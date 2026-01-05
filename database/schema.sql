@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS blocks
 CREATE TABLE IF NOT EXISTS notifications
 (
     notification_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id)
-);
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 
