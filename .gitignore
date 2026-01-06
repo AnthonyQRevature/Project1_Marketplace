@@ -1,3 +1,4 @@
 .vscode/
-*.drawio.bkp
 .idea/
+marketplace/target/
+*.drawio.bkp
