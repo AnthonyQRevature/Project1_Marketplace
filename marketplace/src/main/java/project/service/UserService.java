@@ -1,6 +1,6 @@
 package project.service;
 
-import java.util.function.UnaryOperator;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
-import project.service.model.UserModel;
+import project.controller.model.UserModel;
+import project.util.Hasher;
+import project.util.DateUtil;
 
 /*
  * a service class bean
@@ -17,6 +19,8 @@ import project.service.model.UserModel;
 public class UserService {
 
     UserDao dao;
+    Hasher hasher;
+    DateUtil dateUtil;
 
     /*
      * a response entity represents an HTML response
@@ -27,17 +31,17 @@ public class UserService {
      * client and server.
      */
     /*
-     * user is an object that has fields assigned to it except for maybe the ID field and the password field
+     * 
      */
-    public ResponseEntity<UserEntity> RegisterNewUser(String password, UserEntity user)
+    public ResponseEntity<UserModel> RegisterNewUser(UserModel user)
     {
-        UnaryOperator<String> hasher = (String ps) -> ps;
+        UserEntity entity = new UserEntity();
 
-        //check password requirements, email existence, etc.
-
-
-        //assign the password field in the entity
-        user.setPasswordHash(hasher.apply(password));
+        //TODO check password requirements, email existence, etc.
+        if (user.getPassword().length() < 8)
+        {
+            return ResponseEntity.badRequest().build();
+        }
 
         //check existence
         if (dao.findUserByUsername(user.getUsername()) != null)
@@ -46,16 +50,35 @@ public class UserService {
             return ResponseEntity.status(409).build();
         }
         else
-        {
+        {//potentially factor conversions into a seperate method
+
+            //conversion from model to entity
             //dao.save will return an entity, guarenteed nonnull
             //this entity will have it's ID field filled in unlike the one that is passed into the function
-            var result = dao.save(user);
-            return ResponseEntity.ok(result);
+            Date createdAt = dateUtil.CurrentDate();
+            entity.setUsername(user.getUsername());
+            entity.setEmail(user.getEmail());
+            entity.setCreatedAt(createdAt);
+
+            //assign the password field in the entity
+            String hash = hasher.HashPassword(user.getPassword());
+            entity.setPasswordHash(hash);
+
+            UserEntity result = dao.save(entity);
+
+            //conversion from entity to model
+            UserModel ret = new UserModel(result.getCreatedAt(), result.getEmail(), null, result.getUsername());
+            return ResponseEntity.ok(ret);
         }
         //return ResponseEntity.status(400).build();
     }
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao) {this.dao = dao;}
+    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil) 
+    {
+        this.dao = dao;
+        this.hasher = hasher;
+        this.dateUtil = dateUtil;
+    }
 }
