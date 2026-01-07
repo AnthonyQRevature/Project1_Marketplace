@@ -35,6 +35,11 @@ public class UserEntity {
     public UserEntity() {
     }
 
+    public UserEntity(UserEntity o)
+    {
+        this(o.createdAt, o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+    }
+
     public UserEntity(Date createdAt, String email, String passwordHash, String role, Integer userId, String username, Boolean verifiedSeller) {
         this.createdAt = createdAt;
         this.email = email;
