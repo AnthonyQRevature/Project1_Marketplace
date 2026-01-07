@@ -1,0 +1,4 @@
+curl http://localhost:8080/test
+curl -X PUT -d '{"username":"new_username","password":"abc123"}' -H "Content-Type: application/json" http://localhost:8080/login
+curl -X PUT -d {"username":"new_username","password":"myvalidpassword123"} -H "Content-Type: application/json" http://localhost:8080/login
+curl -X PUT -d "@test.json" -H "Content-Type: application/json" http://localhost:8080/login

@@ -11,4 +11,17 @@ public class AppConfig {
     {
         return new HelloWorldBean();
     }
+
+    /*
+    @Bean
+    public Hasher hasher()
+    {
+        return new Hasher();
+    }
+    */
+
+    /*
+    @Bean
+    public DateUtil dateUtil() {return new DateUtil();}
+    */
 }
