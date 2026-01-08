@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
 import project.controller.model.UserModel;
-import project.util.Hasher;
 import project.util.DateUtil;
+import project.util.Hasher;
 
 /*
  * a service class bean

@@ -64,11 +64,11 @@ public class UserServiceTest {
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
-        when(dateUtil.CurrentDate()).thenReturn(testDate);
-        when(hasher.HashPassword("password")).thenReturn("hashed_password");
+        when(dateUtil.currentDate()).thenReturn(testDate);
+        when(hasher.hashPassword("password")).thenReturn("hashed_password");
 
         //act
-        var ret = userService.RegisterNewUser(input);
+        var ret = userService.registerNewUser(input);
 
         //assert
         assertEquals(expectedResponse, ret.getBody());
