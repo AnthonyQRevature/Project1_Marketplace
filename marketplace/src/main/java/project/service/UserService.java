@@ -1,7 +1,5 @@
 package project.service;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -69,6 +67,12 @@ public class UserService {
             return ResponseEntity.ok(ret);
         }
         //return ResponseEntity.status(400).build();
+    }
+
+    public void AttemptLogin(String username, String password){
+    }
+
+    public void RetrieveByID(int id){
     }
 
     //achieves constructor injection

@@ -40,8 +40,14 @@ public class UserServiceTest {
 
     ////A basic test of the UserService Class
     //Retrieve by id tests
+    @Test
+    public void RetrieveByID(id){
+    }
 
     //Attempt login tests
+    @Test
+    public void AttemptLogin(String username, String password){
+    }
 
     //Registering users tests
     @Test
