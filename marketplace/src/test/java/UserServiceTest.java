@@ -54,7 +54,7 @@ public class UserServiceTest {
         input.setEmail("email");
         */
         
-        UserModel input = new UserModel(null, "test_email", "password", "username");
+        UserModel input = new UserModel("test_email", "password", "username");
         Date testDate = new Date(0);
 
         UserEntity expectedSave = new UserEntity();
@@ -64,7 +64,7 @@ public class UserServiceTest {
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         daoResponse.setUserId(1);
-        UserModel expectedResponse = new UserModel(testDate, "test_email", null, "username");
+        UserModel expectedResponse = new UserModel("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
@@ -92,7 +92,7 @@ public class UserServiceTest {
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         when(dao.findUserByUsername("username")).thenReturn(daoResponse);
-        UserModel input = new UserModel(null, "test_email", "password", "username");
+        UserModel input = new UserModel("test_email", "password", "username");
         var ret = userService.registerNewUser(input);
         assertEquals(HttpStatus.CONFLICT, ret.getStatusCode());
     }
