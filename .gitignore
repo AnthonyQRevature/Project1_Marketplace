@@ -1,4 +1,3 @@
-.vscode/
 .idea/
 marketplace/target/
 # marketplace/src/main/resources/application.properties
