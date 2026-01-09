@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @Table(name="users")
 public class UserEntity {
 
-    @Column(name="user_id")
+    @Column(name="id")
     @Id
     /*
      * relies on a database's auto-increment feature
@@ -30,32 +30,24 @@ public class UserEntity {
     private String passwordHash;
     private String role;
     private Boolean verifiedSeller;
-    private Date createdAt;
 
-    public UserEntity() {
+    public UserEntity() {}
+
+    public UserEntity(UserEntity userEntity){
+        this.userId = userEntity.userId;
+        this.username = userEntity.username;
+        this.email = userEntity.email;
+        this.passwordHash = userEntity.passwordHash;
+        this.role=  userEntity.role;
+        this.verifiedSeller = userEntity.verifiedSeller;
     }
 
-    public UserEntity(UserEntity o)
-    {
-        this(o.createdAt, o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
-    }
-
-    public UserEntity(Date createdAt, String email, String passwordHash, String role, Integer userId, String username, Boolean verifiedSeller) {
-        this.createdAt = createdAt;
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.role = role;
+    public UserEntity(Integer userId, String username, String email, String passwordHash, String role, Boolean verifiedSeller) {
         this.userId = userId;
         this.username = username;
-        this.verifiedSeller = verifiedSeller;
-    }
-
-    public UserEntity(Date createdAt, String email, String passwordHash, String role, String username, Boolean verifiedSeller) {
-        this.createdAt = createdAt;
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
-        this.username = username;
         this.verifiedSeller = verifiedSeller;
     }
 
@@ -105,74 +97,5 @@ public class UserEntity {
 
     public void setVerifiedSeller(Boolean verifiedSeller) {
         this.verifiedSeller = verifiedSeller;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.userId);
-        hash = 29 * hash + Objects.hashCode(this.username);
-        hash = 29 * hash + Objects.hashCode(this.email);
-        hash = 29 * hash + Objects.hashCode(this.passwordHash);
-        hash = 29 * hash + Objects.hashCode(this.role);
-        hash = 29 * hash + Objects.hashCode(this.verifiedSeller);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserEntity other = (UserEntity) obj;
-        if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
-            return false;
-        }
-        if (!Objects.equals(this.role, other.role)) {
-            return false;
-        }
-        if (!Objects.equals(this.userId, other.userId)) {
-            return false;
-        }
-        if (!Objects.equals(this.verifiedSeller, other.verifiedSeller)) {
-            return false;
-        }
-        return Objects.equals(this.createdAt, other.createdAt);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("userEntity{");
-        sb.append("userId=").append(userId);
-        sb.append(", username=").append(username);
-        sb.append(", email=").append(email);
-        sb.append(", passwordHash=").append(passwordHash);
-        sb.append(", role=").append(role);
-        sb.append(", verifiedSeller=").append(verifiedSeller);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append('}');
-        return sb.toString();
     }
 }

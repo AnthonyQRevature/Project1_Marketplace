@@ -61,7 +61,6 @@ public class UserServiceTest {
         expectedSave.setUsername("username");
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
-        expectedSave.setCreatedAt(testDate);
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         daoResponse.setUserId(1);
@@ -90,7 +89,6 @@ public class UserServiceTest {
         expectedSave.setUsername("username");
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
-        expectedSave.setCreatedAt(null);
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         when(dao.findUserByUsername("username")).thenReturn(daoResponse);

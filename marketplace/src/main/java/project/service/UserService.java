@@ -55,10 +55,8 @@ public class UserService {
             //conversion from model to entity
             //dao.save will return an entity, guarenteed nonnull
             //this entity will have it's ID field filled in unlike the one that is passed into the function
-            Date createdAt = dateUtil.currentDate();
             entity.setUsername(user.getUsername());
             entity.setEmail(user.getEmail());
-            entity.setCreatedAt(createdAt);
 
             //assign the password field in the entity
             String hash = hasher.hashPassword(user.getPassword());
@@ -67,7 +65,7 @@ public class UserService {
             UserEntity result = dao.save(entity);
 
             //conversion from entity to model
-            UserModel ret = new UserModel(result.getCreatedAt(), result.getEmail(), null, result.getUsername());
+            UserModel ret = new UserModel(result.getEmail(), null, result.getUsername());
             return ResponseEntity.ok(ret);
         }
         //return ResponseEntity.status(400).build();
