@@ -1,5 +1,6 @@
 import './Homepage.css'
 import Head from './Head.tsx'
+import { Link } from 'react-router';
 
 function Homepage()
 {
@@ -8,7 +9,7 @@ function Homepage()
       <Head />
       <div className="cards">
         <div className="card">
-          <p>Content</p>
+          <Link to="/register"><p>Register</p></Link>
         </div>
         <div className="card">
           <p>Content</p>
