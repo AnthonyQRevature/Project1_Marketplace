@@ -16,7 +16,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
-
     @Column(name="id")
     @Id
     /*
@@ -26,9 +25,13 @@ public class UserEntity {
     private Integer userId;
     @Column(name="username")
     private String username;
+    @Column(name="email")
     private String email;
+    @Column(name="password_hash")
     private String passwordHash;
+    @Column(name="role")
     private String role;
+    @Column(name="verified_seller")
     private Boolean verifiedSeller;
 
     public UserEntity() {}
