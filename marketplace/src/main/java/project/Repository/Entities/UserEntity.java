@@ -37,36 +37,37 @@ public class UserEntity {
     private Integer userId;
     @Column(name="username")
     private String username;
-    @Column(name="email")
     private String email;
-    @Column(name="password_hash")
     private String passwordHash;
-    @Column(name="role")
     @Enumerated(EnumType.STRING)
     //Hibernate 6
     //otherwise we'd need to use native query
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private UserRole role;
-    @Column(name="verified_seller")
     private Boolean verifiedSeller;
 
-    public UserEntity() {}
-
-    public UserEntity(UserEntity userEntity){
-        this.userId = userEntity.userId;
-        this.username = userEntity.username;
-        this.email = userEntity.email;
-        this.passwordHash = userEntity.passwordHash;
-        this.role=  userEntity.role;
-        this.verifiedSeller = userEntity.verifiedSeller;
+    public UserEntity() {
     }
 
-    public UserEntity(Integer userId, String username, String email, String passwordHash, String role, Boolean verifiedSeller) {
-        this.userId = userId;
-        this.username = username;
+    public UserEntity(UserEntity o)
+    {
+        this(o.getCreatedAt(), o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+    }
+
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
+        this.userId = userId;
+        this.username = username;
+        this.verifiedSeller = verifiedSeller;
+    }
+
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.username = username;
         this.verifiedSeller = verifiedSeller;
     }
 
@@ -116,5 +117,72 @@ public class UserEntity {
 
     public void setVerifiedSeller(Boolean verifiedSeller) {
         this.verifiedSeller = verifiedSeller;
+    }
+
+    public Date getCreatedAt() {
+        return null;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.userId);
+        hash = 29 * hash + Objects.hashCode(this.username);
+        hash = 29 * hash + Objects.hashCode(this.email);
+        hash = 29 * hash + Objects.hashCode(this.passwordHash);
+        hash = 29 * hash + Objects.hashCode(this.role);
+        hash = 29 * hash + Objects.hashCode(this.verifiedSeller);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserEntity other = (UserEntity) obj;
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
+            return false;
+        }
+        if (!Objects.equals(this.userId, other.userId)) {
+            return false;
+        }
+        if (!Objects.equals(this.verifiedSeller, other.verifiedSeller)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("userEntity{");
+        sb.append("userId=").append(userId);
+        sb.append(", username=").append(username);
+        sb.append(", email=").append(email);
+        sb.append(", passwordHash=").append(passwordHash);
+        sb.append(", role=").append(role);
+        sb.append(", verifiedSeller=").append(verifiedSeller);
+        sb.append('}');
+        return sb.toString();
     }
 }
