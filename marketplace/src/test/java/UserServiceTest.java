@@ -1,4 +1,3 @@
-
 import java.sql.Date;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +11,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
@@ -35,32 +35,36 @@ public class UserServiceTest {
         //clean
         Mockito.reset(dao);
     }
+    ////Tests of the UserProfileService Class
+    //Get by id tests
 
-    //a basic test of the UserServiceClass
+    ////A basic test of the UserService Class
+    //Retrieve by id tests
+
+    //Attempt login tests
+
+    //Registering users tests
     @Test
     public void CreateUserTest()
     {
         //arrange
-        String inputPassword = "Password";
-
         /*
         UserEntity input = new UserEntity();
         input.setUsername("username");
         input.setEmail("email");
         */
         
-        UserModel input = new UserModel(null, "test_email", "password", "username");
+        UserModel input = new UserModel("test_email", "password", "username");
         Date testDate = new Date(0);
 
         UserEntity expectedSave = new UserEntity();
         expectedSave.setUsername("username");
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
-        expectedSave.setCreatedAt(testDate);
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         daoResponse.setUserId(1);
-        UserModel expectedResponse = new UserModel(testDate, "test_email", null, "username");
+        UserModel expectedResponse = new UserModel("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
@@ -75,6 +79,24 @@ public class UserServiceTest {
         verify(dao, times(1)).findUserByUsername("username");
         verify(dao, times(1)).save(expectedSave);
     }
+
+    //a checking that users can not share usernames
+    @Test
+    public void noDuplicatesUserTest(){
+        //I need to figure out how to do this without just registering the same user twice.
+        //Ideally the first user should already be registered
+        UserEntity expectedSave = new UserEntity();
+        expectedSave.setUsername("username");
+        expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
+        expectedSave.setEmail("test_email");
+
+        UserEntity daoResponse = new UserEntity(expectedSave);
+        when(dao.findUserByUsername("username")).thenReturn(daoResponse);
+        UserModel input = new UserModel("test_email", "password", "username");
+        var ret = userService.registerNewUser(input);
+        assertEquals(HttpStatus.CONFLICT, ret.getStatusCode());
+    }
+
 
     /*
     @Test

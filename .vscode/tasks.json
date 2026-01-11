@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "java (build)",
+			"paths": [
+				"${workspace}/project"
+			],
+			"isFullBuild": true,
+			"group": "build",
+			"problemMatcher": [],
+			"label": "java (build): Build Workspace",
+			"detail": "$(tools) Build all the Java projects in workspace."
+		},
+		{
+			"label": "npm: build",
+			"type": "npm",
+			"script": "build",
+			"path": "marketplace_app",
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "vite build"
+		},
+		{
+			"label": "npm: preview",
+			"type": "npm",
+			"script": "dev",
+			"path": "marketplace_app",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"dependsOn": "npm: build - santorini_app",
+			"problemMatcher": [],
+			"detail": "vite preview"
+		}
+	]
+}
