@@ -3,8 +3,13 @@ package project.Repository.Entities;
 import java.sql.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +21,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
+    static enum UserRole
+    {
+        user,
+        admin,
+        super_user //super is a keyword
+    }
+
     @Column(name="id")
     @Id
     /*
@@ -30,7 +42,11 @@ public class UserEntity {
     @Column(name="password_hash")
     private String passwordHash;
     @Column(name="role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    //Hibernate 6
+    //otherwise we'd need to use native query
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private UserRole role;
     @Column(name="verified_seller")
     private Boolean verifiedSeller;
 
@@ -86,11 +102,11 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
