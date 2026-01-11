@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./Register.css";
 
+const register = {endpoint: "http://localhost:8080/login", method: "PUT"};
+
 function Register()
 {
   const [response, setResponse] = useState(null);
@@ -8,10 +10,10 @@ function Register()
 
   return (
     <>
-      <form method="put" onSubmit={formHandler} className="form-example">
+      <form onSubmit={formHandler} className="form-example">
         <div className="form-example">
-          <label htmlFor="name">Enter your name: </label>
-          <input type="text" name="name" id="name" required />
+          <label htmlFor="username">Enter your name: </label>
+          <input type="text" name="username" id="username" required />
         </div>
         <div className="form-example">
           <label htmlFor="password">Enter your password: </label>
@@ -42,9 +44,19 @@ function handleSubmit(setResponse : (val : any)=>void)
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
 
-    const result = await fetch('http://localhost:8080/echo', { method: 'POST', body: JSON.stringify(formJson) });
+    const result = await fetch(register.endpoint, 
+      { 
+        method: register.method, 
+        body: JSON.stringify(formJson),
+        headers: new Headers({'content-type': 'application/json'})
+      });
 
-    setResponse(await result.json());
+    console.log(result);
+
+    if (result.ok)
+      setResponse(await result.json());
+    else
+      setResponse(result.status);
   }
 }
 

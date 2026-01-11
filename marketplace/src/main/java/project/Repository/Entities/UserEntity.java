@@ -3,8 +3,13 @@ package project.Repository.Entities;
 import java.sql.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,8 +21,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
+    static enum UserRole
+    {
+        user,
+        admin,
+        super_user //super is a keyword
+    }
 
-    @Column(name="user_id")
+    @Column(name="id")
     @Id
     /*
      * relies on a database's auto-increment feature
@@ -28,20 +39,22 @@ public class UserEntity {
     private String username;
     private String email;
     private String passwordHash;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    //Hibernate 6
+    //otherwise we'd need to use native query
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private UserRole role;
     private Boolean verifiedSeller;
-    private Date createdAt;
 
     public UserEntity() {
     }
 
     public UserEntity(UserEntity o)
     {
-        this(o.createdAt, o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+        this(o.getCreatedAt(), o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
     }
 
-    public UserEntity(Date createdAt, String email, String passwordHash, String role, Integer userId, String username, Boolean verifiedSeller) {
-        this.createdAt = createdAt;
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -50,8 +63,7 @@ public class UserEntity {
         this.verifiedSeller = verifiedSeller;
     }
 
-    public UserEntity(Date createdAt, String email, String passwordHash, String role, String username, Boolean verifiedSeller) {
-        this.createdAt = createdAt;
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -91,11 +103,11 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -108,11 +120,11 @@ public class UserEntity {
     }
 
     public Date getCreatedAt() {
-        return createdAt;
+        return null;
     }
 
     public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+        
     }
 
     @Override
@@ -124,7 +136,6 @@ public class UserEntity {
         hash = 29 * hash + Objects.hashCode(this.passwordHash);
         hash = 29 * hash + Objects.hashCode(this.role);
         hash = 29 * hash + Objects.hashCode(this.verifiedSeller);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
         return hash;
     }
 
@@ -158,7 +169,7 @@ public class UserEntity {
         if (!Objects.equals(this.verifiedSeller, other.verifiedSeller)) {
             return false;
         }
-        return Objects.equals(this.createdAt, other.createdAt);
+        return true;
     }
 
     @Override
@@ -171,7 +182,6 @@ public class UserEntity {
         sb.append(", passwordHash=").append(passwordHash);
         sb.append(", role=").append(role);
         sb.append(", verifiedSeller=").append(verifiedSeller);
-        sb.append(", createdAt=").append(createdAt);
         sb.append('}');
         return sb.toString();
     }
