@@ -9,7 +9,7 @@ function Homepage()
       <Head />
       <div className="cards">
         <div className="card">
-          <Link to="/register"><p>Register</p></Link>
+          <Link to="/login"><p>Login</p></Link>
         </div>
         <div className="card">
           <p>Content</p>
