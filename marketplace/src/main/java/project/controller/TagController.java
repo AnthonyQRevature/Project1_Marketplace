@@ -3,13 +3,12 @@ package project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.TagEntity;
 import project.service.TagService;
-import project.service.UserService;
 
 @RestController
 public class TagController {
@@ -22,7 +21,8 @@ public class TagController {
     }
 
     @GetMapping("/tags")
-    List<TagEntity> getAll()
+    @CrossOrigin(origins="http://localhost:5173")
+    public List<TagEntity> getAll()
     {
         return tagService.getAllTags();
     }

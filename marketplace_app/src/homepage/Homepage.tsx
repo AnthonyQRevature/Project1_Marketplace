@@ -9,10 +9,10 @@ function Homepage()
       <Head />
       <div className="cards">
         <div className="card">
-          <Link to="/register"><p>Register</p></Link>
+          <LinkTo path="/register" label='Register' />
         </div>
         <div className="card">
-          <p>Content</p>
+          <LinkTo path="/listings" label='Listings' />
         </div>
         <div className="card">
           <p>Content</p>
@@ -23,6 +23,11 @@ function Homepage()
       </div>
     </>
   );
+}
+
+function LinkTo(props: {path: string, label: string})
+{
+  return (<Link to={props.path}><p>{props.label}</p></Link>);
 }
 
 export default Homepage;
