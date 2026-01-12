@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
+import project.controller.model.LoginModel;
 import project.controller.model.UserModel;
 import project.util.DateUtil;
 import project.util.Hasher;
+import project.util.TokenUtil;
 
 /*
  * a service class bean
@@ -69,7 +71,16 @@ public class UserService {
         //return ResponseEntity.status(400).build();
     }
 
-    public void AttemptLogin(String username, String password){
+    // This should probably be rewritten as ResponseEntity<LoginModel>
+    public LoginModel AttemptLogin(String username, String password){
+        UserEntity logAttempt = dao.findUserByUsername(username);
+        if(hasher.verifyPassword(logAttempt.getPasswordHash(), password)){
+            LoginModel loginModel = new LoginModel(logAttempt.getUserId(), username, TokenUtil.tokenMaker(username));
+            return loginModel;
+        }
+        else{
+            throw new RuntimeException("Log attempt failed");
+        }
     }
 
     public void RetrieveByID(int id){
