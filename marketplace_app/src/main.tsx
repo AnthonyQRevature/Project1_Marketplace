@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router"; //router
 import './index.css';
 import Homepage from './homepage/Homepage.tsx';
 import Test from './Test.tsx';
-import Register from './register_user/register.tsx';
+import Register from './register_user/Register.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
