@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.TagEntity;
 import project.service.TagService;
+import project.util.AllowCORS;
 
 @RestController
+@AllowCORS
 public class TagController {
 
     TagService tagService;
@@ -21,7 +23,6 @@ public class TagController {
     }
 
     @GetMapping("/tags")
-    @CrossOrigin(origins="http://localhost:5173")
     public List<TagEntity> getAll()
     {
         return tagService.getAllTags();

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project.controller.model.UserModel;
 import project.service.UserService;
+import project.util.AllowCORS;
 
 /*
  * A Controller for the /login endpoint
@@ -37,7 +38,7 @@ public class LoginController {
      * and return a UserModel with the username, email, and createdAt date filled in.
      */
     @PutMapping("/login")
-    @CrossOrigin()
+    @AllowCORS
     public ResponseEntity<UserModel> registerUser(@RequestBody UserModel body)
     {
         System.out.printf("Recieved: %s\n", body.toString());
