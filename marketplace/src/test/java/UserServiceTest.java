@@ -15,10 +15,12 @@ import org.springframework.http.HttpStatus;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
+import project.controller.model.LoginModel;
 import project.controller.model.UserModel;
 import project.service.UserService;
 import project.util.DateUtil;
 import project.util.Hasher;
+import project.util.TokenUtil;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -27,6 +29,7 @@ public class UserServiceTest {
     @Mock UserDao dao;
     @Mock DateUtil dateUtil;
     @Mock Hasher hasher;
+    @Mock TokenUtil tokenUtil;
     @InjectMocks UserService userService;
 
     @AfterEach
@@ -103,6 +106,21 @@ public class UserServiceTest {
         assertEquals(HttpStatus.CONFLICT, ret.getStatusCode());
     }
 
+    @Test
+    public void loginTest(){
+        UserEntity expectedSave = new UserEntity();
+        expectedSave.setUserId(1);
+        expectedSave.setUsername("username");
+        expectedSave.setPasswordHash("hashed_password");
+        expectedSave.setEmail("test_email");
+
+        UserEntity daoResponse = new UserEntity(expectedSave);
+        when(dao.findUserByUsername("username")).thenReturn(daoResponse);
+        when(hasher.verifyPassword("hashed_password", "password")).thenReturn(true);
+        when(tokenUtil.tokenMaker("username")).thenReturn("token");
+        LoginModel log = userService.AttemptLogin("username", "password");
+        assertEquals("token", log.getToken());
+    }
 
     /*
     @Test

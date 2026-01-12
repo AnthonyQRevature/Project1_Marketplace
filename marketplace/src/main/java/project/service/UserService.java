@@ -21,6 +21,7 @@ public class UserService {
     UserDao dao;
     Hasher hasher;
     DateUtil dateUtil;
+    TokenUtil tokenUtil;
 
     /*
      * a response entity represents an HTML response
@@ -75,7 +76,7 @@ public class UserService {
     public LoginModel AttemptLogin(String username, String password){
         UserEntity logAttempt = dao.findUserByUsername(username);
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), password)){
-            LoginModel loginModel = new LoginModel(logAttempt.getUserId(), username, TokenUtil.tokenMaker(username));
+            LoginModel loginModel = new LoginModel(logAttempt.getUserId(), username, tokenUtil.tokenMaker(username));
             return loginModel;
         }
         else{
@@ -88,10 +89,11 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil) 
+    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
     {
         this.dao = dao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
+        this.tokenUtil = tokenUtil;
     }
 }
