@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.0 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.3.0">
   <diagram id="UT6aRH6c4MKEX7FBoO01" name="Diagram">
-    <mxGraphModel dx="2823" dy="1906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2625" dy="1764" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -345,7 +345,7 @@
         <mxCell id="5MTHfeKNqOPg67P6-GDZ-102" edge="1" parent="1" source="5MTHfeKNqOPg67P6-GDZ-97" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5MTHfeKNqOPg67P6-GDZ-40">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5MTHfeKNqOPg67P6-GDZ-106" edge="1" parent="1" source="5MTHfeKNqOPg67P6-GDZ-97" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5MTHfeKNqOPg67P6-GDZ-104">
+        <mxCell id="5MTHfeKNqOPg67P6-GDZ-106" edge="1" parent="1" source="VKlvhUgC8jL2m3AewbIV-5" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5MTHfeKNqOPg67P6-GDZ-104">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="5MTHfeKNqOPg67P6-GDZ-97" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" value="SearchController" vertex="1">
@@ -513,6 +513,17 @@
         </mxCell>
         <mxCell id="VZUj6sWTRKwtzA8lyG1O-2" parent="VZUj6sWTRKwtzA8lyG1O-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font face=&quot;Lucida Console&quot;&gt;Date currentDate()&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="170" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="VKlvhUgC8jL2m3AewbIV-5" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" value="TagsController" vertex="1">
+          <mxGeometry height="200" width="160" x="1500" y="-160" as="geometry">
+            <mxRectangle height="26" width="160" x="130" y="380" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VKlvhUgC8jL2m3AewbIV-6" parent="VKlvhUgC8jL2m3AewbIV-5" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;div data-contents=&quot;true&quot;&gt;&lt;div class=&quot;&quot; data-block=&quot;true&quot; data-editor=&quot;1e4k6&quot; data-offset-key=&quot;f4lrl-0-0&quot;&gt;&lt;div data-offset-key=&quot;f4lrl-0-0&quot; class=&quot;public-DraftStyleDefault-block public-DraftStyleDefault-ltr&quot;&gt;&lt;span data-offset-key=&quot;b5f6p-0-0&quot;&gt;/tags&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="160" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="VKlvhUgC8jL2m3AewbIV-7" parent="VKlvhUgC8jL2m3AewbIV-5" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="List all tags" vertex="1">
+          <mxGeometry height="30" width="160" y="56" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
