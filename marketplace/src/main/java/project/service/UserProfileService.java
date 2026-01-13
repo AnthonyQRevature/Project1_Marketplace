@@ -25,7 +25,6 @@ public class UserProfileService{
     }
     boolean deleteUserProfileByEntity(UserProfileEntity entity){
     }
-
     Optional<UserProfileModel> createNewUserProfile(UserProfileModel model){
     }
     boolean uniqueUserID(int userID){
