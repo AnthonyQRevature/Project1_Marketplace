@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class TokenUtil {
     // This should be static but mockito is rejecting TokenUtil if it is static
-    private final SecretKey key = Keys.hmacShaKeyFor("RandomN0nScent5".getBytes(StandardCharsets.UTF_8));
+    private final SecretKey key = Keys.hmacShaKeyFor("HVmw2nb7Zgbo0BLtoY3Iv7Sh2CnEgfUd".getBytes(StandardCharsets.UTF_8));
     private final int tokenLifetime = 43200000;
     public String tokenMaker(String username){
         long currentTime = System.currentTimeMillis();
