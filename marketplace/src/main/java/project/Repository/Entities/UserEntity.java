@@ -1,7 +1,15 @@
 package project.Repository.Entities;
 
+import java.sql.Date;
+import java.util.Objects;
+
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +21,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
+    static enum UserRole
+    {
+        user,
+        admin,
+        super_user //super is a keyword
+    }
 
     @Column(name="id")
     @Id
@@ -25,26 +39,35 @@ public class UserEntity {
     private String username;
     private String email;
     private String passwordHash;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    //Hibernate 6
+    //otherwise we'd need to use native query
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private UserRole role;
     private Boolean verifiedSeller;
 
-    public UserEntity() {}
-
-    public UserEntity(UserEntity userEntity){
-        this.userId = userEntity.userId;
-        this.username = userEntity.username;
-        this.email = userEntity.email;
-        this.passwordHash = userEntity.passwordHash;
-        this.role=  userEntity.role;
-        this.verifiedSeller = userEntity.verifiedSeller;
+    public UserEntity() {
     }
 
-    public UserEntity(Integer userId, String username, String email, String passwordHash, String role, Boolean verifiedSeller) {
-        this.userId = userId;
-        this.username = username;
+    public UserEntity(UserEntity o)
+    {
+        this(o.getCreatedAt(), o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+    }
+
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
+        this.userId = userId;
+        this.username = username;
+        this.verifiedSeller = verifiedSeller;
+    }
+
+    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.username = username;
         this.verifiedSeller = verifiedSeller;
     }
 
@@ -80,11 +103,11 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -96,58 +119,70 @@ public class UserEntity {
         this.verifiedSeller = verifiedSeller;
     }
 
+    public Date getCreatedAt() {
+        return null;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        
+    }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-        result = prime * result + ((username == null) ? 0 : username.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
-        result = prime * result + ((role == null) ? 0 : role.hashCode());
-        result = prime * result + ((verifiedSeller == null) ? 0 : verifiedSeller.hashCode());
-        return result;
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.userId);
+        hash = 29 * hash + Objects.hashCode(this.username);
+        hash = 29 * hash + Objects.hashCode(this.email);
+        hash = 29 * hash + Objects.hashCode(this.passwordHash);
+        hash = 29 * hash + Objects.hashCode(this.role);
+        hash = 29 * hash + Objects.hashCode(this.verifiedSeller);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        UserEntity other = (UserEntity) obj;
-        if (userId == null) {
-            if (other.userId != null)
-                return false;
-        } else if (!userId.equals(other.userId))
+        }
+        final UserEntity other = (UserEntity) obj;
+        if (!Objects.equals(this.username, other.username)) {
             return false;
-        if (username == null) {
-            if (other.username != null)
-                return false;
-        } else if (!username.equals(other.username))
+        }
+        if (!Objects.equals(this.email, other.email)) {
             return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
+        }
+        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
             return false;
-        if (passwordHash == null) {
-            if (other.passwordHash != null)
-                return false;
-        } else if (!passwordHash.equals(other.passwordHash))
+        }
+        if (!Objects.equals(this.role, other.role)) {
             return false;
-        if (role == null) {
-            if (other.role != null)
-                return false;
-        } else if (!role.equals(other.role))
+        }
+        if (!Objects.equals(this.userId, other.userId)) {
             return false;
-        if (verifiedSeller == null) {
-            if (other.verifiedSeller != null)
-                return false;
-        } else if (!verifiedSeller.equals(other.verifiedSeller))
+        }
+        if (!Objects.equals(this.verifiedSeller, other.verifiedSeller)) {
             return false;
+        }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("userEntity{");
+        sb.append("userId=").append(userId);
+        sb.append(", username=").append(username);
+        sb.append(", email=").append(email);
+        sb.append(", passwordHash=").append(passwordHash);
+        sb.append(", role=").append(role);
+        sb.append(", verifiedSeller=").append(verifiedSeller);
+        sb.append('}');
+        return sb.toString();
     }
 }

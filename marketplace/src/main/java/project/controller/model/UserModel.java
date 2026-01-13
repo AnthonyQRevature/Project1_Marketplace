@@ -13,8 +13,10 @@ public class UserModel
     String username;
     String password;
     String email;
+    Date createdAt;
 
-    public UserModel(String email, String password, String username) {
+    public UserModel(Date createdAt, String email, String password, String username) {
+        this.createdAt = createdAt;
         this.email = email;
         this.password = password;
         this.username = username;
@@ -47,9 +49,13 @@ public class UserModel
         this.email = email;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-
-
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     @Override
     public int hashCode() {
@@ -57,6 +63,7 @@ public class UserModel
         hash = 71 * hash + Objects.hashCode(this.username);
         hash = 71 * hash + Objects.hashCode(this.password);
         hash = 71 * hash + Objects.hashCode(this.email);
+        hash = 71 * hash + Objects.hashCode(this.createdAt);
         return hash;
     }
 
@@ -78,7 +85,10 @@ public class UserModel
         if (!Objects.equals(this.password, other.password)) {
             return false;
         }
-        return (Objects.equals(this.email, other.email));
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return Objects.equals(this.createdAt, other.createdAt);
     }
 
     @Override
@@ -88,6 +98,7 @@ public class UserModel
         sb.append("username=").append(username);
         sb.append(", password=").append(password);
         sb.append(", email=").append(email);
+        sb.append(", createdAt=").append(createdAt);
         sb.append('}');
         return sb.toString();
     }
