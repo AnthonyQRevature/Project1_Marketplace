@@ -59,8 +59,6 @@ public class BlockEntity {
 			}
 			return this.blocked == other.blocked;
 		}
-
-
 	}
 
 	@Id
