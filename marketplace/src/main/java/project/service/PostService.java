@@ -5,22 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.Repository.Entities.TagEntity;
-import project.Repository.dao.TagDao;
+import project.Repository.Entities.PostEntity;
+import project.Repository.dao.PostDao;
 
 @Service
-public class TagService {
-
-    TagDao dao;
+public class PostService {
+    PostDao dao;
 
     @Autowired
-    public TagService(TagDao dao)
-    {
+    public PostService(PostDao dao) {
         this.dao = dao;
     }
 
-    public List<TagEntity> getAllTags()
+    //maybe add limit and offset
+    public List<PostEntity> getAllPosts()
     {
         return dao.findAll();
     }
 }
+
+

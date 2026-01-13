@@ -5,3 +5,14 @@ INSERT INTO tags(tag_name) VALUES
 ('Dresses'),
 ('Unused'),
 ('Used');
+
+INSERT INTO users(id, email, password_hash, username) VALUES
+(1, 'joes@email', 'test', 'BigJoe'),
+(2, 'janes@email', 'test', 'FancyJane');
+
+INSERT INTO post(id, seller_id, description, price, status) VALUES
+(1, 1, 'A big shirt', 50.00, 'available');
+
+INSERT INTO post_media(post_id, media_url) VALUES
+(1, 'media1'),
+(1, 'media2');
