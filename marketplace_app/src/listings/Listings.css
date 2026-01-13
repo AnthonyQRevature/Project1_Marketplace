@@ -5,4 +5,10 @@ p {
 .TagsList 
 {
     display: flex;
+    list-style-type: none;
+}
+
+.TagsList > li
+{
+    margin-right: 20px;
 }

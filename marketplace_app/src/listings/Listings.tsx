@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Listings.css";
 import logError from "../util/logError";
+import AsyncLoader from "../util/AsyncLoader";
 
 const get_tags = {endpoint: "http://localhost:8080/tags", method: "GET"};
 
@@ -12,46 +13,11 @@ type TagEntity = {
 function Listings()
 {
   //asynchronously load in the tags
-  const [tagList, setTagList] = useState<TagEntity[]>([]);
+  const renderTags = (value : TagEntity[]) => (<TagsList tags={value} />);
   
-  //try a certain number of times
-  const fetch_tags = async (rep: number) => 
-  {
-    let i = 0;
-    while (true)
-    {
-      try
-      {
-        const response = await fetch(get_tags.endpoint, {method: get_tags.method});
-        const values : TagEntity[] = await response.json();
-        setTagList(values);
-        return;
-      }
-      catch (e)
-      {
-        //fail
-        logError(e);
-      }
-
-      //failed
-      i++;
-      if (i < rep)
-      {
-        logError("Fetch request failed. Retrying.");
-      }
-      else
-      {
-        logError("Fetch request failed. Too many attempts. Aborting.")
-        break;
-      }
-    }
-  };
-
-  useEffect(() => {fetch_tags(5);}, []);
-
   return (
     <>
-      <TagsList tags={tagList} />
+      <AsyncLoader<TagEntity[]> endpoint={get_tags} then={renderTags} otherwise={(<p>Loading...</p>)} abort={<p>Failed</p>} />
     </>
   );
 }
@@ -64,7 +30,7 @@ function TagsList(props : {tags: TagEntity[]})
   //loading
   if (props.tags.length==0)
   {
-    return <p>Loading...</p>
+    return 
   }
 
   //retrieved tags
