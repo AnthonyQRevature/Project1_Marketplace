@@ -11,16 +11,14 @@
 
 package project.Repository.Entities;
 
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
-import java.time.Instant;
-import java.util.Objects;
 
 @Entity
 @Table(name="messages")
@@ -74,6 +72,7 @@ public class MessageEntity {
 	public Instant getRead_at() {return read_at;}
 	public void setRead_at(Instant read_at) {this.read_at = read_at;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -81,11 +80,12 @@ public class MessageEntity {
 		return java.util.Objects.equals(message_id, that.message_id) && java.util.Objects.equals(sender_id, that.sender_id) && java.util.Objects.equals(reciever_id, that.reciever_id) && java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(message, that.message) && java.util.Objects.equals(sent_at, that.sent_at) && java.util.Objects.equals(read_at, that.read_at);
 	}
 
+	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(super.hashCode(), message_id, sender_id, reciever_id, post_id, message, sent_at, read_at);
 	}
 
-	@java.lang.Override
+	@Override
 	public java.lang.String toString() {
 		return "MessageEntity{" +
 				"message_id=" + message_id +

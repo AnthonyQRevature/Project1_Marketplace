@@ -6,10 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
-import java.time.Instant;
 import java.util.Objects;
+
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name="user_demerits")
@@ -28,7 +32,7 @@ public class UserDemeritsEntity {
 	@Column(name="reason")
 	private String reason;
 
-	static enum DemeritActionEnum
+	public static enum DemeritActionEnum
 	{
 		warning,
 		post_removed,
@@ -54,7 +58,7 @@ public class UserDemeritsEntity {
 		this.actionEnum = userDemeritsEntity.actionEnum;
 	}
 
-	public UserDemeritsEntity(Integer post_id, Integer user_id, Integer admin_id, Integer report_id, String reason, project.Repository.Entities.UserDemeritsEntity.DemeritActionEnum actionEnum) {
+	public UserDemeritsEntity(Integer post_id, Integer user_id, Integer admin_id, Integer report_id, String reason, DemeritActionEnum actionEnum) {
 		this.post_id = post_id;
 		this.user_id = user_id;
 		this.admin_id = admin_id;
@@ -76,6 +80,7 @@ public class UserDemeritsEntity {
 	public DemeritActionEnum getActionEnum() {return actionEnum;}
 	public void setActionEnum(DemeritActionEnum actionEnum) {this.actionEnum = actionEnum;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -84,6 +89,7 @@ public class UserDemeritsEntity {
 		return java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(user_id, that.user_id) && java.util.Objects.equals(admin_id, that.admin_id) && java.util.Objects.equals(report_id, that.report_id) && java.util.Objects.equals(reason, that.reason) && actionEnum == that.actionEnum;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + Objects.hashCode(post_id);

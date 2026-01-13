@@ -1,15 +1,18 @@
 package project.Repository.Entities;
 
+import java.util.Objects;
+
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
-import java.time.Instant;
-import java.util.Objects;
 
 @Entity
 @Table(name="post_media")
@@ -24,7 +27,7 @@ public class PostMediaEntity {
 	@Column(name="media_url")
 	private String media_url;
 
-	static enum MediaTypeEnum
+	public static enum MediaTypeEnum
 	{
 		image,
 		video
@@ -55,6 +58,7 @@ public class PostMediaEntity {
 	public MediaTypeEnum getMediaTypeEnum() {return mediaTypeEnum;}
 	public void setMediaTypeEnum(MediaTypeEnum mediaTypeEnum) {this.mediaTypeEnum = mediaTypeEnum;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -63,6 +67,7 @@ public class PostMediaEntity {
 		return java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(postID, that.postID) && java.util.Objects.equals(media_url, that.media_url) && mediaTypeEnum == that.mediaTypeEnum;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + Objects.hashCode(post_id);

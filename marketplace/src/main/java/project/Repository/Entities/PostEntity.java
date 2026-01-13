@@ -1,15 +1,19 @@
 package project.Repository.Entities;
 
+import java.time.Instant;
+import java.util.Objects;
+
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
-import java.time.Instant;
-import java.util.Objects;
 
 @Entity
 @Table(name="post")
@@ -30,7 +34,7 @@ public class PostEntity {
 	@Column(name="price")
 	private Double price;
 
-	static enum PostStatusEnum
+	public static enum PostStatusEnum
 	{
 		available,
 		unlisted,
@@ -56,7 +60,7 @@ public class PostEntity {
 		this.status = postEntity.status;
 	}
 
-	public PostEntity(Integer post_id, Instant last_edit, Instant created_at, Integer seller_id, String desc, Double price, project.Repository.Entities.PostEntity.PostStatusEnum status) {
+	public PostEntity(Integer post_id, Instant last_edit, Instant created_at, Integer seller_id, String desc, Double price, PostStatusEnum status) {
 		this.post_id = post_id;
 		this.last_edit = last_edit;
 		this.created_at = created_at;
@@ -81,6 +85,7 @@ public class PostEntity {
 	public PostStatusEnum getStatus() {return status;}
 	public void setStatus(PostStatusEnum status) {this.status = status;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -89,6 +94,7 @@ public class PostEntity {
 		return java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(last_edit, that.last_edit) && java.util.Objects.equals(created_at, that.created_at) && java.util.Objects.equals(seller_id, that.seller_id) && java.util.Objects.equals(desc, that.desc) && java.util.Objects.equals(price, that.price) && status == that.status;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + Objects.hashCode(post_id);

@@ -1,15 +1,14 @@
 package project.Repository.Entities;
 
+import java.time.Instant;
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
-import java.time.Instant;
-import java.util.Objects;
 
 @Entity
 @Table(name="notifications")
@@ -22,11 +21,11 @@ public class NotificationEntity {
 	private Integer user_id;
 	@Column(name="content")
 	private  String text;
-	enum Notification_Type
+	public static enum Notification_Type
 	{
-		MESSAGE_RECEIVED,
-		SYSTEM,
-		ADMIN_ACTION;
+		message_recieved,
+		system,
+		admin_action;
 	}
 	@Column(name="type")
 	Notification_Type type;
