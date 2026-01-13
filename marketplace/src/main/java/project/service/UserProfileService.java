@@ -1,0 +1,9 @@
+package project.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserProfileService{
+    int a;
+    Optional<UserProfileModel> get
+}
