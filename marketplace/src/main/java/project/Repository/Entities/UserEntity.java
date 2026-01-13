@@ -1,8 +1,5 @@
 package project.Repository.Entities;
 
-import java.sql.Date;
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -97,5 +94,60 @@ public class UserEntity {
 
     public void setVerifiedSeller(Boolean verifiedSeller) {
         this.verifiedSeller = verifiedSeller;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
+        result = prime * result + ((role == null) ? 0 : role.hashCode());
+        result = prime * result + ((verifiedSeller == null) ? 0 : verifiedSeller.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UserEntity other = (UserEntity) obj;
+        if (userId == null) {
+            if (other.userId != null)
+                return false;
+        } else if (!userId.equals(other.userId))
+            return false;
+        if (username == null) {
+            if (other.username != null)
+                return false;
+        } else if (!username.equals(other.username))
+            return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        if (passwordHash == null) {
+            if (other.passwordHash != null)
+                return false;
+        } else if (!passwordHash.equals(other.passwordHash))
+            return false;
+        if (role == null) {
+            if (other.role != null)
+                return false;
+        } else if (!role.equals(other.role))
+            return false;
+        if (verifiedSeller == null) {
+            if (other.verifiedSeller != null)
+                return false;
+        } else if (!verifiedSeller.equals(other.verifiedSeller))
+            return false;
+        return true;
     }
 }

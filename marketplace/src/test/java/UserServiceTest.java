@@ -77,7 +77,6 @@ public class UserServiceTest {
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
-        when(dateUtil.currentDate()).thenReturn(testDate);
         when(hasher.hashPassword("password")).thenReturn("hashed_password");
 
         //act
