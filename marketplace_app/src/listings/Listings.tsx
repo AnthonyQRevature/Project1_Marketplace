@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import "./Listings.css";
-import logError from "../util/logError";
 import AsyncLoader from "../util/AsyncLoader";
 
 const get_tags = {endpoint: "http://localhost:8080/tags", method: "GET"};

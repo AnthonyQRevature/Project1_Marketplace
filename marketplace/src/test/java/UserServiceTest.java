@@ -59,7 +59,7 @@ public class UserServiceTest {
         expectedSave.setCreatedAt(testDate);
 
         UserEntity daoResponse = new UserEntity(expectedSave);
-        daoResponse.setUserId(1);
+        daoResponse.setId(1);
         UserModel expectedResponse = new UserModel(testDate, "test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
