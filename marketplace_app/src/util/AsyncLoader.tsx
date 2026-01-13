@@ -14,6 +14,10 @@ type AsyncLoaderInit<T> =
   abort? : JSX.Element
 };
 
+/*
+ * Component that makes a request to the backend and waits for a response before rendering
+ * the component
+ */
 function AsyncLoader<T>(props : AsyncLoaderInit<T>)
 {
   let otherwise = props.otherwise || <></>;
