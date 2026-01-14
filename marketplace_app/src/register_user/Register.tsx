@@ -56,7 +56,7 @@ function handleSubmit(setResponse : (val : any)=>void)
     if (result.ok)
       setResponse(await result.json());
     else
-      setResponse(result.status);
+      setResponse(`Error: ${result.status}`);
   }
 }
 
