@@ -1,5 +1,7 @@
 package project.Repository.Entities;
 
+import java.util.Objects;
+
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 
@@ -8,20 +10,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="post_media")
 public class PostMediaEntity {
-    public static enum MediaTypeEnum
-    {
-        image,
-        video
-    }
 
     @Id
+    public Integer id;
     //@ManyToOne(targetEntity=PostEntity.class)
     public Integer postId;
     @Nonnull
@@ -29,4 +25,52 @@ public class PostMediaEntity {
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     public MediaTypeEnum mediaType;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("PostMediaEntity{");
+        sb.append("postId=").append(postId);
+        sb.append(", mediaUrl=").append(mediaUrl);
+        sb.append(", mediaType=").append(mediaType);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.postId);
+        hash = 79 * hash + Objects.hashCode(this.mediaUrl);
+        hash = 79 * hash + Objects.hashCode(this.mediaType);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PostMediaEntity other = (PostMediaEntity) obj;
+        if (!Objects.equals(this.mediaUrl, other.mediaUrl)) {
+            return false;
+        }
+        if (!Objects.equals(this.postId, other.postId)) {
+            return false;
+        }
+        return this.mediaType == other.mediaType;
+    }
+    public static enum MediaTypeEnum
+    {
+        image,
+        video
+    }
+
+    
 }

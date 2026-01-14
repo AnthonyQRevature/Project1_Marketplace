@@ -12,3 +12,21 @@ p {
 {
     margin-right: 20px;
 }
+
+.postsGrid 
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.postCard 
+{
+    border: 2px solid black;
+}
+
+.postCard > img
+{
+    object-fit: cover;
+    max-width: 60%;
+    aspect-ratio: 1/1;
+}

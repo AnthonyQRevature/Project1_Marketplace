@@ -1,5 +1,6 @@
 import "./Listings.css";
 import AsyncLoader from "../util/AsyncLoader";
+import getAsset from "../util/AssetLoader";
 
 const get_tags = {endpoint: "http://localhost:8080/tags", method: "GET"};
 type TagEntity = {
@@ -41,12 +42,6 @@ function Listings()
  */
 function TagsList(props : {tags: TagEntity[]})
 {
-  //loading
-  if (props.tags.length==0)
-  {
-    return 
-  }
-
   //retrieved tags
   let tagList = props.tags;
 
@@ -54,7 +49,7 @@ function TagsList(props : {tags: TagEntity[]})
     (
       <li key={String(value.id)}>
         <label htmlFor={`tag${value.id}`}>{value.tag_name}</label>
-        <input type="checkbox" name=""/>
+        <input type="checkbox" name={`tag${value.id}`}/>
       </li>
     )
   );
@@ -64,7 +59,8 @@ function TagsList(props : {tags: TagEntity[]})
       <form>
         <div className="TagsList">
           {Checkboxes}
-        </div>  
+        </div>
+        <button>Subnit</button>
       </form>
     </>
   )
@@ -74,16 +70,19 @@ function PostsGrid(props : {posts: PostEntity[]})
 {
   return (
     <div className="postsGrid">
-      <PostCard post={props.posts[0]}/>
+      {props.posts.map((post)=>(<PostCard key={post.id} post={post}/>))}
     </div>
   );
 }
 
 function PostCard(props : {post: PostEntity})
 {
+  //add title and user and stuff
   return (
     <div className="postCard">
-      <img src={props.post.media[0].mediaUrl}/>
+      <img src={getAsset(props.post.media[0].mediaUrl)}/>
+      <h1>{props.post.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h1>
+      <p>{props.post.description}</p>
     </div>
   );
 }

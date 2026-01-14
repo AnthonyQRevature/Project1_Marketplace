@@ -20,7 +20,8 @@ public class PostService {
     //maybe add limit and offset
     public List<PostEntity> getAllPosts()
     {
-        return dao.findAll();
+        var all = dao.findAll();
+        return all;
     }
 }
 
