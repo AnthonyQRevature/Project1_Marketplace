@@ -51,11 +51,7 @@ public class UserEntity {
 
     public UserEntity(UserEntity o)
     {
-<<<<<<< HEAD
-        this(o.getCreatedAt(), o.email, o.passwordHash, o.role, o.id, o.username, o.verifiedSeller);
-=======
-        this(o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
->>>>>>> 86cf0c65615775d533fa1fd05d2e82332ac5d6fb
+        this(o.email, o.passwordHash, o.role, o.id, o.username, o.verifiedSeller);
     }
 
     public UserEntity(String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {

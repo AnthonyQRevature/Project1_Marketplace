@@ -1,7 +1,5 @@
 package project.service;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -78,7 +76,7 @@ public class UserService {
     public LoginModel AttemptLogin(String username, String password){
         UserEntity logAttempt = dao.findUserByUsername(username);
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), password)){
-            LoginModel loginModel = new LoginModel(logAttempt.getUserId(), username, tokenUtil.tokenMaker(username));
+            LoginModel loginModel = new LoginModel(logAttempt.getId(), username, tokenUtil.tokenMaker(username));
             return loginModel;
         }
         else{
