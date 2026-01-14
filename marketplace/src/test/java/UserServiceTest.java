@@ -1,6 +1,4 @@
 
-import java.sql.Date;
-
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -74,7 +72,7 @@ public class UserServiceTest {
         expectedSave.setEmail("test_email");
 
         UserEntity daoResponse = new UserEntity(expectedSave);
-        daoResponse.setUserId(1);
+        daoResponse.setId(1);
         UserModel expectedResponse = new UserModel("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
@@ -110,7 +108,7 @@ public class UserServiceTest {
     @Test
     public void loginTest(){
         UserEntity expectedSave = new UserEntity();
-        expectedSave.setUserId(1);
+        expectedSave.setId(1);
         expectedSave.setUsername("username");
         expectedSave.setPasswordHash("hashed_password");
         expectedSave.setEmail("test_email");
