@@ -1,6 +1,5 @@
 package project.controller.model;
 
-import java.sql.Date;
 import java.util.Objects;
 
 /*
@@ -47,10 +46,6 @@ public class UserModel
         this.email = email;
     }
 
-
-
-
-
     @Override
     public int hashCode() {
         int hash = 3;
@@ -78,7 +73,7 @@ public class UserModel
         if (!Objects.equals(this.password, other.password)) {
             return false;
         }
-        return (Objects.equals(this.email, other.email));
+        return Objects.equals(this.email, other.email);
     }
 
     @Override

@@ -8,14 +8,13 @@ import project.Repository.dao.UserDao;
 
 //Component exists simply to prove that it connects to the database
 @Component
-public class Driver implements CommandLineRunner {
+public class DBTester implements CommandLineRunner {
 
     @Autowired
     UserDao dao;
 
     @Override
     public void run(String... args) throws Exception {
-        var entities = dao.findAll();
-        System.out.printf("==========\nTable \'users\' has %d entities \n==========\n", entities.size());
+        System.out.printf("==========\nTable \'users\' has %d entities \n==========\n", dao.count());
     }
 }

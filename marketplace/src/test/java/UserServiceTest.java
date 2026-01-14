@@ -1,4 +1,3 @@
-import java.sql.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,10 +14,12 @@ import org.springframework.http.HttpStatus;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
+import project.controller.model.LoginModel;
 import project.controller.model.UserModel;
 import project.service.UserService;
 import project.util.DateUtil;
 import project.util.Hasher;
+import project.util.TokenUtil;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -27,6 +28,7 @@ public class UserServiceTest {
     @Mock UserDao dao;
     @Mock DateUtil dateUtil;
     @Mock Hasher hasher;
+    @Mock TokenUtil tokenUtil;
     @InjectMocks UserService userService;
 
     @AfterEach
@@ -40,14 +42,22 @@ public class UserServiceTest {
 
     ////A basic test of the UserService Class
     //Retrieve by id tests
+    @Test
+    public void RetrieveByIDTest(){
+    }
 
     //Attempt login tests
+    @Test
+    public void AttemptLoginTest(){
+    }
 
     //Registering users tests
     @Test
     public void CreateUserTest()
     {
         //arrange
+        String inputPassword = "Password";
+
         /*
         UserEntity input = new UserEntity();
         input.setUsername("username");
@@ -55,7 +65,6 @@ public class UserServiceTest {
         */
         
         UserModel input = new UserModel("test_email", "password", "username");
-        Date testDate = new Date(0);
 
         UserEntity expectedSave = new UserEntity();
         expectedSave.setUsername("username");
@@ -63,12 +72,11 @@ public class UserServiceTest {
         expectedSave.setEmail("test_email");
 
         UserEntity daoResponse = new UserEntity(expectedSave);
-        daoResponse.setUserId(1);
+        daoResponse.setId(1);
         UserModel expectedResponse = new UserModel("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
-        when(dateUtil.currentDate()).thenReturn(testDate);
         when(hasher.hashPassword("password")).thenReturn("hashed_password");
 
         //act
@@ -97,6 +105,21 @@ public class UserServiceTest {
         assertEquals(HttpStatus.CONFLICT, ret.getStatusCode());
     }
 
+    @Test
+    public void loginTest(){
+        UserEntity expectedSave = new UserEntity();
+        expectedSave.setId(1);
+        expectedSave.setUsername("username");
+        expectedSave.setPasswordHash("hashed_password");
+        expectedSave.setEmail("test_email");
+
+        UserEntity daoResponse = new UserEntity(expectedSave);
+        when(dao.findUserByUsername("username")).thenReturn(daoResponse);
+        when(hasher.verifyPassword("hashed_password", "password")).thenReturn(true);
+        when(tokenUtil.tokenMaker("username")).thenReturn("token");
+        LoginModel log = userService.AttemptLogin("username", "password");
+        assertEquals("token", log.getToken());
+    }
 
     /*
     @Test
