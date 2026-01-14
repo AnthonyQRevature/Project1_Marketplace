@@ -9,7 +9,7 @@ function Homepage()
       <Head />
       <div className="cards">
         <div className="card">
-          <LinkTo path="/register" label='Register' />
+          <Link to="/login"><p>Login</p></Link>
         </div>
         <div className="card">
           <LinkTo path="/listings" label='Listings' />
