@@ -1,4 +1,4 @@
-package project.controller.model;
+package project.controller.request;
 
 import java.util.Objects;
 
@@ -6,20 +6,20 @@ import java.util.Objects;
  * JSON serializable Object representing a login or register attempt
  * used by the controller layer
  */
-public class UserModel 
+public class RegisterRequest 
 {
     //an object is Jackson serializable if it has getters and setters
     String username;
     String password;
     String email;
 
-    public UserModel(String email, String password, String username) {
+    public RegisterRequest(String email, String password, String username) {
         this.email = email;
         this.password = password;
         this.username = username;
     }
 
-    public UserModel() {
+    public RegisterRequest() {
     }
 
     public String getUsername() {
@@ -66,7 +66,7 @@ public class UserModel
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UserModel other = (UserModel) obj;
+        final RegisterRequest other = (RegisterRequest) obj;
         if (!Objects.equals(this.username, other.username)) {
             return false;
         }
