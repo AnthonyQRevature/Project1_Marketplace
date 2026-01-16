@@ -1,6 +1,1 @@
-
-{
-    "username": "new_username",
-    "password": "myvalidpassword123",
-    "email": "my_real_email"
-}
+reports[]: {id: int, reporter: {id: int, username: string, profile: {pfp_url: string}}, reported: {id: int, username: string, profile: {pfp_url: string}, post?:{id: int, description: string, status: string, created_at: string, last_edit_time: string}, message?: {id: int, message_text: string, sent_at: string}}}
