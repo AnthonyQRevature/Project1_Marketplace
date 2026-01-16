@@ -19,12 +19,15 @@ import io.jsonwebtoken.security.Keys;
 public class TokenUtil {
     public static class Token
     {
-        Jws<Claims> token;
+        private Jws<Claims> token;
 
         public Token(Jws<Claims> token) {
             this.token = token;
         }
 
+        public int getId() {
+            return Integer.parseInt(token.getBody().getId());
+        }
         public String getUsername(){
             return token.getBody().getSubject();
         }
@@ -32,8 +35,9 @@ public class TokenUtil {
             return token.getBody().getExpiration();
         }
         public boolean isExpired(){
-            return token.getBody().getExpiration().after(new Date());
+            return token.getBody().getExpiration().before(new Date());
         }
+        public Jws<Claims> getToken() {return token;}
 
         public boolean isValid()
         {
@@ -55,10 +59,10 @@ public class TokenUtil {
         }
     }
 
-    public String makeToken(String username){
+    public String makeToken(String username, Integer id){
         long currentTime = System.currentTimeMillis();
         Date expireTime = new Date(currentTime + tokenLifetime);
-        JwtBuilder build = Jwts.builder().setSubject(username).setIssuedAt(new Date(currentTime)).setExpiration(expireTime).signWith(SignatureAlgorithm.HS256, key);
+        JwtBuilder build = Jwts.builder().setSubject(username).setId(id.toString()).setIssuedAt(new Date(currentTime)).setExpiration(expireTime).signWith(key, SignatureAlgorithm.HS256);
         return build.compact();
     }
 

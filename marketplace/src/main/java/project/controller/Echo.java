@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.util.AllowCORS;
-import project.util.Secure;
 import project.util.SecurityLevel;
+import project.util.SecureIndescriminate;
 
 @RestController
 public class Echo {
@@ -27,7 +27,7 @@ public class Echo {
      * if the jwt is invalid then responds with status 409
      * otherwise executes the method as normal 
      */
-    @Secure(SecurityLevel.USER)
+    @SecureIndescriminate(SecurityLevel.USER)
     public ResponseEntity<String> secureEcho(@RequestHeader("Authorization") String authHeader, @RequestBody String body)
     {
         return ResponseEntity.ok(body);
