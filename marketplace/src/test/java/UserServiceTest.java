@@ -15,8 +15,11 @@ import org.springframework.http.HttpStatus;
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
 import project.controller.model.LoginModel;
-import project.controller.model.UserModel;
+import project.controller.request.LoginRequest;
+import project.controller.request.RegisterRequest;
+import project.controller.response.LoginResponse;
 import project.service.UserService;
+import project.util.DatabaseConflictException;
 import project.util.DateUtil;
 import project.util.Hasher;
 import project.util.TokenUtil;
@@ -53,7 +56,7 @@ public class UserServiceTest {
 
     //Registering users tests
     @Test
-    public void CreateUserTest()
+    public void CreateUserTest() throws Exception
     {
         //arrange
         String inputPassword = "Password";
@@ -64,7 +67,7 @@ public class UserServiceTest {
         input.setEmail("email");
         */
         
-        UserModel input = new UserModel("test_email", "password", "username");
+        RegisterRequest input = new RegisterRequest("test_email", "password", "username");
 
         UserEntity expectedSave = new UserEntity();
         expectedSave.setUsername("username");
@@ -73,7 +76,7 @@ public class UserServiceTest {
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         daoResponse.setId(1);
-        UserModel expectedResponse = new UserModel("test_email", null, "username");
+        RegisterRequest expectedResponse = new RegisterRequest("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
@@ -83,14 +86,14 @@ public class UserServiceTest {
         var ret = userService.registerNewUser(input);
 
         //assert
-        assertEquals(expectedResponse, ret.getBody());
+        assertEquals(expectedResponse, ret);
         verify(dao, times(1)).findUserByUsername("username");
         verify(dao, times(1)).save(expectedSave);
     }
 
     //a checking that users can not share usernames
     @Test
-    public void noDuplicatesUserTest(){
+    public void noDuplicatesUserTest() throws Exception {
         //I need to figure out how to do this without just registering the same user twice.
         //Ideally the first user should already be registered
         UserEntity expectedSave = new UserEntity();
@@ -100,9 +103,14 @@ public class UserServiceTest {
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         when(dao.findUserByUsername("username")).thenReturn(daoResponse);
-        UserModel input = new UserModel("test_email", "password", "username");
-        var ret = userService.registerNewUser(input);
-        assertEquals(HttpStatus.CONFLICT, ret.getStatusCode());
+        RegisterRequest input = new RegisterRequest("test_email", "password", "username");
+        
+        try {
+            var ret = userService.registerNewUser(input);
+            assert(false);
+        } catch (DatabaseConflictException e) {
+            return;
+        }
     }
 
     @Test
@@ -116,9 +124,11 @@ public class UserServiceTest {
         UserEntity daoResponse = new UserEntity(expectedSave);
         when(dao.findUserByUsername("username")).thenReturn(daoResponse);
         when(hasher.verifyPassword("hashed_password", "password")).thenReturn(true);
-        when(tokenUtil.tokenMaker("username")).thenReturn("token");
-        LoginModel log = userService.AttemptLogin("username", "password");
-        assertEquals("token", log.getToken());
+        when(tokenUtil.makeToken("username")).thenReturn("token");
+
+        LoginResponse log = userService.attemptLogin(new LoginRequest("username", "password"));
+        
+        assertEquals("token", log.getEncryptedToken());
     }
 
     /*
