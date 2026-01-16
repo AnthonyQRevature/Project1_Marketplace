@@ -7,4 +7,5 @@ import project.AppConfig;
 @SpringBootApplication
 @ComponentScan(basePackageClasses={TestAppConfig.class, AppConfig.class})
 public class TestAppConfig {
+    
 }

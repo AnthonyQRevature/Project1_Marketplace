@@ -1,2 +1,3 @@
 curl http://localhost:8080/test
 curl -X PUT -d "@test.json" -H "Content-Type: application/json" http://localhost:8080/login
+curl -X POST -d "@_curl/test.json" -H "Content-Type: application/json" -H "Authorization: abc" http://localHost:8080/secure/echo
