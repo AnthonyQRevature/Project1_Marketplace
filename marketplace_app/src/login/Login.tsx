@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
+import AuthenticationContext, { type Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 
 function Register()
 {
   const [response, setResponse] = useState(null);
+  const [auth, setAuth] = useContext<AuthenticationState>(AuthenticationContext);
   const navigate = useNavigate();
-  const formHandler = handleSubmit(setResponse, navigate);
+  const formHandler = handleSubmit((val) => {
+    setResponse(val);
+    let auth = val as Authentication;
+    setAuth(auth);
+  }, navigate);
 
   return (
     <>
@@ -28,11 +34,12 @@ function Register()
       </form>
 
       <p>output: {JSON.stringify(response)}</p>
+      <p>current authentication: {JSON.stringify(auth)}</p>
     </>
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
+function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunction)
 {
   return async (e : any) => 
   {
@@ -56,9 +63,9 @@ function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFuncti
 
       if (result.ok)
       {
-        setResponse(await result.json());
+        const response = await result.json();
+        setResponse(response);
 
-        
         /*
          * navigate back to homepage once we recieve the response
          */
