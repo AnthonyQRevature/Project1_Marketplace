@@ -1,9 +1,13 @@
 package project;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import project.properties.MediaProperties;
+
 @SpringBootApplication
+@EnableConfigurationProperties(MediaProperties.class)
 public class AppConfig {
 
     @Bean

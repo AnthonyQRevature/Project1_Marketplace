@@ -3,7 +3,6 @@ package project;
 import javax.sql.DataSource;
 
 import org.hibernate.HibernateException;
-import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.SpringApplication;
