@@ -33,6 +33,9 @@ public class MediaService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
     
+    /**
+     * stores a file into the file structure
+     */
     public void store(MultipartFile file) 
     {
         try 
@@ -60,7 +63,9 @@ public class MediaService {
             throw new RuntimeException("Failed to store file.", e);
         }
     }
-            
+    /**
+     * returns a list of all files in the file structure
+     */
     public Stream<Path> loadAll() {
         try {
             return Files.walk(this.rootLocation, 1)
@@ -71,11 +76,15 @@ public class MediaService {
             throw new RuntimeException("Failed to read stored files", e);
         }
     }
-    
+    /**
+     * returns the path of a file named filename in the file structure
+     */
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
-    
+    /**
+     * returns a Resource representing the file named filename in the file structure
+     */
     public Resource loadAsResource(String filename) 
     {
         try 
@@ -95,7 +104,9 @@ public class MediaService {
             throw new RuntimeException("Could not read file: " + filename, e);
         }
     }
-    
+    /**
+     * deletes all files in the file structure
+     */
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
