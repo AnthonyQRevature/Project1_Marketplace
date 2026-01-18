@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 /**
- * @Secure is an annotation that verifies the first string as a jwt.
- * if the jwt is invalid then responds with status 409
- * otherwise executes the method as normal 
- * 
- * The first string must be a String bound to the Authorization header of the http request
+ * Checks the jwt token to verify if it is a valid token.
+ * To use this annotation, add this to a method that matches the following pattern: <br/>
+ * <code>public ResponseEntity{@literal<String>} method({@literal@RequestHeader}("Authorization") String authHeader,...)</code>
+ * <br/>
+ * see {@link project.controller.Echo}.
  */
 public @interface SecureIndescriminate {
 
