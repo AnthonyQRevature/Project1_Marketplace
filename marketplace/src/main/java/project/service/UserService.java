@@ -89,12 +89,9 @@ public class UserService {
      */
     public LoginResponse attemptLogin(LoginRequest request) /* throws AuthenticationException */ {
         UserEntity logAttempt = dao.findUserByUsername(request.getUsername());
-        
-        System.out.printf("Recieved: %s\n", request.toString());
-        System.out.printf("password comaprison: \n%s\n%s", hasher.hashPassword(request.getPassword()), logAttempt.getPasswordHash());
 
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), request.getPassword())){
-            String token = tokenUtil.makeToken(logAttempt.getUsername());
+            String token = tokenUtil.makeToken(logAttempt.getUsername(), logAttempt.getId());
             LoginResponse response = new LoginResponse(logAttempt.getId(), logAttempt.getUsername(), token);
             return response;
         }
