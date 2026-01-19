@@ -124,7 +124,7 @@ public class UserServiceTest {
         UserEntity daoResponse = new UserEntity(expectedSave);
         when(dao.findUserByUsername("username")).thenReturn(daoResponse);
         when(hasher.verifyPassword("hashed_password", "password")).thenReturn(true);
-        when(tokenUtil.makeToken("username")).thenReturn("token");
+        when(tokenUtil.makeToken("username", 1)).thenReturn("token");
 
         LoginResponse log = userService.attemptLogin(new LoginRequest("username", "password"));
         
