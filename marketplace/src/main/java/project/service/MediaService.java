@@ -17,6 +17,8 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import project.properties.MediaProperties;
+import project.util.exception.FileNotFoundException;
+import project.util.exception.InvalidRequestException;
 
 @Service
 public class MediaService {
@@ -36,13 +38,13 @@ public class MediaService {
     /**
      * stores a file into the file structure
      */
-    public void store(MultipartFile file) 
+    public void store(MultipartFile file) throws InvalidRequestException
     {
         try 
         {
             if (file.isEmpty()) 
             {
-                throw new RuntimeException("Failed to store empty file.");
+                throw new InvalidRequestException("Failed to store empty file.");
             }
             Path destinationFile = this.rootLocation.resolve(
                 Paths.get(file.getOriginalFilename()))
@@ -85,7 +87,7 @@ public class MediaService {
     /**
      * returns a Resource representing the file named filename in the file structure
      */
-    public Resource loadAsResource(String filename) 
+    public Resource loadAsResource(String filename) throws FileNotFoundException
     {
         try 
         {
@@ -95,13 +97,13 @@ public class MediaService {
                 return resource;
             }
             else {
-                throw new RuntimeException(
+                throw new FileNotFoundException(
                     "Could not read file: " + filename);
                 
             }
         }
         catch (MalformedURLException e) {
-            throw new RuntimeException("Could not read file: " + filename, e);
+            throw new FileNotFoundException("Could not read file: " + filename, e);
         }
     }
     /**

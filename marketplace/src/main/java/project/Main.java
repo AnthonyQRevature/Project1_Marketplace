@@ -12,7 +12,6 @@ public class Main {
         try
         {
             var context = SpringApplication.run(AppConfig.class, args);
-            var connection = context.getBean(DataSource.class);
         }
         catch (BeanCreationException e)
         {

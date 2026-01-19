@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.service.MediaService;
 import project.util.AllowCORS;
+import project.util.exception.FileNotFoundException;
+import project.util.exception.InvalidRequestException;
 
 @RestController
 public class MediaController {
@@ -29,39 +31,51 @@ public class MediaController {
         this.storageService = storageService;
     }
     
-    @GetMapping("/files")
-    public String listUploadedFiles(Model model) {
-        
+    @GetMapping("/media")
+    public Object listUploadedFiles(Model model) {
+        /*
         model.addAttribute("files", storageService.loadAll().map(
             path -> MvcUriComponentsBuilder.fromMethodName(MediaController.class,
                 "serveFile", path.getFileName().toString()).build().toUri().toString())
                 .collect(Collectors.toList()));
-        return "uploadForm";
+        */
+        return storageService.loadAll().map(
+            path -> MvcUriComponentsBuilder.fromMethodName(MediaController.class,
+                "serveFile", path.getFileName().toString()).build().toUri().toString())
+                .collect(Collectors.toList());
     }
             
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/media/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        
-        Resource file = storageService.loadAsResource(filename);
-        
-        if (file == null)
+        try
+        {
+            Resource file = storageService.loadAsResource(filename);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        }
+        catch (FileNotFoundException e)
+        {
             return ResponseEntity.notFound().build();
-        
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        }
     }
         
-    @PostMapping("/files")
+    @PostMapping("/media")
     @AllowCORS
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-    RedirectAttributes redirectAttributes) {
-        
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-        "You successfully uploaded " + file.getOriginalFilename() + "!");
-        
-        return "redirect:/";
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
+    RedirectAttributes redirectAttributes) 
+    {
+        try{
+            storageService.store(file);
+            redirectAttributes.addFlashAttribute("message",
+            "You successfully uploaded " + file.getOriginalFilename() + "!");
+            
+            return ResponseEntity.ok("redirect:/");
+        }
+        catch (InvalidRequestException e)
+        {
+            return ResponseEntity.status(400).build();
+        }
     }
     
     /*
