@@ -1,4 +1,4 @@
-package project.util;
+package project.util.exception;
 
 /**
  * Database already contains the entity 

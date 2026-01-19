@@ -19,10 +19,10 @@ import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
 import project.service.UserService;
-import project.util.DatabaseConflictException;
 import project.util.DateUtil;
 import project.util.Hasher;
 import project.util.TokenUtil;
+import project.util.exception.DatabaseConflictException;
 
 
 @ExtendWith(MockitoExtension.class)
