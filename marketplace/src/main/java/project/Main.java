@@ -3,7 +3,6 @@ package project;
 import javax.sql.DataSource;
 
 import org.hibernate.HibernateException;
-import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +12,6 @@ public class Main {
         try
         {
             var context = SpringApplication.run(AppConfig.class, args);
-            var connection = context.getBean(DataSource.class);
         }
         catch (BeanCreationException e)
         {

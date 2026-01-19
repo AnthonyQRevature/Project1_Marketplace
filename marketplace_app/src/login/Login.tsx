@@ -18,7 +18,7 @@ function Register()
 
   return (
     <>
-      <form onSubmit={formHandler}>
+      <form action={formHandler}>
         <div>
           <label htmlFor="username">Username: </label>
           <input type="text" name="username" id="username" required />
@@ -41,14 +41,10 @@ function Register()
 
 function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunction)
 {
-  return async (e : any) => 
+  return async (e : FormData) => 
   {
-    e.preventDefault();
-
     // Read the form data
-    const form = e.target;
-    const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
+    const formJson = Object.fromEntries(e.entries());
     try
     {
       const result = await fetch(login.endpoint, 

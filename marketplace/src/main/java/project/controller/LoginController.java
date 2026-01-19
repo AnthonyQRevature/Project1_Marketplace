@@ -12,8 +12,8 @@ import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
 import project.service.UserService;
 import project.util.AllowCORS;
-import project.util.DatabaseConflictException;
-import project.util.InvalidCredentialsException;
+import project.util.exception.DatabaseConflictException;
+import project.util.exception.InvalidCredentialsException;
 
 /*
  * A Controller for the /login endpoint

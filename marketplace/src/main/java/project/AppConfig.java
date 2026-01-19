@@ -1,11 +1,13 @@
 package project;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+import project.properties.MediaProperties;
 
 @SpringBootApplication
-@EnableAspectJAutoProxy
+@EnableConfigurationProperties(MediaProperties.class)
 public class AppConfig {
 
     @Bean

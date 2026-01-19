@@ -1,6 +1,7 @@
 package project.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,8 @@ import project.util.SecurityLevel;
 public class Echo {
     
     @PostMapping("/echo")
-    @AllowCORS
+    @CrossOrigin() //theres supposed to be a parameter for @CrossOrigin but i didnt get it right last time
+    //ill deal with it later
     public String echo(@RequestBody String body)
     {
         return body;
