@@ -3,19 +3,16 @@ package project.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.net.LoginAuthenticator;
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
-import project.controller.model.LoginModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
-import project.util.AuthenticationException;
-import project.util.DatabaseConflictException;
 import project.util.DateUtil;
 import project.util.Hasher;
-import project.util.InvalidCredentialsException;
 import project.util.TokenUtil;
+import project.util.exception.DatabaseConflictException;
+import project.util.exception.InvalidCredentialsException;
 
 /*
  * a service class bean
@@ -89,6 +86,9 @@ public class UserService {
      */
     public LoginResponse attemptLogin(LoginRequest request) /* throws AuthenticationException */ {
         UserEntity logAttempt = dao.findUserByUsername(request.getUsername());
+        
+        System.out.printf("Recieved: %s\n", request.toString());
+        System.out.printf("password comaprison: \n%s\n%s", hasher.hashPassword(request.getPassword()), logAttempt.getPasswordHash());
 
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), request.getPassword())){
             String token = tokenUtil.makeToken(logAttempt.getUsername(), logAttempt.getId());

@@ -17,6 +17,10 @@ import io.jsonwebtoken.security.Keys;
 // Roles are not yet implemented into this, as part of how this works we need isAdmin
 @Component
 public class TokenUtil {
+
+    private final SecretKey key = Keys.hmacShaKeyFor("HVmw2nb7Zgbo0BLtoY3Iv7Sh2CnEgfUd".getBytes(StandardCharsets.UTF_8));
+    private final int tokenLifetime = 43200000;
+
     public static class Token
     {
         private Jws<Claims> token;
@@ -44,9 +48,6 @@ public class TokenUtil {
             return token != null;
         }
     }
-
-    private final SecretKey key = Keys.hmacShaKeyFor("HVmw2nb7Zgbo0BLtoY3Iv7Sh2CnEgfUd".getBytes(StandardCharsets.UTF_8));
-    private final int tokenLifetime = 43200000;
 
     public Token asToken(String token) 
     {
