@@ -72,9 +72,9 @@ public class MediaController {
             
             return ResponseEntity.ok("redirect:/");
         }
-        catch (InvalidRequestException e)
+        catch (InvalidRequestException | FileNotFoundException e)
         {
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(400).header("Cause", e.getMessage()).build();
         }
     }
     

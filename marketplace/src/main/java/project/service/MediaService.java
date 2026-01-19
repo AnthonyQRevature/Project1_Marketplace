@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -24,6 +26,7 @@ import project.util.exception.InvalidRequestException;
 public class MediaService {
     
     private final Path rootLocation;
+    private Set<String> acceptedMediaTypes;
     
     @Autowired
     public MediaService(MediaProperties properties) {
@@ -33,12 +36,17 @@ public class MediaService {
         }
         
         this.rootLocation = Paths.get(properties.getLocation());
+        this.acceptedMediaTypes = new HashSet<>();
+        this.acceptedMediaTypes.add("image/png");
+        this.acceptedMediaTypes.add("image/jpeg");
     }
     
     /**
      * stores a file into the file structure
      */
-    public void store(MultipartFile file) throws InvalidRequestException
+    public void store(MultipartFile file) throws 
+        InvalidRequestException,
+        FileNotFoundException
     {
         try 
         {
@@ -46,13 +54,17 @@ public class MediaService {
             {
                 throw new InvalidRequestException("Failed to store empty file.");
             }
+            if (!acceptedMediaTypes.contains(file.getContentType()))
+            {
+                throw new InvalidRequestException(String.format("File type '%s' not supported", file.getContentType()));
+            }
             Path destinationFile = this.rootLocation.resolve(
                 Paths.get(file.getOriginalFilename()))
                 .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) 
             {
                 // This is a security check
-                throw new RuntimeException(
+                throw new FileNotFoundException(
                     "Cannot store file outside current directory.");
             }
             try (InputStream inputStream = file.getInputStream()) 
