@@ -59,7 +59,11 @@ public class TokenUtil {
     public String makeToken(String username){
         long currentTime = System.currentTimeMillis();
         Date expireTime = new Date(currentTime + tokenLifetime);
-        JwtBuilder build = Jwts.builder().setSubject(username).setIssuedAt(new Date(currentTime)).setExpiration(expireTime).signWith(SignatureAlgorithm.HS256, key);
+        JwtBuilder build = Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(new Date(currentTime))
+            .setExpiration(expireTime)
+            .signWith(key, SignatureAlgorithm.HS256);
         return build.compact();
     }
 
