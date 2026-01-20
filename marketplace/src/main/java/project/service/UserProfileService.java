@@ -48,7 +48,7 @@ public class UserProfileService{
 
     public boolean deleteUserProfileByID(int id){
         dao.deleteById(id);
-        return dao.findUserProfileById(id) == null;
+        return dao.getReferenceById(id) == null;
     }
 
     public boolean deleteUserProfileByUserID(int userID){

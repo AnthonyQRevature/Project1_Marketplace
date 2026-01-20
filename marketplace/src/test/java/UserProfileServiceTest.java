@@ -141,20 +141,20 @@ public class UserProfileServiceTest {
     //deleteUserProfileByID
     @Test
     public void DeleteById(){
-        when(dao.findUserProfileById(1)).thenReturn(null);
+        when(dao.getReferenceById(1)).thenReturn(null);
         assertTrue(service.deleteUserProfileByID(1));
     }
     @Test
     public void DeleteByIdFailure(){
         UserProfileEntity result = new UserProfileEntity();
-        when(dao.findUserProfileById(1)).thenReturn(result);
+        when(dao.getReferenceById(1)).thenReturn(result);
         assertFalse(service.deleteUserProfileByID(1));
     }
 
     //deleteUserProfileByUserID
     @Test
     public void DeleteByUserID(){
-        when(dao.findUserProfileById(1)).thenReturn(null);
+        when(dao.getReferenceById(1)).thenReturn(null);
         assertTrue(service.deleteUserProfileByUserID(1));
     }
     @Test
