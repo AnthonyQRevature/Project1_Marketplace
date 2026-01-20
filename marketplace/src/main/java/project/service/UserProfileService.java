@@ -12,13 +12,15 @@ import project.controller.model.UserProfileModel;
 public class UserProfileService{
     UserProfileDao dao;
 
-    Optional<UserProfileModel> getProfileModelByUserID(int userID){
+    public Optional<UserProfileModel> getProfileModelByUserID(int userID){
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(dao.findUserProfileByUserID(userID)));
         return ret;
     }
 
-    Optional<UserProfileModel> updateUserProfile(UserProfileModel model) throws NoSuchFieldException{
-        if (dao.findUserProfileByUserID(model.getUserID()) != null){
+    //Worried about this function, feels like I should rewrite it.
+    //Maybe make it so you can partially update a Profile?
+    public Optional<UserProfileModel> updateUserProfile(UserProfileModel model) throws NoSuchFieldException{
+        if (uniqueUserID(model.getUserID())){
             throw new NoSuchFieldException("User Profile does not exist.");
         }
         UserProfileEntity result = dao.save(modelToEntity(model));
@@ -26,11 +28,11 @@ public class UserProfileService{
         return ret;
     }
 
-    UserProfileEntity modelToEntity(UserProfileModel model){
+    public UserProfileEntity modelToEntity(UserProfileModel model){
         UserProfileEntity entity = new UserProfileEntity();
 
 		entity.setUserID(model.getUserID());
-		entity.setPfpUrl(model.getBio());
+		entity.setPfpUrl(model.getPfpUrl());
 		entity.setBio(model.getBio());
 		entity.setLatitude(model.getLatitude());
 		entity.setLongitude(model.getLongitude());
@@ -39,36 +41,40 @@ public class UserProfileService{
         return entity;
     }
 
-    UserProfileModel entityToModel(UserProfileEntity entity){
+    public UserProfileModel entityToModel(UserProfileEntity entity){
         UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfpUrl(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 
-    boolean deleteUserProfileByID(int id){
+    public boolean deleteUserProfileByID(int id){
         dao.deleteById(id);
         return dao.findUserProfileById(id) == null;
     }
 
-    boolean deleteUserProfileByUserID(int userID){
+    public boolean deleteUserProfileByUserID(int userID){
         dao.deleteByUserID(userID);
         return dao.findUserProfileByUserID(userID) == null;
     }
 
-    boolean deleteUserProfileByModel(UserProfileModel model){
+    public boolean deleteUserProfileByModel(UserProfileModel model){
         return deleteUserProfileByUserID((model.getUserID()));
     }
 
-    boolean deleteUserProfileByEntity(UserProfileEntity entity){
+    public boolean deleteUserProfileByEntity(UserProfileEntity entity){
         return deleteUserProfileByID(entity.getProfileId());
     }
 
-    Optional<UserProfileModel> createNewUserProfile(UserProfileModel model){
+    //Worried about this function, feels like I should rewrite it.
+    public Optional<UserProfileModel> createNewUserProfile(UserProfileModel model) throws NoSuchFieldException{
+        if(uniqueUserID(model.getUserID()) != true){
+            throw new NoSuchFieldException("User Profile already exists.");
+        }
         UserProfileEntity result = dao.save(modelToEntity(model));
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
         return ret;
     }
 
-    boolean uniqueUserID(int userID){
-        return dao.findUserProfileByUserID(userID) != null;
+    public boolean uniqueUserID(int userID){
+        return dao.findUserProfileByUserID(userID) == null;
     }
 }
