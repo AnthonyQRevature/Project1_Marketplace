@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.Repository.Entities.PostMediaEntity;
 import project.Repository.Entities.PostMediaEntity.MediaTypeEnum;
 import project.Repository.dao.PostMediaDao;
+import project.util.FileEncoder;
 import project.util.FileSystemProvider;
 import project.util.exception.FileNotFoundException;
 import project.util.exception.InvalidRequestException;
@@ -27,12 +27,12 @@ import project.util.exception.InvalidRequestException;
 @Service
 public class PostMediaService {
 
-    MediaService media;
-    FileSystemProvider fileSystem;
     PostMediaDao dao;
+    FileEncoder encoder;
     Set<String> acceptedMediaTypes;
     Rectangle targetDimensions;
 
+    /*
     private String assignFilename(MediaTypeEnum type, String extension)
     {
         String fileName = "";
@@ -45,40 +45,43 @@ public class PostMediaService {
         } while (fileSystem.exists(fileName));
         return fileName;
     }
-    private PostMediaEntity entityOf(MultipartFile file, Integer postId)
+    */
+    private PostMediaEntity entityOf(MultipartFile file, Integer postId) throws IOException
     {
         MediaTypeEnum type = MediaTypeEnum.image;
-        String extension = ".jpg";
-        String name = "";
+        String encodedFile = "";
 
         switch (file.getContentType())
         {
             case "image/png":
             case "image/jpg":
                 type=MediaTypeEnum.image;
-                name=assignFilename(type, ".jpg");
                 break;
             default:
                 System.out.printf("Found file type %s\n", file.getContentType());
         }
 
-        name = DigestUtils.md5DigestAsHex(name.getBytes()) + extension;
-
-        return new PostMediaEntity(type, name, postId);
+        //base64 encode the image
+        try (InputStream stream = file.getInputStream())
+        {
+            //removes the alpha channel
+            BufferedImage resized = cropAndResize(ImageIO.read(stream));
+            encodedFile = encoder.base64Encode(resized);
+        }
+        return new PostMediaEntity(type, encodedFile, postId);
     }
 
     @Autowired
-    public PostMediaService(PostMediaDao dao, MediaService media, FileSystemProvider fileSystem) 
+    public PostMediaService(PostMediaDao dao, FileEncoder encoder) 
     {
         this.dao = dao;
-        this.media = media;
-        this.fileSystem = fileSystem;
+        this.encoder = encoder;
 
         this.acceptedMediaTypes = new HashSet<>();
         this.acceptedMediaTypes.add("image/png");
         this.acceptedMediaTypes.add("image/jpeg");
 
-        this.targetDimensions = new Rectangle(640, 640);
+        this.targetDimensions = new Rectangle(200, 200);
     }
 
     public BufferedImage cropAndResize(Image img)
@@ -119,8 +122,7 @@ public class PostMediaService {
 
     public PostMediaEntity addMedia(MultipartFile file, Integer postId) throws 
         InvalidRequestException,
-        IOException,
-        FileNotFoundException
+        IOException
     {
         if (file.isEmpty()) 
         {
@@ -132,6 +134,10 @@ public class PostMediaService {
         }
 
         var entity = entityOf(file, postId);
+        entity = dao.save(entity);
+        return entity;
+
+        /*
         try (InputStream inputStream = file.getInputStream()) 
         {
             Image img = ImageIO.read(inputStream);
@@ -147,6 +153,7 @@ public class PostMediaService {
         {
             throw e;
         }
+        */
     }
 
 }

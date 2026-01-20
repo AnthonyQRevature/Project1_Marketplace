@@ -23,24 +23,24 @@ public class PostMediaEntity {
     public Integer id;
     public Integer postId;
     @Nonnull
-    public String mediaUrl;
+    public String mediaEncoded;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     public MediaTypeEnum mediaType;
 
-    public PostMediaEntity(Integer id, MediaTypeEnum mediaType, String mediaUrl, Integer postId) {
+    public PostMediaEntity(Integer id, MediaTypeEnum mediaType, String mediaEncoded, Integer postId) {
         this.id = id;
         this.mediaType = mediaType;
-        this.mediaUrl = mediaUrl;
+        this.mediaEncoded = mediaEncoded;
         this.postId = postId;
     }
 
     public PostMediaEntity() {
     }
 
-    public PostMediaEntity(MediaTypeEnum mediaType, String mediaUrl, Integer postId) {
+    public PostMediaEntity(MediaTypeEnum mediaType, String mediaEncoded, Integer postId) {
         this.mediaType = mediaType;
-        this.mediaUrl = mediaUrl;
+        this.mediaEncoded = mediaEncoded;
         this.postId = postId;
     }
 
@@ -49,7 +49,7 @@ public class PostMediaEntity {
         StringBuilder sb = new StringBuilder();
         sb.append("PostMediaEntity{");
         sb.append("postId=").append(postId);
-        sb.append(", mediaUrl=").append(mediaUrl);
+        sb.append(", mediaEncoded=").append(mediaEncoded);
         sb.append(", mediaType=").append(mediaType);
         sb.append('}');
         return sb.toString();
@@ -59,7 +59,7 @@ public class PostMediaEntity {
     public int hashCode() {
         int hash = 3;
         hash = 79 * hash + Objects.hashCode(this.postId);
-        hash = 79 * hash + Objects.hashCode(this.mediaUrl);
+        hash = 79 * hash + Objects.hashCode(this.mediaEncoded);
         hash = 79 * hash + Objects.hashCode(this.mediaType);
         return hash;
     }
@@ -76,7 +76,7 @@ public class PostMediaEntity {
             return false;
         }
         final PostMediaEntity other = (PostMediaEntity) obj;
-        if (!Objects.equals(this.mediaUrl, other.mediaUrl)) {
+        if (!Objects.equals(this.mediaEncoded, other.mediaEncoded)) {
             return false;
         }
         if (!Objects.equals(this.postId, other.postId)) {

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * Checks the jwt token to verify that it matches the user id passed into the function.
  * To use this annotation, add this to a method that matches the following pattern: <br/>
- * <code>public ResponseEntity{@literal<String>} method({@literal@RequestHeader}("Authorization") String authHeader, {@literal@PathVariable("user_id")} String user_id,...)</code>
+ * <code>public ResponseEntity{@literal<String>} method({@literal@RequestHeader}("Authorization") String authHeader, {@literal@PathVariable("user_id")} int user_id,...)</code>
  * <br/>
  * see {@link project.controller.Echo}.
  */
