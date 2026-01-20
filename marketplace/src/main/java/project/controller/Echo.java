@@ -40,7 +40,7 @@ public class Echo {
     @PostMapping("/secure/{user_id}/echo")
     @AllowCORS
     @Secure
-    public ResponseEntity<String> secureIdEcho(@RequestHeader("Authorization") String authHeader, @PathVariable("user_id") String user_id, @RequestBody String body)
+    public ResponseEntity<String> secureIdEcho(@RequestHeader("Authorization") String authHeader, @PathVariable("user_id") int user_id, @RequestBody String body)
     {
         return ResponseEntity.ok(body);
     }

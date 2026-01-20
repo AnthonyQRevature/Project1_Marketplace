@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./Upload.css";
 import logError from "../util/logError";
 
-const file_upload = {endpoint: "http://localhost:8080/media", method: "POST"};
+const file_upload = {endpoint: "http://localhost:8080/users/3/listings/1/media", method: "POST"};
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXdfdXNlciIsImp0aSI6IjMiLCJpYXQiOjE3Njg5MzgxNzEsImV4cCI6MTc2ODk4MTM3MX0.9B9XeC8k3nyYqw0HezVo7I89Yu3XcxSvTOcMmzSMo7A";
 
 function Upload()
 {
@@ -16,6 +17,8 @@ function Upload()
     setPreview(URL.createObjectURL(file));
   }
 
+  console.log(response);
+
   return (
     <>
       <form action={handleSubmit(setResponse)}>
@@ -27,6 +30,7 @@ function Upload()
         </table>
         <ImagePreview url={preview} />
       </form>
+      {response && (<img src={`data:image/png;base64,${response}`}/>)}
       <p>Response: {JSON.stringify(response)}</p>
     </>
   );
@@ -57,10 +61,15 @@ function handleSubmit(setResponse : (val : any)=>void)
     {
       let response = await fetch(file_upload.endpoint, {
         method: file_upload.method,
+        headers: {
+          "Authorization": token
+        },
         body: e
       });
+
+      let string_result = await response.text();
       
-      setResponse(response);
+      setResponse(string_result);
     }
     catch (e)
     {

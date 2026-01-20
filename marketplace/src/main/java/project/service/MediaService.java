@@ -1,55 +1,59 @@
+//probably gonna delete this one
 package project.service;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.stream.Stream;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import project.properties.MediaProperties;
+import project.Repository.Entities.PostMediaEntity;
+import project.util.FileSystemProvider;
 import project.util.exception.FileNotFoundException;
 import project.util.exception.InvalidRequestException;
 
 @Service
-public class MediaService {
-    
-    private final Path rootLocation;
+public class MediaService 
+{
     private Set<String> acceptedMediaTypes;
+    private FileSystemProvider fileSystem;
     
     @Autowired
-    public MediaService(MediaProperties properties) {
-        
-        if(properties.getLocation().trim().length() == 0){
-            throw new RuntimeException("File upload location can not be Empty."); 
-        }
-        
-        this.rootLocation = Paths.get(properties.getLocation());
+    public MediaService(FileSystemProvider fileSystem) {
+        this.fileSystem = fileSystem;
+
         this.acceptedMediaTypes = new HashSet<>();
         this.acceptedMediaTypes.add("image/png");
         this.acceptedMediaTypes.add("image/jpeg");
     }
     
+    private static BufferedImage cropAndResize(Image img)
+    {
+        return null;
+    }
+
     /**
      * stores a file into the file structure
      */
-    public void store(MultipartFile file) throws 
+    public void store(MultipartFile file, PostMediaEntity fileData) throws 
         InvalidRequestException,
         FileNotFoundException
     {
         try 
         {
+            /*
             if (file.isEmpty()) 
             {
                 throw new InvalidRequestException("Failed to store empty file.");
@@ -58,19 +62,17 @@ public class MediaService {
             {
                 throw new InvalidRequestException(String.format("File type '%s' not supported", file.getContentType()));
             }
-            Path destinationFile = this.rootLocation.resolve(
-                Paths.get(file.getOriginalFilename()))
-                .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) 
-            {
-                // This is a security check
-                throw new FileNotFoundException(
-                    "Cannot store file outside current directory.");
-            }
+            */
+            
+
             try (InputStream inputStream = file.getInputStream()) 
             {
-                Files.copy(inputStream, destinationFile,
-                    StandardCopyOption.REPLACE_EXISTING);
+                Image img = ImageIO.read(inputStream);
+                BufferedImage resize = cropAndResize(img);
+                
+                //saving the file
+                Path destinationFile = fileSystem.resolve(file.getOriginalFilename());
+                
             }
         }
         catch (IOException e) {
@@ -81,20 +83,13 @@ public class MediaService {
      * returns a list of all files in the file structure
      */
     public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
-        }
-        catch (IOException e) {
-            throw new RuntimeException("Failed to read stored files", e);
-        }
+        return fileSystem.loadAll();
     }
     /**
      * returns the path of a file named filename in the file structure
      */
     public Path load(String filename) {
-        return rootLocation.resolve(filename);
+        return fileSystem.resolve(filename);
     }
     /**
      * returns a Resource representing the file named filename in the file structure
@@ -122,9 +117,9 @@ public class MediaService {
      * deletes all files in the file structure
      */
     public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+        fileSystem.deleteAll();
     }
-    
+    /*
     public void init() {
         try {
             Files.createDirectories(rootLocation);
@@ -132,5 +127,5 @@ public class MediaService {
         catch (IOException e) {
             throw new RuntimeException("Could not initialize storage", e);
         }
-    }
+    }*/
 }

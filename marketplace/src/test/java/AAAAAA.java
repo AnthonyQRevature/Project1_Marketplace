@@ -1,5 +1,8 @@
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+
+import javax.imageio.ImageIO;
 
 import project.Repository.dao.UserDao;
 import test.TestAppConfig;
