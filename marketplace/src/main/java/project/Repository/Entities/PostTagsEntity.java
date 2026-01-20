@@ -3,38 +3,38 @@ package project.Repository.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
-import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name="post_tags")
+@IdClass(PostTagsEntity.PostTagsID.class)
 public class PostTagsEntity
 {
 	public static class PostTagsID
 	{
-		private Integer postID;
-		private Integer tagID;
+		public Integer post;
+		public Integer tag;
 
 		public PostTagsID(Integer postID, Integer tagID) {
-			this.postID = postID;
-			this.tagID = tagID;
+			this.post = postID;
+			this.tag = tagID;
 		}
 
+		@Override
 		public boolean equals(Object object) {
 			if (object == null || getClass() != object.getClass()) return false;
 			if (!super.equals(object)) return false;
 			PostTagsID that = (PostTagsID) object;
-			return java.util.Objects.equals(postID, that.postID) && java.util.Objects.equals(tagID, that.tagID);
+			return java.util.Objects.equals(post, that.post) && java.util.Objects.equals(tag, that.tag);
 		}
 
+		@Override
 		public int hashCode() {
-			return Objects.hash(super.hashCode(), postID, tagID);
+			return Objects.hash(super.hashCode(), post, tag);
 		}
 	}
 
@@ -62,6 +62,7 @@ public class PostTagsEntity
 	public Integer getTag() {return tag;}
 	public void setTag(Integer tag) {this.tag = tag;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -69,11 +70,12 @@ public class PostTagsEntity
 		return java.util.Objects.equals(post, that.post) && java.util.Objects.equals(tag, that.tag);
 	}
 
+	@Override
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), post, tag);
 	}
 
-	@java.lang.Override
+	@Override
 	public java.lang.String toString() {
 		return "PostTagsEntity{" +
 				"post=" + post +

@@ -6,9 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
-import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -39,6 +37,7 @@ public class TagsEntity {
 	public String getTag_name() {return tag_name;}
 	public void setTag_name(String tag_name) {this.tag_name = tag_name;}
 
+	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
@@ -46,6 +45,7 @@ public class TagsEntity {
 		return java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(tag_name, that.tag_name);
 	}
 
+	@Override
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), post_id, tag_name);
 	}

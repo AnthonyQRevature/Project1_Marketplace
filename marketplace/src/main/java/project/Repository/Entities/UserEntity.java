@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
-    static enum UserRole
+    public static enum UserRole
     {
         user,
         admin,
@@ -33,7 +33,7 @@ public class UserEntity {
      * relies on a database's auto-increment feature
      */
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
     @Column(name="username")
     private String username;
     private String email;
@@ -50,14 +50,14 @@ public class UserEntity {
 
     public UserEntity(UserEntity o)
     {
-        this(o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+        this(o.email, o.passwordHash, o.role, o.id, o.username, o.verifiedSeller);
     }
 
     public UserEntity(String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
-        this.userId = userId;
+        this.id = userId;
         this.username = username;
         this.verifiedSeller = verifiedSeller;
     }
@@ -70,12 +70,12 @@ public class UserEntity {
         this.verifiedSeller = verifiedSeller;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer userId) {
+        this.id = userId;
     }
 
     public String getUsername() {
@@ -121,7 +121,7 @@ public class UserEntity {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.userId);
+        hash = 29 * hash + Objects.hashCode(this.id);
         hash = 29 * hash + Objects.hashCode(this.username);
         hash = 29 * hash + Objects.hashCode(this.email);
         hash = 29 * hash + Objects.hashCode(this.passwordHash);
@@ -154,7 +154,7 @@ public class UserEntity {
         if (!Objects.equals(this.role, other.role)) {
             return false;
         }
-        if (!Objects.equals(this.userId, other.userId)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.verifiedSeller, other.verifiedSeller)) {
@@ -167,7 +167,7 @@ public class UserEntity {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("userEntity{");
-        sb.append("userId=").append(userId);
+        sb.append("userId=").append(id);
         sb.append(", username=").append(username);
         sb.append(", email=").append(email);
         sb.append(", passwordHash=").append(passwordHash);

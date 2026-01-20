@@ -1,13 +1,18 @@
 package project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
-import project.controller.model.UserModel;
+import project.controller.request.LoginRequest;
+import project.controller.request.RegisterRequest;
+import project.controller.response.LoginResponse;
+import project.util.DateUtil;
 import project.util.Hasher;
+import project.util.TokenUtil;
+import project.util.exception.DatabaseConflictException;
+import project.util.exception.InvalidCredentialsException;
 
 /*
  * a service class bean
@@ -17,6 +22,8 @@ public class UserService {
 
     UserDao dao;
     Hasher hasher;
+    DateUtil dateUtil;
+    TokenUtil tokenUtil;
 
     /*
      * a response entity represents an HTML response
@@ -26,24 +33,28 @@ public class UserService {
      * The example that I have access to uses json serialization to send information between the
      * client and server.
      */
-    /*
+    /**
      * 
      */
-    public ResponseEntity<UserModel> registerNewUser(UserModel user)
+    public RegisterRequest registerNewUser(RegisterRequest user) throws 
+        InvalidCredentialsException,
+        DatabaseConflictException
     {
         UserEntity entity = new UserEntity();
 
         //TODO check password requirements, email existence, etc.
         if (user.getPassword().length() < 8)
         {
-            return ResponseEntity.badRequest().build();
+            throw new InvalidCredentialsException();
+            //return ResponseEntity.badRequest().build();
         }
 
         //check existence
         if (dao.findUserByUsername(user.getUsername()) != null)
         {
             //already in db
-            return ResponseEntity.status(409).build();
+            throw new DatabaseConflictException();
+            //return ResponseEntity.status(409).build();
         }
         else
         {//potentially factor conversions into a seperate method
@@ -61,17 +72,44 @@ public class UserService {
             UserEntity result = dao.save(entity);
 
             //conversion from entity to model
-            UserModel ret = new UserModel(result.getEmail(), null, result.getUsername());
-            return ResponseEntity.ok(ret);
+            RegisterRequest ret = new RegisterRequest(result.getEmail(), null, result.getUsername());
+            return ret;
         }
         //return ResponseEntity.status(400).build();
     }
 
+    /**
+     * Takes a login request and verifys it then returns an object 
+     * representing either a login success or failiure
+     * @param request
+     * @return LoginResponse if request corresponds to a valid user, null otherwise
+     */
+    public LoginResponse attemptLogin(LoginRequest request) /* throws AuthenticationException */ {
+        UserEntity logAttempt = dao.findUserByUsername(request.getUsername());
+        
+        System.out.printf("Recieved: %s\n", request.toString());
+        System.out.printf("password comaprison: \n%s\n%s", hasher.hashPassword(request.getPassword()), logAttempt.getPasswordHash());
+
+        if(hasher.verifyPassword(logAttempt.getPasswordHash(), request.getPassword())){
+            String token = tokenUtil.makeToken(logAttempt.getUsername(), logAttempt.getId());
+            LoginResponse response = new LoginResponse(logAttempt.getId(), logAttempt.getUsername(), token);
+            return response;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void retrieveByID(int id){
+    }
+
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher) 
+    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
     {
         this.dao = dao;
         this.hasher = hasher;
+        this.dateUtil = dateUtil;
+        this.tokenUtil = tokenUtil;
     }
 }

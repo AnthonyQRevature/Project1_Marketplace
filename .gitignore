@@ -1,5 +1,7 @@
 .idea/
 .vscode/
+upload-dir/*
 marketplace/target/
+upload-dir/*
 # marketplace/src/main/resources/application.properties
 *.drawio.bkp

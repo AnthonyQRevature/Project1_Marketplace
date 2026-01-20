@@ -2,14 +2,18 @@ package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.controller.model.UserModel;
+import project.controller.request.LoginRequest;
+import project.controller.request.RegisterRequest;
+import project.controller.response.LoginResponse;
 import project.service.UserService;
+import project.util.AllowCORS;
+import project.util.exception.DatabaseConflictException;
+import project.util.exception.InvalidCredentialsException;
 
 /*
  * A Controller for the /login endpoint
@@ -19,31 +23,45 @@ public class LoginController {
 
     UserService userService;
 
-    /*
-     * Login should take a UserModel with only the username and password filled in
+    /**
+     * Login takes a LoginRequest when 
      * on success return some sort of session token to prove that the user logged in (TBD)
      * on fail return some sort of failure.
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserModel body)
+    @AllowCORS
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest body)
     {
-        return ResponseEntity.internalServerError().build();
+        var response = userService.attemptLogin(body);
+        if (response == null)
+        {
+            return ResponseEntity.status(403).build();
+        }
+        else
+        {
+            return ResponseEntity.ok(response);
+        }
     }
 
-    /*
-     * RegisterUser should take in a UserModel with the username, password, and email filled in 
-     * (whatever data we need to create a new user)
-     * then persist it to the Database
-     * and return a UserModel with the username, email, and createdAt date filled in.
+    /**
+     * RegisterUser takes a RegisterRequest and persists a UserEntity to the Database
+     * returns a status code of 400 when either the username or password are invalid
+     * returns a status code of 409 when a UserEntity with the same Username already exists in the database
      */
     @PutMapping("/login")
-    @CrossOrigin()
-    public ResponseEntity<UserModel> registerUser(@RequestBody UserModel body)
+    @AllowCORS
+    public ResponseEntity<RegisterRequest> registerUser(@RequestBody RegisterRequest body)
     {
-        System.out.printf("Recieved: %s\n", body.toString());
-
-        var response = userService.registerNewUser(body);
-        return response;
+        try {
+            var response = userService.registerNewUser(body);
+            return ResponseEntity.ok(response);
+        }
+        catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(400).build();
+        }
+        catch (DatabaseConflictException e) {
+            return ResponseEntity.status(409).build();
+        }
     }
 
     @Autowired
