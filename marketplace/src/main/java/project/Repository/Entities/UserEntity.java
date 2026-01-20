@@ -1,6 +1,5 @@
 package project.Repository.Entities;
 
-import java.sql.Date;
 import java.util.Objects;
 
 import org.hibernate.annotations.JdbcType;
@@ -51,10 +50,10 @@ public class UserEntity {
 
     public UserEntity(UserEntity o)
     {
-        this(o.getCreatedAt(), o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
+        this(o.email, o.passwordHash, o.role, o.userId, o.username, o.verifiedSeller);
     }
 
-    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
+    public UserEntity(String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -63,7 +62,7 @@ public class UserEntity {
         this.verifiedSeller = verifiedSeller;
     }
 
-    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
+    public UserEntity(String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -117,14 +116,6 @@ public class UserEntity {
 
     public void setVerifiedSeller(Boolean verifiedSeller) {
         this.verifiedSeller = verifiedSeller;
-    }
-
-    public Date getCreatedAt() {
-        return null;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        
     }
 
     @Override

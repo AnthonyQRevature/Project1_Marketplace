@@ -1,7 +1,5 @@
 package project.service;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Service;
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
 import project.controller.model.UserModel;
-import project.util.DateUtil;
 import project.util.Hasher;
 
 /*
@@ -20,7 +17,6 @@ public class UserService {
 
     UserDao dao;
     Hasher hasher;
-    DateUtil dateUtil;
 
     /*
      * a response entity represents an HTML response
@@ -55,10 +51,8 @@ public class UserService {
             //conversion from model to entity
             //dao.save will return an entity, guarenteed nonnull
             //this entity will have it's ID field filled in unlike the one that is passed into the function
-            Date createdAt = dateUtil.currentDate();
             entity.setUsername(user.getUsername());
             entity.setEmail(user.getEmail());
-            entity.setCreatedAt(createdAt);
 
             //assign the password field in the entity
             String hash = hasher.hashPassword(user.getPassword());
@@ -67,7 +61,7 @@ public class UserService {
             UserEntity result = dao.save(entity);
 
             //conversion from entity to model
-            UserModel ret = new UserModel(result.getCreatedAt(), result.getEmail(), null, result.getUsername());
+            UserModel ret = new UserModel(result.getEmail(), null, result.getUsername());
             return ResponseEntity.ok(ret);
         }
         //return ResponseEntity.status(400).build();
@@ -75,10 +69,9 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil) 
+    public UserService(UserDao dao, Hasher hasher) 
     {
         this.dao = dao;
         this.hasher = hasher;
-        this.dateUtil = dateUtil;
     }
 }

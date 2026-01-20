@@ -1,13 +1,13 @@
 package project.Repository.Entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import java.util.Objects;
 
 @Entity
 @Table(name="user_profile")
@@ -46,10 +46,10 @@ public class UserProfileEntity {
 
 	public Integer getProfileId() {return profileId;}
 	public void setProfileId(Integer profileId) {this.profileId = profileId;}
-	public Integer getUser_id() {return user_id;}
-	public void setUser_id(Integer user_id) {this.user_id = user_id;}
-	public String getPfp_url() {return pfp_url;}
-	public void setPfp_url(String pfp_url) {this.pfp_url = pfp_url;}
+	public Integer getUserID() {return user_id;}
+	public void setUserID(Integer user_id) {this.user_id = user_id;}
+	public String getPfpUrl() {return pfp_url;}
+	public void setPfpUrl(String pfp_url) {this.pfp_url = pfp_url;}
 	public String getBio() {return bio;}
 	public void setBio(String bio) {this.bio = bio;}
 	public double getLatitude() {return latitude;}

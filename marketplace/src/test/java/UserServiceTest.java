@@ -1,6 +1,4 @@
 
-import java.sql.Date;
-
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
 import project.controller.model.UserModel;
 import project.service.UserService;
-import project.util.DateUtil;
 import project.util.Hasher;
 
 
@@ -25,7 +22,6 @@ import project.util.Hasher;
 public class UserServiceTest {
 
     @Mock UserDao dao;
-    @Mock DateUtil dateUtil;
     @Mock Hasher hasher;
     @InjectMocks UserService userService;
 
@@ -49,22 +45,19 @@ public class UserServiceTest {
         input.setEmail("email");
         */
         
-        UserModel input = new UserModel(null, "test_email", "password", "username");
-        Date testDate = new Date(0);
+        UserModel input = new UserModel("test_email", "password", "username");
 
         UserEntity expectedSave = new UserEntity();
         expectedSave.setUsername("username");
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
-        expectedSave.setCreatedAt(testDate);
 
         UserEntity daoResponse = new UserEntity(expectedSave);
         daoResponse.setUserId(1);
-        UserModel expectedResponse = new UserModel(testDate, "test_email", null, "username");
+        UserModel expectedResponse = new UserModel("test_email", null, "username");
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
-        when(dateUtil.currentDate()).thenReturn(testDate);
         when(hasher.hashPassword("password")).thenReturn("hashed_password");
 
         //act

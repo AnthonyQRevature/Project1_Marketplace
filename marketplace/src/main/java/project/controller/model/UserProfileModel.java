@@ -1,7 +1,5 @@
 package project.controller.model;
 
-import java.sql.Date;
-
 public class UserProfileModel {
     Integer user_id;
 	String pfp_url;
@@ -9,16 +7,14 @@ public class UserProfileModel {
 	double latitude;
 	double longitude;
 	String address;
-    Date createdAt;
 
-    public UserProfileModel(Integer user_id, String pfp_url, String bio, double latitude, double longitude, String address, Date createdAt) {
+    public UserProfileModel(Integer user_id, String pfp_url, String bio, double latitude, double longitude, String address) {
         this.user_id = user_id;
         this.pfp_url = pfp_url;
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
-        this.createdAt = createdAt;
     }
     public UserProfileModel(){
     }
@@ -65,13 +61,6 @@ public class UserProfileModel {
         this.address = address;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -85,7 +74,6 @@ public class UserProfileModel {
         temp = Double.doubleToLongBits(longitude);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + ((address == null) ? 0 : address.hashCode());
-        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -122,11 +110,6 @@ public class UserProfileModel {
                 return false;
         } else if (!address.equals(other.address))
             return false;
-        if (createdAt == null) {
-            if (other.createdAt != null)
-                return false;
-        } else if (!createdAt.equals(other.createdAt))
-            return false;
         return true;
     }
 
@@ -140,7 +123,6 @@ public class UserProfileModel {
         sb.append(", latitude=").append(latitude);
         sb.append(", longitude=").append(longitude);
         sb.append(", address=").append(address);
-        sb.append(", createdAt=").append(createdAt);
         sb.append('}');
         return sb.toString();
     }
