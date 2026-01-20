@@ -61,7 +61,7 @@ public class UserProfileService{
     }
 
     public boolean deleteUserProfileByEntity(UserProfileEntity entity){
-        return deleteUserProfileByID(entity.getProfileId());
+        return deleteUserProfileByID(entity.getId());
     }
 
     //Worried about this function, feels like I should rewrite it.
