@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS user_profile (
     id SERIAL PRIMARY KEY,
     user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    pfp_url VARCHAR(255),
+    pfp_encoded TEXT,
     bio TEXT,
     latitude DECIMAL(9,6),
     longitude DECIMAL(9,6),
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS post (
 CREATE TABLE IF NOT EXISTS post_media (
     id SERIAL PRIMARY KEY,
     post_id INT REFERENCES post(id) ON DELETE CASCADE,
-    media_url VARCHAR(255) NOT NULL,
+    media_encoded TEXT NOT NULL,
     media_type media_type_enum DEFAULT 'image'
     );
 
