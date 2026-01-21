@@ -60,7 +60,7 @@ function TagsList(props : {tags: TagEntity[]})
         <div className="TagsList">
           {Checkboxes}
         </div>
-        <button>Subnit</button>
+        <button>Submit</button>
       </form>
     </>
   )

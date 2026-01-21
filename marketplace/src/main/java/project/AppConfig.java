@@ -9,7 +9,7 @@ import project.properties.MediaProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(MediaProperties.class)
 public class AppConfig {
-
+/*
     @Bean
     public HelloWorldBean helloWorldBean()
     {
