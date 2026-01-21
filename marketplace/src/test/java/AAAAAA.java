@@ -1,8 +1,5 @@
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-
-import javax.imageio.ImageIO;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import project.Repository.dao.UserDao;
 import test.TestAppConfig;
@@ -12,7 +9,7 @@ public class AAAAAA {
     {
         ApplicationContext ctx = SpringApplication.run(TestAppConfig.class);
         var bean = ctx.getBean(UserDao.class);
-        var list = bean.findUserByDistance(150, 250);
+        var list = bean.findUserByDistance(33.03810434840791, -96.69287478499572, 5);
 
         for (var e : list)
         {

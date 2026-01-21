@@ -16,6 +16,6 @@ public interface UserDao extends JpaRepository<UserEntity, Integer>
     @Query("SELECT u FROM UserEntity u WHERE u.username = ?1")
     UserEntity findUserByUsername(String username);
 
-    @NativeQuery("SELECT id, username, pfp_encoded, haversine_formula(?1, ?2, latitude, longitude) as distance FROM user_distances")
-    List<UserDistanceEntity> findUserByDistance(double latitude, double longitude);
+    @NativeQuery("SELECT * FROM (SELECT id, username, pfp_encoded, haversine_formula(?1, ?2, latitude, longitude) as distance FROM user_distances ORDER BY distance ASC) WHERE distance < ?3")
+    List<UserDistanceEntity> findUserByDistance(double latitude, double longitude, double maximum_distance);
 }

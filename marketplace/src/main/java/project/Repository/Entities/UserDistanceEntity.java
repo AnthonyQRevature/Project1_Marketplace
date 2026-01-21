@@ -1,11 +1,13 @@
 package project.Repository.Entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
 public class UserDistanceEntity {
     @Id
+    @Column(name="id")
     int user_id;
     String username;
     String pfp_encoded;
@@ -16,6 +18,9 @@ public class UserDistanceEntity {
         this.pfp_encoded = pfp_encoded;
         this.user_id = user_id;
         this.username = username;
+    }
+
+    public UserDistanceEntity() {
     }
 
     public int getUser_id() {

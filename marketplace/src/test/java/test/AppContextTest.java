@@ -16,7 +16,7 @@ public class AppContextTest implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        getAll();
+        //getAll();
     }
 
     public void getAll()
