@@ -42,7 +42,7 @@ public class UserProfileService{
         if (uniqueUserID(model.getUserID())){
             UserProfileEntity entity = new UserProfileEntity();
             entity.setUserID(model.getUserID());
-            entity.setPfp_url(model.getPfpUrl());
+            entity.setPfpEncoded(model.getPfpEncoded());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
             entity.setLongitude(model.getLongitude());
@@ -54,7 +54,7 @@ public class UserProfileService{
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_url(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfpEncoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 

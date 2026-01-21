@@ -40,7 +40,7 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = new UserProfileEntity();
 
         entity.setUserID(1);
-		entity.setPfp_url("aaa");
+		entity.setPfpEncoded("aaa");
 		entity.setBio("bbb");
 		entity.setLatitude(2.0);
 		entity.setLongitude(3.0);
@@ -62,7 +62,7 @@ public class UserProfileServiceTest {
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
-            entity.setPfp_url("aaa");
+            entity.setPfpEncoded("aaa");
             entity.setBio("bbb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
@@ -72,7 +72,7 @@ public class UserProfileServiceTest {
             
             UserProfileEntity entity2 = entity;
             entity.setUserID(1);
-            entity.setPfp_url("aa");
+            entity.setPfpEncoded("aa");
             entity.setBio("bb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
@@ -83,7 +83,7 @@ public class UserProfileServiceTest {
             UserProfileModel model2 = (service.updateUserProfile(model).get());
             
             assertEquals(model2.getUserID(), model.getUserID());
-            assertEquals(model2.getPfpUrl(), model.getPfpUrl());
+            assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
             assertEquals(model2.getBio(), model.getBio());
             assertEquals(model2.getLatitude(), model.getLatitude());
             assertEquals(model2.getLongitude(), model.getLongitude());
@@ -109,7 +109,7 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = service.modelToEntity(model);
 
         assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfp_url(), model.getPfpUrl());
+        assertEquals(entity.getPfpEncoded(), model.getPfpEncoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -122,7 +122,7 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = new UserProfileEntity();
 
         entity.setUserID(1);
-		entity.setPfp_url("aaa");
+		entity.setPfpEncoded("aaa");
 		entity.setBio("bbb");
 		entity.setLatitude(2.0);
 		entity.setLongitude(3.0);
@@ -131,7 +131,7 @@ public class UserProfileServiceTest {
         UserProfileModel model = service.entityToModel(entity);
 
         assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfp_url(), model.getPfpUrl());
+        assertEquals(entity.getPfpEncoded(), model.getPfpEncoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -173,7 +173,7 @@ public class UserProfileServiceTest {
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
-            entity.setPfp_url("aa");
+            entity.setPfpEncoded("aa");
             entity.setBio("bb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
@@ -186,7 +186,7 @@ public class UserProfileServiceTest {
             UserProfileModel model2 = (service.createNewUserProfile(model).get());
             
             assertEquals(model2.getUserID(), model.getUserID());
-            assertEquals(model2.getPfpUrl(), model.getPfpUrl());
+            assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
             assertEquals(model2.getBio(), model.getBio());
             assertEquals(model2.getLatitude(), model.getLatitude());
             assertEquals(model2.getLongitude(), model.getLongitude());

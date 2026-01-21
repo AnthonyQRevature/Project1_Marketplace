@@ -35,7 +35,7 @@ public class UserController {
             UserEntity entity = userService.retrieveByUsername(username).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_url());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -49,7 +49,7 @@ public class UserController {
             UserEntity entity = userService.retrieveByID(user_id).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(user_id).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_url());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), user_id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -57,6 +57,7 @@ public class UserController {
         }
     }
 
+    //Fix this Murphy
     @GetMapping("/users/{id}")
     public ResponseEntity<UserResponse> patchUserAndProfile(@RequestBody UserModel body, @RequestBody UserProfileModel body2) {
         try{
@@ -64,7 +65,7 @@ public class UserController {
             UserEntity entity = userService.updateUserEmail(body).get();
             UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(body2).get());
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_url());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){

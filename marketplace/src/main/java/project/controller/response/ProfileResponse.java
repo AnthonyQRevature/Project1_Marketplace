@@ -1,23 +1,23 @@
 package project.controller.response;
 
 public class ProfileResponse {
-    String pfp_url;
+    String pfp_encoded;
     String bio;
     Double latitude;
     Double longitude;
 
-    public ProfileResponse(String bio, Double latitude, Double longitude, String pfp_url) {
+    public ProfileResponse(String bio, Double latitude, Double longitude, String pfp_encoded) {
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.pfp_url = pfp_url;
+        this.pfp_encoded = pfp_encoded;
     }
 
-    public String getPfp_url() {
-        return pfp_url;
+    public String getPfpEncoded() {
+        return pfp_encoded;
     }
-    public void setPfp_url(String pfp_url) {
-        this.pfp_url = pfp_url;
+    public void setPfpEncoded(String pfp_encoded) {
+        this.pfp_encoded = pfp_encoded;
     }
 
     public String getBio() {

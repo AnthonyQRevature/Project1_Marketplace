@@ -3,15 +3,15 @@ package project.controller.model;
 //this doesnt have a reason to exist
 public class UserProfileModel {
     Integer user_id;
-	String pfp_url;
+	String pfp_encoded;
 	String bio;
 	double latitude;
 	double longitude;
 	String address;
 
-    public UserProfileModel(Integer user_id, String pfp_url, String bio, double latitude, double longitude, String address) {
+    public UserProfileModel(Integer user_id, String pfp_encoded, String bio, double latitude, double longitude, String address) {
         this.user_id = user_id;
-        this.pfp_url = pfp_url;
+        this.pfp_encoded = pfp_encoded;
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -27,11 +27,11 @@ public class UserProfileModel {
         this.user_id = user_id;
     }
 
-    public String getPfpUrl() {
-        return pfp_url;
+    public String getPfpEncoded() {
+        return pfp_encoded;
     }
-    public void setPfpUrl(String pfp_url) {
-        this.pfp_url = pfp_url;
+    public void setPfpEncoded(String pfp_encoded) {
+        this.pfp_encoded = pfp_encoded;
     }
 
     public String getBio() {
@@ -67,7 +67,7 @@ public class UserProfileModel {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
-        result = prime * result + ((pfp_url == null) ? 0 : pfp_url.hashCode());
+        result = prime * result + ((pfp_encoded == null) ? 0 : pfp_encoded.hashCode());
         result = prime * result + ((bio == null) ? 0 : bio.hashCode());
         long temp;
         temp = Double.doubleToLongBits(latitude);
@@ -92,10 +92,10 @@ public class UserProfileModel {
                 return false;
         } else if (!user_id.equals(other.user_id))
             return false;
-        if (pfp_url == null) {
-            if (other.pfp_url != null)
+        if (pfp_encoded == null) {
+            if (other.pfp_encoded != null)
                 return false;
-        } else if (!pfp_url.equals(other.pfp_url))
+        } else if (!pfp_encoded.equals(other.pfp_encoded))
             return false;
         if (bio == null) {
             if (other.bio != null)
@@ -119,7 +119,7 @@ public class UserProfileModel {
         StringBuilder sb = new StringBuilder();
         sb.append("UserModel{");
         sb.append("user_id=").append(user_id);
-        sb.append(", pfp_url=").append(pfp_url);
+        sb.append(", pfp_encoded=").append(pfp_encoded);
         sb.append(", bio=").append(bio);
         sb.append(", latitude=").append(latitude);
         sb.append(", longitude=").append(longitude);
