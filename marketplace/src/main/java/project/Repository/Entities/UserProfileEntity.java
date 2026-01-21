@@ -22,7 +22,7 @@ public class UserProfileEntity {
 	@Column(name="user_id")
 	private Integer user_id;
 	@Column(name="pfp_url")
-	private String pfp_url;
+	private String pfp_encoded;
 	@Column(name="bio")
 	private String bio;
 	@Column(name="latitude")
@@ -37,7 +37,7 @@ public class UserProfileEntity {
 	public UserProfileEntity(UserProfileEntity userProfileEntity) {
 		this.id = userProfileEntity.id;
 		this.user_id = userProfileEntity.user_id;
-		this.pfp_url = userProfileEntity.pfp_url;
+		this.pfp_encoded = userProfileEntity.pfp_encoded;
 		this.bio = userProfileEntity.bio;
 		this.latitude = userProfileEntity.latitude;
 		this.longitude = userProfileEntity.longitude;
@@ -48,8 +48,8 @@ public class UserProfileEntity {
 	public void setId(Integer id) {this.id = id;}
 	public Integer getUserID() {return user_id;}
 	public void setUserID(Integer user_id) {this.user_id = user_id;}
-	public String getPfpUrl() {return pfp_url;}
-	public void setPfpUrl(String pfp_url) {this.pfp_url = pfp_url;}
+	public String getPfp_encoded() {return pfp_encoded;}
+	public void setPfp_encoded(String pfp_encoded) {this.pfp_encoded = pfp_encoded;}
 	public String getBio() {return bio;}
 	public void setBio(String bio) {this.bio = bio;}
 	public double getLatitude() {return latitude;}
@@ -76,7 +76,7 @@ public class UserProfileEntity {
 		return "UserProfileEntity{" +
 				"id=" + id +
 				", user_id=" + user_id +
-				", pfp_url='" + pfp_url + '\'' +
+				", pfp_url='" + pfp_encoded + '\'' +
 				", bio='" + bio + '\'' +
 				", latitude=" + latitude +
 				", longitude=" + longitude +
