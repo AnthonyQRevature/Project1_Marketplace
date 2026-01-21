@@ -9,6 +9,8 @@ INSERT INTO tags(tag_name) VALUES
 INSERT INTO users(id, email, password_hash, username) VALUES
 (1, 'joes@email', 'test', 'BigJoe'),
 (2, 'janes@email', 'test', 'FancyJane');
+INSERT INTO users(id, email, password_hash, username) VALUES
+(3, 'dougs@email', 'test', 'doog');
 
 INSERT INTO user_profile(user_id, latitude, longitude) VALUES
 (1, 123, 122),

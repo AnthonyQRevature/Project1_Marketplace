@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
@@ -30,10 +31,10 @@ public class ReportEntity {
 	private Integer reported_id;
 
 	@Column(name="post_id")
-	private Integer post_id;
+	private Optional<Integer> post_id;
 
 	@Column(name="message_id")
-	private Integer message_id;
+	private Optional<Integer> message_id;
 
 	@Column(name="reason")
 	private String reason;
@@ -45,73 +46,57 @@ public class ReportEntity {
 	@Column(name="status")
 	private ReportStatus status;
 
-    public ReportEntity(Integer message_id, Integer post_id, String reason, Integer report_id, Integer reported_id, Integer reporter_id, ReportStatus status) {
-        this.message_id = message_id;
-        this.post_id = post_id;
-        this.reason = reason;
+    public ReportEntity(Integer report_id, Integer reporter_id, Integer reported_id, Optional<Integer> post_id, Optional<Integer> message_id, String reason, ReportStatus status) {
         this.report_id = report_id;
-        this.reported_id = reported_id;
         this.reporter_id = reporter_id;
+        this.reported_id = reported_id;
+        this.post_id = post_id;
+        this.message_id = message_id;
+        this.reason = reason;
         this.status = status;
     }
 
-    public ReportEntity() {
-    }
+    public ReportEntity() {}
 
     public Integer getReport_id() {
         return report_id;
     }
-
     public void setReport_id(Integer report_id) {
         this.report_id = report_id;
     }
-
     public Integer getReporter_id() {
         return reporter_id;
     }
-
     public void setReporter_id(Integer reporter_id) {
         this.reporter_id = reporter_id;
     }
-
     public Integer getReported_id() {
         return reported_id;
     }
-
     public void setReported_id(Integer reported_id) {
         this.reported_id = reported_id;
     }
-
-    public Integer getPost_id() {
-        return post_id;
-    }
-
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
-    }
-
-    public Integer getMessage_id() {
-        return message_id;
-    }
-
-    public void setMessage_id(Integer message_id) {
-        this.message_id = message_id;
-    }
-
     public String getReason() {
         return reason;
     }
-
     public void setReason(String reason) {
         this.reason = reason;
     }
-
     public ReportStatus getStatus() {
         return status;
     }
-
     public void setStatus(ReportStatus status) {
         this.status = status;
+    }
+    public Optional<Integer> getPost_id() {return post_id;}
+    public void setPost_id(Optional<Integer> post_id) {this.post_id = post_id;}
+
+    public Optional<Integer> getMessage_id() {
+        return message_id;
+    }
+
+    public void setMessage_id(Optional<Integer> message_id) {
+        this.message_id = message_id;
     }
 
     @Override
