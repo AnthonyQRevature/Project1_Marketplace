@@ -2,11 +2,14 @@ package project.service;
 
 import java.util.Optional;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
+import project.controller.model.UserModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
@@ -99,6 +102,21 @@ public class UserService {
         }
         else{
             return null;
+        }
+    }
+
+    public Optional<UserEntity> updateUserEmail(UserModel userModel) throws AccountNotFoundException {
+        //check existence
+        if (dao.findUserByUsername(userModel.getUsername()) == null) {
+            //not in db
+            throw new AccountNotFoundException();
+        } else {
+            UserEntity entity = dao.findUserByUsername(userModel.getUsername());
+            entity.setEmail(userModel.getEmail());
+
+            UserEntity result = dao.save(entity);
+            Optional<UserEntity> ret = Optional.ofNullable(result);
+            return ret;
         }
     }
 

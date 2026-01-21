@@ -40,10 +40,10 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = new UserProfileEntity();
 
         entity.setUserID(1);
-		entity.setPfp_encoded("aaa");
+		entity.setPfp_url("aaa");
 		entity.setBio("bbb");
-		entity.setLatitude(2);
-		entity.setLongitude(3);
+		entity.setLatitude(2.0);
+		entity.setLongitude(3.0);
 		entity.setAddress("ccc");
 
         when(dao.findUserProfileByUserID(1)).thenReturn(entity);
@@ -62,20 +62,20 @@ public class UserProfileServiceTest {
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
-            entity.setPfp_encoded("aaa");
+            entity.setPfp_url("aaa");
             entity.setBio("bbb");
-            entity.setLatitude(2);
-            entity.setLongitude(3);
+            entity.setLatitude(2.0);
+            entity.setLongitude(3.0);
             entity.setAddress("ccc");
             
             when(dao.findUserProfileByUserID(1)).thenReturn(entity);
             
             UserProfileEntity entity2 = entity;
             entity.setUserID(1);
-            entity.setPfp_encoded("aa");
+            entity.setPfp_url("aa");
             entity.setBio("bb");
-            entity.setLatitude(2);
-            entity.setLongitude(3);
+            entity.setLatitude(2.0);
+            entity.setLongitude(3.0);
             entity.setAddress("cc");
             
             when(dao.save(entity2)).thenReturn(entity2);
@@ -88,7 +88,7 @@ public class UserProfileServiceTest {
             assertEquals(model2.getLatitude(), model.getLatitude());
             assertEquals(model2.getLongitude(), model.getLongitude());
             assertEquals(model2.getAddress(), model.getAddress());
-        } catch (NoSuchFieldException ex) {
+        } catch (Exception ex) {
             fail("There was an Exception.");
         }
     }
@@ -109,7 +109,7 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = service.modelToEntity(model);
 
         assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfp_encoded(), model.getPfpUrl());
+        assertEquals(entity.getPfp_url(), model.getPfpUrl());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -122,16 +122,16 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = new UserProfileEntity();
 
         entity.setUserID(1);
-		entity.setPfp_encoded("aaa");
+		entity.setPfp_url("aaa");
 		entity.setBio("bbb");
-		entity.setLatitude(2);
-		entity.setLongitude(3);
+		entity.setLatitude(2.0);
+		entity.setLongitude(3.0);
 		entity.setAddress("ccc");
 
         UserProfileModel model = service.entityToModel(entity);
 
         assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfp_encoded(), model.getPfpUrl());
+        assertEquals(entity.getPfp_url(), model.getPfpUrl());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -173,10 +173,10 @@ public class UserProfileServiceTest {
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
-            entity.setPfp_encoded("aa");
+            entity.setPfp_url("aa");
             entity.setBio("bb");
-            entity.setLatitude(2);
-            entity.setLongitude(3);
+            entity.setLatitude(2.0);
+            entity.setLongitude(3.0);
             entity.setAddress("cc");
             
             when(dao.findUserProfileByUserID(1)).thenReturn(null);
@@ -191,7 +191,7 @@ public class UserProfileServiceTest {
             assertEquals(model2.getLatitude(), model.getLatitude());
             assertEquals(model2.getLongitude(), model.getLongitude());
             assertEquals(model2.getAddress(), model.getAddress());
-        } catch (NoSuchFieldException ex) {
+        } catch (Exception ex) {
             fail("There was an Exception.");
         }
     }

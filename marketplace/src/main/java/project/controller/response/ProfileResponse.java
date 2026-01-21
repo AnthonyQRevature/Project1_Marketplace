@@ -3,10 +3,10 @@ package project.controller.response;
 public class ProfileResponse {
     String pfp_url;
     String bio;
-    Integer latitude;
-    Integer longitude;
+    Double latitude;
+    Double longitude;
 
-    public ProfileResponse(String bio, Integer latitude, Integer longitude, String pfp_url) {
+    public ProfileResponse(String bio, Double latitude, Double longitude, String pfp_url) {
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -27,17 +27,17 @@ public class ProfileResponse {
         this.bio = bio;
     }
 
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
     
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 }

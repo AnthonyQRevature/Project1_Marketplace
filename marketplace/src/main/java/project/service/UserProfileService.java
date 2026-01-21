@@ -2,12 +2,15 @@ package project.service;
 
 import java.util.Optional;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
+import project.util.exception.DatabaseConflictException;
 
 @Service
 public class UserProfileService{
@@ -26,9 +29,9 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
-    public Optional<UserProfileModel> updateUserProfile(UserProfileModel model) throws NoSuchFieldException{
+    public Optional<UserProfileModel> updateUserProfile(UserProfileModel model) throws AccountNotFoundException{
         if (uniqueUserID(model.getUserID())){
-            throw new NoSuchFieldException("User Profile does not exist.");
+            throw new AccountNotFoundException("User Profile does not exist.");
         }
         UserProfileEntity result = dao.save(modelToEntity(model));
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
@@ -39,7 +42,7 @@ public class UserProfileService{
         if (uniqueUserID(model.getUserID())){
             UserProfileEntity entity = new UserProfileEntity();
             entity.setUserID(model.getUserID());
-            entity.setPfp_encoded(model.getPfpUrl());
+            entity.setPfp_url(model.getPfpUrl());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
             entity.setLongitude(model.getLongitude());
@@ -51,7 +54,7 @@ public class UserProfileService{
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_url(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 
@@ -74,9 +77,9 @@ public class UserProfileService{
     }
 
     //Worried about this function, feels like I should rewrite it.
-    public Optional<UserProfileModel> createNewUserProfile(UserProfileModel model) throws NoSuchFieldException{
+    public Optional<UserProfileModel> createNewUserProfile(UserProfileModel model) throws DatabaseConflictException{
         if(uniqueUserID(model.getUserID()) != true){
-            throw new NoSuchFieldException("User Profile already exists.");
+            throw new DatabaseConflictException();
         }
         UserProfileEntity result = dao.save(modelToEntity(model));
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));

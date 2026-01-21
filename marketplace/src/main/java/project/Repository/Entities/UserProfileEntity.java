@@ -26,9 +26,9 @@ public class UserProfileEntity {
 	@Column(name="bio")
 	private String bio;
 	@Column(name="latitude")
-	private Integer latitude;
+	private Double latitude;
 	@Column(name="longitude")
-	private Integer longitude;
+	private Double longitude;
 	@Column(name="address")
 	private String address;
 
@@ -52,10 +52,10 @@ public class UserProfileEntity {
 	public void setPfp_url(String pfp_url) {this.pfp_url = pfp_url;}
 	public String getBio() {return bio;}
 	public void setBio(String bio) {this.bio = bio;}
-	public double getLatitude() {return latitude;}
-	public void setLatitude(Integer latitude) {this.latitude = latitude;}
-	public double getLongitude() {return longitude;}
-	public void setLongitude(Integer longitude) {this.longitude = longitude;}
+	public Double getLatitude() {return latitude;}
+	public void setLatitude(Double latitude) {this.latitude = latitude;}
+	public Double getLongitude() {return longitude;}
+	public void setLongitude(Double longitude) {this.longitude = longitude;}
 	public String getAddress() {return address;}
 	public void setAddress(String address) {this.address = address;}
 
