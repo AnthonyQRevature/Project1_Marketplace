@@ -63,12 +63,12 @@ public class UserProfileEntity {
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) return false;
 		UserProfileEntity that = (UserProfileEntity) o;
-		return Double.compare(latitude, that.latitude) == 0 && Double.compare(longitude, that.longitude) == 0 && Objects.equals(id, that.id) && Objects.equals(user_id, that.user_id) && Objects.equals(pfp_url, that.pfp_url) && Objects.equals(bio, that.bio) && Objects.equals(address, that.address);
+		return Double.compare(latitude, that.latitude) == 0 && Double.compare(longitude, that.longitude) == 0 && Objects.equals(id, that.id) && Objects.equals(user_id, that.user_id) && Objects.equals(pfp_encoded, that.pfp_encoded) && Objects.equals(bio, that.bio) && Objects.equals(address, that.address);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, user_id, pfp_url, bio, latitude, longitude, address);
+		return Objects.hash(id, user_id, pfp_encoded, bio, latitude, longitude, address);
 	}
 
 	@Override

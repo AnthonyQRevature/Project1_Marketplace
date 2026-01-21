@@ -3,6 +3,7 @@ package project.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
@@ -11,6 +12,12 @@ import project.controller.model.UserProfileModel;
 @Service
 public class UserProfileService{
     UserProfileDao dao;
+
+    //TODO
+    public UserProfileEntity addMedia(MultipartFile file, Integer user_id)
+    {
+        throw new RuntimeException("not yet implemented");
+    }
 
     public Optional<UserProfileModel> getProfileModelByUserID(int userID){
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(dao.findUserProfileByUserID(userID)));
@@ -32,7 +39,7 @@ public class UserProfileService{
         UserProfileEntity entity = new UserProfileEntity();
 
 		entity.setUserID(model.getUserID());
-		entity.setPfpUrl(model.getPfpUrl());
+		entity.setPfp_encoded(model.getPfpUrl());
 		entity.setBio(model.getBio());
 		entity.setLatitude(model.getLatitude());
 		entity.setLongitude(model.getLongitude());
@@ -42,7 +49,7 @@ public class UserProfileService{
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfpUrl(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 
