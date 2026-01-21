@@ -23,9 +23,4 @@ public class AppConfig {
         return new Hasher();
     }
     */
-
-    /*
-    @Bean
-    public DateUtil dateUtil() {return new DateUtil();}
-    */
 }
