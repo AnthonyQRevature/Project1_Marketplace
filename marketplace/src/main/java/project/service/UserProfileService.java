@@ -19,8 +19,8 @@ public class UserProfileService{
         throw new RuntimeException("not yet implemented");
     }
 
-    public Optional<UserProfileModel> getProfileModelByUserID(int userID){
-        Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(dao.findUserProfileByUserID(userID)));
+    public Optional<UserProfileEntity> getProfileEntityByUserID(int userID){
+        Optional<UserProfileEntity> ret = Optional.ofNullable(dao.findUserProfileByUserID(userID));
         return ret;
     }
 
@@ -35,16 +35,18 @@ public class UserProfileService{
         return ret;
     }
 
-    public UserProfileEntity modelToEntity(UserProfileModel model){
-        UserProfileEntity entity = new UserProfileEntity();
-
-		entity.setUserID(model.getUserID());
-		entity.setPfp_encoded(model.getPfpUrl());
-		entity.setBio(model.getBio());
-		entity.setLatitude(model.getLatitude());
-		entity.setLongitude(model.getLongitude());
-		entity.setAddress(model.getAddress());
-
+    public UserProfileEntity modelToEntity(UserProfileModel model) {
+        if (uniqueUserID(model.getUserID())){
+            UserProfileEntity entity = new UserProfileEntity();
+            entity.setUserID(model.getUserID());
+            entity.setPfp_encoded(model.getPfpUrl());
+            entity.setBio(model.getBio());
+            entity.setLatitude(model.getLatitude());
+            entity.setLongitude(model.getLongitude());
+            entity.setAddress(model.getAddress());
+            return entity;
+        }
+        UserProfileEntity entity = getProfileEntityByUserID(model.getUserID()).get();
         return entity;
     }
 
@@ -53,7 +55,7 @@ public class UserProfileService{
         return ret;
     }
 
-    public boolean deleteUserProfileByID(int id){
+    public boolean deleteUserProfileById(int id){
         dao.deleteById(id);
         return dao.getReferenceById(id) == null;
     }
@@ -68,7 +70,7 @@ public class UserProfileService{
     }
 
     public boolean deleteUserProfileByEntity(UserProfileEntity entity){
-        return deleteUserProfileByID(entity.getId());
+        return deleteUserProfileById(entity.getId());
     }
 
     //Worried about this function, feels like I should rewrite it.

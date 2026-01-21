@@ -48,9 +48,9 @@ public class UserProfileServiceTest {
 
         when(dao.findUserProfileByUserID(1)).thenReturn(entity);
 
-        UserProfileModel model = (service.getProfileModelByUserID(1).get());
+        UserProfileEntity entity2 = (service.getProfileEntityByUserID(1).get());
 
-        assertEquals(service.entityToModel(entity), model);
+        assertEquals(entity, entity2);
     }
 
     //updateUserProfile
@@ -142,13 +142,13 @@ public class UserProfileServiceTest {
     @Test
     public void DeleteById(){
         when(dao.getReferenceById(1)).thenReturn(null);
-        assertTrue(service.deleteUserProfileByID(1));
+        assertTrue(service.deleteUserProfileById(1));
     }
     @Test
     public void DeleteByIdFailure(){
         UserProfileEntity result = new UserProfileEntity();
         when(dao.getReferenceById(1)).thenReturn(result);
-        assertFalse(service.deleteUserProfileByID(1));
+        assertFalse(service.deleteUserProfileById(1));
     }
 
     //deleteUserProfileByUserID

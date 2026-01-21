@@ -1,5 +1,7 @@
 package project.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,7 +102,17 @@ public class UserService {
         }
     }
 
-    public void retrieveByID(int id){
+    public Optional<UserEntity> retrieveByUsername(String username){
+        return Optional.ofNullable(dao.findUserByUsername(username));
+    }
+
+    public Optional<UserEntity> retrieveByID(int id){
+        return Optional.ofNullable(dao.findUserById(id));
+    }
+
+    public boolean deleteUserById(int id){
+        dao.deleteById(id);
+        return dao.getReferenceById(id) == null;
     }
 
     //achieves constructor injection
