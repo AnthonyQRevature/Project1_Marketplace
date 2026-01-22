@@ -1,6 +1,7 @@
 package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,18 +31,18 @@ public class ReportController {
 	//get all reports
 	@GetMapping("/reports")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public List<ReportEntity> getAllReports(
+	public ResponseEntity<List<ReportEntity>> getAllReports(
 			@RequestHeader("Authorization") String authHeader
 	)
 	{
-		return reportService.getAllReports();
+		return ResponseEntity.ok(reportService.getAllReports());
 	}
 
 	//change report status
 		//changes status of a report with given id, to new status
 	@PatchMapping("/reports")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public void ChangeStatus
+	public ResponseEntity ChangeStatus
 	(
 			@RequestHeader("Authorization") String authHeader,
 			@RequestBody ReportStatusBody body, Errors error)
@@ -53,12 +54,14 @@ public class ReportController {
 		}
 
 		System.out.println(error.getAllErrors());
+
+		return ResponseEntity.ok().build();
 	}
 
 	//delete report by id
 	@DeleteMapping("/reports/{id}")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public void DeleteReport(
+	public ResponseEntity<?> DeleteReport(
 			@RequestHeader("Authorization") String authHeader,
 			@PathVariable Integer id
 	)
@@ -67,19 +70,21 @@ public class ReportController {
 		{
 			//TODO: ERROR HANDLING: if report status is false, do things here
 		}
+
+		return ResponseEntity.ok().build();
 	}
 
 	//get all reports of user id
 	@GetMapping("/users/{id}/reports")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public List<ReportEntity> ReportsOf
+	public ResponseEntity<List<ReportEntity>> ReportsOf
 		(
 				@RequestHeader("Authorization") String authHeader,
 				@PathVariable Integer id,
 				@RequestBody() ReportsOfBody body
 		)
 	{
-		return reportService.getReportsOf(body.getId());
+		return ResponseEntity.ok(reportService.getReportsOf(body.getId()));
 	}
 
 	//public void getAllReportsFromUser()
@@ -88,12 +93,12 @@ public class ReportController {
 	//create report from user ID
 	@PostMapping("/users/{id}/reports")
 	@SecureIndescriminate(SecurityLevel.USER)
-	public ReportEntity createNewReport(
+	public ResponseEntity<ReportEntity> createNewReport(
 			@RequestHeader("Authorization") String authHeader,
 			@RequestBody() ReportPostBody body,
 			@PathVariable Integer id)
 	{
-		return reportService.createReport(body);
+		return ResponseEntity.ok(reportService.createReport(body));
 	}
 
 
