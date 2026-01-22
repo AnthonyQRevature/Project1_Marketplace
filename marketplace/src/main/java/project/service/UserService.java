@@ -12,6 +12,7 @@ import project.Repository.dao.UserDao;
 import project.controller.model.UserModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
+import project.controller.request.UserUpdateRequest;
 import project.controller.response.LoginResponse;
 import project.util.DateUtil;
 import project.util.Hasher;
@@ -105,14 +106,14 @@ public class UserService {
         }
     }
 
-    public Optional<UserEntity> updateUserEmail(UserModel userModel) throws AccountNotFoundException {
+    public Optional<UserEntity> updateUserEmail(Integer id, UserUpdateRequest body) throws AccountNotFoundException {
         //check existence
-        if (dao.findUserByUsername(userModel.getUsername()) == null) {
+        if (dao.findUserById(id) == null) {
             //not in db
             throw new AccountNotFoundException();
         } else {
-            UserEntity entity = dao.findUserByUsername(userModel.getUsername());
-            entity.setEmail(userModel.getEmail());
+            UserEntity entity = dao.findUserById(id);
+            entity.setEmail(body.getEmail());
 
             UserEntity result = dao.save(entity);
             Optional<UserEntity> ret = Optional.ofNullable(result);

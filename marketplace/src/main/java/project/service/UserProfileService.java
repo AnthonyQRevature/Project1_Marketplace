@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
+import project.controller.request.ProfileRequest;
+import project.controller.request.UserUpdateRequest;
 import project.util.exception.DatabaseConflictException;
 
 @Service
@@ -29,11 +31,17 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
-    public Optional<UserProfileModel> updateUserProfile(UserProfileModel model) throws AccountNotFoundException{
-        if (uniqueUserID(model.getUserID())){
+    public Optional<UserProfileModel> updateUserProfile(Integer id, UserUpdateRequest body) throws AccountNotFoundException{
+        if (uniqueUserID(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
         }
-        UserProfileEntity result = dao.save(modelToEntity(model));
+        UserProfileEntity entity = getProfileEntityByUserID(id).get();
+        ProfileRequest profileRequest = body.getProfileRequest();
+        entity.setPfpEncoded(profileRequest.getPfpEncoded());
+        entity.setBio(profileRequest.getBio());
+        entity.setLatitude(profileRequest.getLatitude());
+        entity.setLongitude(profileRequest.getLongitude());
+        UserProfileEntity result = dao.save(entity);
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
         return ret;
     }

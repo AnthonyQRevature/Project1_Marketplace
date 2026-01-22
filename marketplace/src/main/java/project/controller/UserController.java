@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.controller.request.UserUpdateRequest;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
-import project.controller.model.UserModel;
-import project.controller.model.UserProfileModel;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
 import project.service.UserProfileService;
@@ -44,13 +43,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserResponse> getUserAndProfileById(@PathVariable("user_id") int user_id) {
+    public ResponseEntity<UserResponse> getUserAndProfileById(@PathVariable("id") int id) {
         try{
-            UserEntity entity = userService.retrieveByID(user_id).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(user_id).get();
+            UserEntity entity = userService.retrieveByID(id).get();
+            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
-            UserResponse response = new UserResponse(entity.getEmail(), user_id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
+            UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
             return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
@@ -59,11 +58,11 @@ public class UserController {
 
     //Fix this Murphy
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserResponse> patchUserAndProfile(@RequestBody UserModel body, @RequestBody UserProfileModel body2) {
+    public ResponseEntity<UserResponse> patchUserAndProfile(@PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
-            UserEntity entity = userService.updateUserEmail(body).get();
-            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(body2).get());
+            UserEntity entity = userService.updateUserEmail(id, body).get();
+            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(id, body).get());
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
