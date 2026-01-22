@@ -27,10 +27,10 @@ public class UserProfileModel {
         this.user_id = user_id;
     }
 
-    public String getPfpEncoded() {
+    public String getPfp_encoded() {
         return pfp_encoded;
     }
-    public void setPfpEncoded(String pfp_encoded) {
+    public void setPfp_encoded(String pfp_encoded) {
         this.pfp_encoded = pfp_encoded;
     }
 

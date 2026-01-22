@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
+import project.controller.request.ProfileRequest;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
@@ -36,7 +37,7 @@ public class UserController {
             UserEntity entity = userService.retrieveByUsername(username).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -50,7 +51,7 @@ public class UserController {
             UserEntity entity = userService.retrieveByID(id).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
             UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -64,9 +65,10 @@ public class UserController {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
             UserEntity entity = userService.updateUserEmail(id, body).get();
-            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(id, body).get());
+            ProfileRequest profileRequest = body.getProfileRequest();
+            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(id, profileRequest).get());
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){

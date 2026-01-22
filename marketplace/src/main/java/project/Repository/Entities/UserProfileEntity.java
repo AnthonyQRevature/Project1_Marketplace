@@ -48,8 +48,8 @@ public class UserProfileEntity {
 	public void setId(Integer id) {this.id = id;}
 	public Integer getUserID() {return user_id;}
 	public void setUserID(Integer user_id) {this.user_id = user_id;}
-	public String getPfpEncoded() {return pfp_encoded;}
-	public void setPfpEncoded(String pfp_encoded) {this.pfp_encoded = pfp_encoded;}
+	public String getPfp_encoded() {return pfp_encoded;}
+	public void setPfp_encoded(String pfp_encoded) {this.pfp_encoded = pfp_encoded;}
 	public String getBio() {return bio;}
 	public void setBio(String bio) {this.bio = bio;}
 	public Double getLatitude() {return latitude;}

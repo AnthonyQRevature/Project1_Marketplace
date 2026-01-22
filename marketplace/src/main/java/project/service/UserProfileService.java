@@ -11,7 +11,6 @@ import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
 import project.controller.request.ProfileRequest;
-import project.controller.request.UserUpdateRequest;
 import project.util.exception.DatabaseConflictException;
 
 @Service
@@ -31,13 +30,12 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
-    public Optional<UserProfileModel> updateUserProfile(Integer id, UserUpdateRequest body) throws AccountNotFoundException{
+    public Optional<UserProfileModel> updateUserProfile(Integer id, ProfileRequest profileRequest) throws AccountNotFoundException{
         if (uniqueUserID(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
         }
         UserProfileEntity entity = getProfileEntityByUserID(id).get();
-        ProfileRequest profileRequest = body.getProfileRequest();
-        entity.setPfpEncoded(profileRequest.getPfpEncoded());
+        entity.setPfp_encoded(profileRequest.getPfp_encoded());
         entity.setBio(profileRequest.getBio());
         entity.setLatitude(profileRequest.getLatitude());
         entity.setLongitude(profileRequest.getLongitude());
@@ -50,7 +48,7 @@ public class UserProfileService{
         if (uniqueUserID(model.getUserID())){
             UserProfileEntity entity = new UserProfileEntity();
             entity.setUserID(model.getUserID());
-            entity.setPfpEncoded(model.getPfpEncoded());
+            entity.setPfp_encoded(model.getPfp_encoded());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
             entity.setLongitude(model.getLongitude());
@@ -62,7 +60,7 @@ public class UserProfileService{
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfpEncoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 

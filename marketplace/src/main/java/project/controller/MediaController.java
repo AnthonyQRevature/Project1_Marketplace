@@ -72,7 +72,7 @@ public class MediaController {
         try
         {
             var entity = profileService.addMedia(file, user_id);
-            return ResponseEntity.ok(entity.getPfpEncoded());
+            return ResponseEntity.ok(entity.getPfp_encoded());
         }
         catch (Exception e)
         {

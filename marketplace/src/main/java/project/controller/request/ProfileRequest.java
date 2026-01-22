@@ -1,22 +1,26 @@
 package project.controller.request;
 
 public class ProfileRequest {
+    // TODO: add address?
     String pfp_encoded;
     String bio;
     Double latitude;
     Double longitude;
+    Double distance;
 
     public ProfileRequest(String bio, Double latitude, Double longitude, String pfp_encoded) {
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
         this.pfp_encoded = pfp_encoded;
+        // TODO: Set this up
+        this.distance = 0.0;
     }
 
-    public String getPfpEncoded() {
+    public String getPfp_encoded() {
         return pfp_encoded;
     }
-    public void setPfpEncoded(String pfp_encoded) {
+    public void setPfp_encoded(String pfp_encoded) {
         this.pfp_encoded = pfp_encoded;
     }
 
@@ -39,5 +43,12 @@ public class ProfileRequest {
     }
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }
