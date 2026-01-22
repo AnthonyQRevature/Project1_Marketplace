@@ -1,22 +1,17 @@
 package project.util;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.ImageOutputStream;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileEncoder {
@@ -56,6 +51,42 @@ public class FileEncoder {
         }
     }
     */
+
+    public BufferedImage cropAndResize(Image img, Rectangle targetDimensions)
+    {
+        double sfx, sfy;
+        int imgWidth, imgHeight;
+        imgWidth = img.getWidth(null);
+        imgHeight = img.getHeight(null);
+        sfx = (double)targetDimensions.width/imgWidth;
+        sfy = (double)targetDimensions.height/imgHeight;
+        Rectangle printBox = new Rectangle(0, 0, targetDimensions.width, targetDimensions.height);
+        //not perfect
+        if (sfx > sfy)
+        {
+            //offset the y
+            double sf = sfx;
+            printBox.y = -(int)Math.round((sf * imgHeight - targetDimensions.height) / 2);
+            printBox.width = (int)Math.round(imgWidth * sf);
+            printBox.height = (int)Math.round(imgHeight * sf);
+        }
+        else if (sfy > sfx)
+        {
+            //offset the x
+            double sf = sfy;
+            printBox.x = -(int)Math.round((sf * imgWidth - targetDimensions.width) / 2);
+            printBox.width = (int)Math.round(imgWidth * sf);
+            printBox.height = (int)Math.round(imgHeight * sf);
+        }
+        
+
+        int imageType = BufferedImage.TYPE_INT_RGB;
+        BufferedImage result = new BufferedImage(targetDimensions.width, targetDimensions.height, imageType);
+        Graphics2D g = result.createGraphics();
+        g.drawImage(img, printBox.x, printBox.y, printBox.width, printBox.height, null);
+        System.out.println(printBox.toString());
+        return result;
+    }
 
     public String base64Encode(BufferedImage file)
     {

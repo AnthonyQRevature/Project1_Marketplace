@@ -13,12 +13,7 @@ public class ProfileResponse {
         this.pfp_encoded = pfp_encoded;
     }
 
-    public String getPfpEncoded() {
-        return pfp_encoded;
-    }
-    public void setPfpEncoded(String pfp_encoded) {
-        this.pfp_encoded = pfp_encoded;
-    }
+    
 
     public String getBio() {
         return bio;
@@ -39,5 +34,13 @@ public class ProfileResponse {
     }
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getPfp_encoded() {
+        return pfp_encoded;
+    }
+
+    public void setPfp_encoded(String pfp_encoded) {
+        this.pfp_encoded = pfp_encoded;
     }
 }

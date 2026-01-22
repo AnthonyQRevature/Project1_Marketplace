@@ -2,7 +2,9 @@ package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserResponse> getUserAndProfileById(@PathVariable("user_id") int user_id) {
+    public ResponseEntity<UserResponse> getUserAndProfileById(@PathVariable("id") int user_id) {
         try{
             UserEntity entity = userService.retrieveByID(user_id).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(user_id).get();
@@ -53,12 +55,13 @@ public class UserController {
             UserResponse response = new UserResponse(entity.getEmail(), user_id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
-            return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            //return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            throw e;
         }
     }
 
     //Fix this Murphy
-    @GetMapping("/users/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<UserResponse> patchUserAndProfile(@RequestBody UserModel body, @RequestBody UserProfileModel body2) {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
@@ -73,7 +76,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Integer> deleteUserAndProfile(@PathVariable("id") Integer id) {
         try{
             userProfileService.deleteUserProfileById(id);

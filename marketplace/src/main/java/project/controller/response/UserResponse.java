@@ -4,13 +4,13 @@ public class UserResponse {
     int id;
     String username;
     String email;
-    boolean verified_seller;
-    ProfileResponse profileResponse;
+    Boolean verified_seller;
+    ProfileResponse profile;
 
-    public UserResponse(String email, int id, ProfileResponse profileResponse, String username, boolean verified_seller) {
+    public UserResponse(String email, int id, ProfileResponse profileResponse, String username, Boolean verified_seller) {
         this.email = email;
         this.id = id;
-        this.profileResponse = profileResponse;
+        this.profile = profileResponse;
         this.username = username;
         this.verified_seller = verified_seller;
     }
@@ -36,17 +36,17 @@ public class UserResponse {
         this.email = email;
     }
 
-    public boolean isVerified_seller() {
+    public Boolean isVerified_seller() {
         return verified_seller;
     }
-    public void setVerified_seller(boolean verified_seller) {
+    public void setVerified_seller(Boolean verified_seller) {
         this.verified_seller = verified_seller;
     }
 
-    public ProfileResponse getProfileResponse() {
-        return profileResponse;
+    public ProfileResponse getProfile() {
+        return profile;
     }
-    public void setProfileResponse(ProfileResponse profileResponse) {
-        this.profileResponse = profileResponse;
+    public void setProfile(ProfileResponse profileResponse) {
+        this.profile = profileResponse;
     }
 }

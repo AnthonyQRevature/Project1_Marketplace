@@ -1,25 +1,53 @@
 package project.service;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
+import project.util.FileEncoder;
 import project.util.exception.DatabaseConflictException;
 
 @Service
 public class UserProfileService{
+    @Autowired
     UserProfileDao dao;
+    @Autowired
+    FileEncoder encoder;
+    Rectangle targetDimensions;
 
-    //TODO
-    public UserProfileEntity addMedia(MultipartFile file, Integer user_id)
+    public UserProfileService()
     {
-        throw new RuntimeException("not yet implemented");
+        this.targetDimensions = new Rectangle(32, 32);
+    }
+
+    @Transactional
+    public UserProfileEntity addMedia(MultipartFile file, Integer user_id) throws IOException
+    {
+        String encodedFile;
+        UserProfileEntity entity = dao.findById(user_id).get();
+
+        try (InputStream stream = file.getInputStream())
+        {
+            //removes the alpha channel
+            BufferedImage resized = encoder.cropAndResize(ImageIO.read(stream), targetDimensions);
+            encodedFile = encoder.base64Encode(resized);
+            entity.setPfpEncoded(encodedFile);
+            entity = dao.save(entity);
+            return entity;
+        }
     }
 
     public Optional<UserProfileEntity> getProfileEntityByUserID(int userID){
