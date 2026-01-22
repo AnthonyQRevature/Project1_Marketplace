@@ -2,14 +2,16 @@ package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.controller.request.UserUpdateRequest;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
+import project.controller.request.UserUpdateRequest;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
 import project.service.UserProfileService;
@@ -57,7 +59,7 @@ public class UserController {
     }
 
     //Fix this Murphy
-    @GetMapping("/users/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<UserResponse> patchUserAndProfile(@PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
@@ -72,7 +74,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Integer> deleteUserAndProfile(@PathVariable("id") Integer id) {
         try{
             userProfileService.deleteUserProfileById(id);

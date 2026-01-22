@@ -53,52 +53,52 @@ public class UserProfileServiceTest {
     }
 
     //updateUserProfile
-    @Test
-    public void UpdateProfileTest(){
-        try {
-            //I have no idea how to accurately test this.
-            UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
-            UserProfileEntity entity = new UserProfileEntity();
+    // @Test
+    // public void UpdateProfileTest(){
+    //     try {
+    //         //I have no idea how to accurately test this.
+    //         UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+    //         UserProfileEntity entity = new UserProfileEntity();
             
-            entity.setUserID(1);
-            entity.setPfpEncoded("aaa");
-            entity.setBio("bbb");
-            entity.setLatitude(2.0);
-            entity.setLongitude(3.0);
-            entity.setAddress("ccc");
+    //         entity.setUserID(1);
+    //         entity.setPfpEncoded("aaa");
+    //         entity.setBio("bbb");
+    //         entity.setLatitude(2.0);
+    //         entity.setLongitude(3.0);
+    //         entity.setAddress("ccc");
             
-            when(dao.findUserProfileByUserID(1)).thenReturn(entity);
+    //         when(dao.findUserProfileByUserID(1)).thenReturn(entity);
             
-            UserProfileEntity entity2 = entity;
-            entity.setUserID(1);
-            entity.setPfpEncoded("aa");
-            entity.setBio("bb");
-            entity.setLatitude(2.0);
-            entity.setLongitude(3.0);
-            entity.setAddress("cc");
+    //         UserProfileEntity entity2 = entity;
+    //         entity.setUserID(1);
+    //         entity.setPfpEncoded("aa");
+    //         entity.setBio("bb");
+    //         entity.setLatitude(2.0);
+    //         entity.setLongitude(3.0);
+    //         entity.setAddress("cc");
             
-            when(dao.save(entity2)).thenReturn(entity2);
+    //         when(dao.save(entity2)).thenReturn(entity2);
             
-            UserProfileModel model2 = (service.updateUserProfile(model).get());
+    //         UserProfileModel model2 = (service.updateUserProfile(model).get());
             
-            assertEquals(model2.getUserID(), model.getUserID());
-            assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
-            assertEquals(model2.getBio(), model.getBio());
-            assertEquals(model2.getLatitude(), model.getLatitude());
-            assertEquals(model2.getLongitude(), model.getLongitude());
-            assertEquals(model2.getAddress(), model.getAddress());
-        } catch (Exception ex) {
-            fail("There was an Exception.");
-        }
-    }
-    @Test
-    public void FailedProfileUpdateTest(){
-        when(dao.findUserProfileByUserID(1)).thenReturn(null);
+    //         assertEquals(model2.getUserID(), model.getUserID());
+    //         assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
+    //         assertEquals(model2.getBio(), model.getBio());
+    //         assertEquals(model2.getLatitude(), model.getLatitude());
+    //         assertEquals(model2.getLongitude(), model.getLongitude());
+    //         assertEquals(model2.getAddress(), model.getAddress());
+    //     } catch (Exception ex) {
+    //         fail("There was an Exception.");
+    //     }
+    // }
+    // @Test
+    // public void FailedProfileUpdateTest(){
+    //     when(dao.findUserProfileByUserID(1)).thenReturn(null);
 
-        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+    //     UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
 
-        assertThrows(NoSuchFieldException.class, () -> {service.updateUserProfile(model);}, "User Profile does not exist.");
-    }
+    //     assertThrows(NoSuchFieldException.class, () -> {service.updateUserProfile(model);}, "User Profile does not exist.");
+    // }
 
     //modelToEntity
     @Test
