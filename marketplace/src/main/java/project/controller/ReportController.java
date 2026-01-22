@@ -1,6 +1,7 @@
 package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import project.Repository.Entities.ReportEntity;
@@ -34,13 +35,15 @@ public class ReportController {
 		//changes status of a report with given id, to new status
 	@PatchMapping("/reports")
 	public void ChangeStatus
-	(@RequestBody ReportStatusBody body)
+	(@RequestBody ReportStatusBody body, Errors error)
 	{
 		//call dao to change status
 		if(! reportService.changeReportStatus(body.getId(), body.getStatus()))
 		{
 			//TODO ERROR HANDLING: if reportService is false do thingss here.
 		}
+
+		System.out.println(error.getAllErrors());
 	}
 
 	//delete report by id

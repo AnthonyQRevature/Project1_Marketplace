@@ -1,5 +1,6 @@
 package project.Repository.dao;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,6 +17,7 @@ public interface ReportDAO extends JpaRepository<ReportEntity, Integer>{
 //	ReportEntity findReportByUsername(String username);
 
 	//change status of the update
+	@Transactional
 	@Modifying
 	@Query("UPDATE ReportEntity r set r.status = ?2 WHERE r.id = ?1")
 	public void ChangeStatus(Integer id, ReportEntity.ReportStatus newStatus);

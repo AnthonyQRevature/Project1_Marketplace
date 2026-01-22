@@ -24,3 +24,18 @@ INSERT INTO post_media(post_id, media_encoded) VALUES
 (1, 'abc'),
 (1, 'def'),
 (2, 'ghi');
+
+INSERT INTO report(reporter_id, reported_id, reason) VALUES
+(1, 2, 'Stinky!')
+
+select * from report
+
+CREATE TABLE IF NOT EXISTS report (
+    id SERIAL PRIMARY KEY,
+    reporter_id INT REFERENCES users(id) ON DELETE CASCADE,
+    reported_id INT REFERENCES users(id) ON DELETE CASCADE,
+    post_id INT REFERENCES post(id) ON DELETE SET NULL,
+    message_id INT REFERENCES messages(id) ON DELETE SET NULL,
+    reason TEXT,
+    status report_status_enum DEFAULT 'open'
+    );
