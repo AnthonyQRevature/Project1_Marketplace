@@ -1,32 +1,55 @@
 package project.service;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
+import project.util.FileEncoder;
 import project.controller.request.ProfileRequest;
 import project.util.exception.DatabaseConflictException;
 
 @Service
 public class UserProfileService{
-    UserProfileDao dao;
-
     @Autowired
-    public UserProfileService(UserProfileDao dao) {
-        this.dao = dao;
+    UserProfileDao dao;
+    @Autowired
+    FileEncoder encoder;
+    Rectangle targetDimensions;
+
+    public UserProfileService()
+    {
+        this.targetDimensions = new Rectangle(32, 32);
     }
 
-    //TODO
-    public UserProfileEntity addMedia(MultipartFile file, Integer user_id)
+    @Transactional
+    public UserProfileEntity addMedia(MultipartFile file, Integer user_id) throws IOException
     {
-        throw new RuntimeException("not yet implemented");
+        String encodedFile;
+        UserProfileEntity entity = dao.findById(user_id).get();
+
+        try (InputStream stream = file.getInputStream())
+        {
+            //removes the alpha channel
+            BufferedImage resized = encoder.cropAndResize(ImageIO.read(stream), targetDimensions);
+            encodedFile = encoder.base64Encode(resized);
+            entity.setPfpEncoded(encodedFile);
+            entity = dao.save(entity);
+            return entity;
+        }
     }
 
     public Optional<UserProfileEntity> getProfileEntityByUser_id(int user_id){

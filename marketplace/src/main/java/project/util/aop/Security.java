@@ -92,7 +92,7 @@ public class Security {
             }
         }
 
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(403).build();
     }
     public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, SecureIndescriminate security)
         throws Throwable
@@ -112,6 +112,6 @@ public class Security {
             }
         }
 
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(403).build();
     }
 }
