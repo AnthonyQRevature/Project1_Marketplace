@@ -1,10 +1,15 @@
 package project.service;
 
+import java.util.Optional;
+
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
+import project.controller.model.UserModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
@@ -100,7 +105,32 @@ public class UserService {
         }
     }
 
-    public void retrieveByID(int id){
+    public Optional<UserEntity> updateUserEmail(UserModel userModel) throws AccountNotFoundException {
+        //check existence
+        if (dao.findUserByUsername(userModel.getUsername()) == null) {
+            //not in db
+            throw new AccountNotFoundException();
+        } else {
+            UserEntity entity = dao.findUserByUsername(userModel.getUsername());
+            entity.setEmail(userModel.getEmail());
+
+            UserEntity result = dao.save(entity);
+            Optional<UserEntity> ret = Optional.ofNullable(result);
+            return ret;
+        }
+    }
+
+    public Optional<UserEntity> retrieveByUsername(String username){
+        return Optional.ofNullable(dao.findUserByUsername(username));
+    }
+
+    public Optional<UserEntity> retrieveByID(int id){
+        return Optional.ofNullable(dao.findUserById(id));
+    }
+
+    public boolean deleteUserById(int id){
+        dao.deleteById(id);
+        return dao.getReferenceById(id) == null;
     }
 
     //achieves constructor injection
