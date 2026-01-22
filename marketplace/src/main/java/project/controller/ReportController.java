@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import project.Repository.Entities.ReportEntity;
 import project.controller.Bodies.ReportPostBody;
 import project.controller.Bodies.ReportStatusBody;
+import project.controller.Bodies.ReportsOfBody;
 import project.service.ReportService;
 import project.util.AllowCORS;
 import java.util.List;
@@ -53,12 +54,13 @@ public class ReportController {
 		}
 	}
 
-	//get all reports from user id
+	//get all reports of user id
 	@GetMapping("/users/{id}/reports")
 	public List<ReportEntity> ReportsOf
-		(@PathVariable Integer id)
+		(@PathVariable Integer id,
+		 @RequestBody() ReportsOfBody body)
 	{
-		return reportService.getReportsOf(id);
+		return reportService.getReportsOf(body.getId());
 	}
 
 	//public void getAllReportsFromUser()
