@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
+import project.Repository.Entities.UserEntity.UserRole;
 import project.Repository.dao.UserDao;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
@@ -64,6 +65,7 @@ public class UserService {
             //this entity will have it's ID field filled in unlike the one that is passed into the function
             entity.setUsername(user.getUsername());
             entity.setEmail(user.getEmail());
+            entity.setRole(UserRole.user); //default value
 
             //assign the password field in the entity
             String hash = hasher.hashPassword(user.getPassword());

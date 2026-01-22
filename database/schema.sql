@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    role user_role_enum DEFAULT 'user',
+    role user_role_enum NOT NULL DEFAULT 'user',
     verified_seller BOOLEAN DEFAULT FALSE
     );
 
