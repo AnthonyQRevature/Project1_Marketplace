@@ -37,7 +37,7 @@ public class UserProfileService{
     public UserProfileEntity addMedia(MultipartFile file, Integer user_id) throws IOException
     {
         String encodedFile;
-        UserProfileEntity entity = dao.findById(user_id).get();
+        UserProfileEntity entity = dao.findUserProfileByUserID(user_id);
 
         try (InputStream stream = file.getInputStream())
         {

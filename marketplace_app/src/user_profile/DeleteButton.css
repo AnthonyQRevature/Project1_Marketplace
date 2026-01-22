@@ -1,0 +1,15 @@
+.delete-grid {
+    display: flex;
+}
+
+.danger {
+    width: 20vw;
+}
+
+.delete, .confirm {
+    background-color: red;
+}
+
+.reset {
+    background-color: lightgray;
+}

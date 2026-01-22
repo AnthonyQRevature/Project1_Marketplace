@@ -5,6 +5,7 @@ import AuthenticationContext, { Authentication, type AuthenticationState } from 
 import AsyncLoader from "../util/AsyncLoader";
 import { EncodedImage } from "../util/EncodedImage";
 import type { Endpoint } from "../util/Endpoint";
+import DeleteButton from "./DeleteButton";
 
 //get user profile endpoint
 function makeEndpoint(id: number) : Endpoint
@@ -82,6 +83,7 @@ function Display(props : {profile : UserProfile})
   {
     return (
       <>
+        <DeleteButton />
         <EncodedImage img={profile.profile.pfp_encoded} />
         {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
         <h1>{profile.username}</h1>
