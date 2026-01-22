@@ -15,7 +15,7 @@ function Homepage()
           <LinkTo path="/listings" label='Listings' />
         </div>
         <div className="card">
-          <p>Content</p>
+          <LinkTo path="/uploads" label="uploads" />
         </div>
         <div className="card">
           <p>Content</p>

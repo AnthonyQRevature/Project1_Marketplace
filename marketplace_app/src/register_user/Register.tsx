@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "./Register.css";
+import { useNavigate, type NavigateFunction } from "react-router";
 
-const register = {endpoint: "http://localhost:8080/login", method: "PUT"};
+const register = {endpoint: "http://localhost:8080/register", method: "POST"};
 
 function Register()
 {
   const [response, setResponse] = useState(null);
-  const formHandler = handleSubmit(setResponse);
+  const formHandler = handleSubmit(setResponse, useNavigate());
 
   return (
     <>
@@ -33,7 +34,7 @@ function Register()
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void)
+function handleSubmit(setResponse : (val : any)=>void, nav : NavigateFunction)
 {
   return async (e : any) => 
   {
@@ -54,7 +55,10 @@ function handleSubmit(setResponse : (val : any)=>void)
     console.log(result);
 
     if (result.ok)
-      setResponse(await result.json());
+    {
+      //setResponse(await result.status);
+      nav("/login")
+    }
     else
       setResponse(`Error: ${result.status}`);
   }
