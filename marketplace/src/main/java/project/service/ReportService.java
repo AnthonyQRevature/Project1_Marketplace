@@ -60,10 +60,9 @@ public class ReportService {
 		newReport.setReported_id(body.getReported_id());
 		newReport.setReason(body.getReason());
 		newReport.setStatus(ReportEntity.ReportStatus.open);
-		if(body.getMessage_id().isPresent())
-			newReport.setMessage_id(body.getMessage_id());
-		if(body.getPost_id().isPresent())
-			newReport.setPost_id(body.getPost_id());
+		newReport.setMessage_id(body.getMessage_id());
+		newReport.setPost_id(body.getPost_id());
+
 
 		return dao.save(newReport);
 	}

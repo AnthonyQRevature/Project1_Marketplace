@@ -31,10 +31,10 @@ public class ReportEntity {
 	private Integer reported_id;
 
 	@Column(name="post_id")
-	private Optional<Integer> post_id;
+	private Integer post_id;
 
 	@Column(name="message_id")
-	private Optional<Integer> message_id;
+	private Integer message_id;
 
 	@Column(name="reason")
 	private String reason;
@@ -46,17 +46,17 @@ public class ReportEntity {
 	@Column(name="status")
 	private ReportStatus status;
 
-    public ReportEntity(Integer report_id, Integer reporter_id, Integer reported_id, Optional<Integer> post_id, Optional<Integer> message_id, String reason, ReportStatus status) {
-        this.report_id = report_id;
-        this.reporter_id = reporter_id;
-        this.reported_id = reported_id;
-        this.post_id = post_id;
-        this.message_id = message_id;
-        this.reason = reason;
-        this.status = status;
-    }
+	public ReportEntity(Integer report_id, Integer reporter_id, Integer reported_id, Integer post_id, Integer message_id, String reason, ReportStatus status) {
+		this.report_id = report_id;
+		this.reporter_id = reporter_id;
+		this.reported_id = reported_id;
+		this.post_id = post_id;
+		this.message_id = message_id;
+		this.reason = reason;
+		this.status = status;
+	}
 
-    public ReportEntity() {}
+	public ReportEntity() {}
 
     public Integer getReport_id() {
         return report_id;
@@ -82,24 +82,16 @@ public class ReportEntity {
     public void setReason(String reason) {
         this.reason = reason;
     }
-    public ReportStatus getStatus() {
-        return status;
-    }
+    public ReportStatus getStatus() {return status;}
     public void setStatus(ReportStatus status) {
         this.status = status;
     }
-    public Optional<Integer> getPost_id() {return post_id;}
-    public void setPost_id(Optional<Integer> post_id) {this.post_id = post_id;}
+	public Integer getPost_id() {return post_id;}
+	public void setPost_id(Integer post_id) {this.post_id = post_id;}
+	public Integer getMessage_id() {return message_id;}
+	public void setMessage_id(Integer message_id) {this.message_id = message_id;}
 
-    public Optional<Integer> getMessage_id() {
-        return message_id;
-    }
-
-    public void setMessage_id(Optional<Integer> message_id) {
-        this.message_id = message_id;
-    }
-
-    @Override
+	@Override
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.report_id);
