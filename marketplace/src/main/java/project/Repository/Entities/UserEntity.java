@@ -53,11 +53,11 @@ public class UserEntity {
         this(o.email, o.passwordHash, o.role, o.id, o.username, o.verifiedSeller);
     }
 
-    public UserEntity(String email, String passwordHash, UserRole role, Integer userId, String username, Boolean verifiedSeller) {
+    public UserEntity(String email, String passwordHash, UserRole role, Integer user_id, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
-        this.id = userId;
+        this.id = user_id;
         this.username = username;
         this.verifiedSeller = verifiedSeller;
     }
@@ -74,8 +74,8 @@ public class UserEntity {
         return id;
     }
 
-    public void setId(Integer userId) {
-        this.id = userId;
+    public void setId(Integer user_id) {
+        this.id = user_id;
     }
 
     public String getUsername() {
@@ -167,7 +167,7 @@ public class UserEntity {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("userEntity{");
-        sb.append("userId=").append(id);
+        sb.append("user_id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", email=").append(email);
         sb.append(", passwordHash=").append(passwordHash);

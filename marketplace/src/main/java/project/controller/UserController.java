@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.UserEntity;
@@ -21,6 +22,7 @@ import project.util.AllowCORS;
 
 @RestController
 @AllowCORS
+@RequestMapping("/users")
 public class UserController {
     UserService userService;
     UserProfileService userProfileService;
@@ -31,8 +33,8 @@ public class UserController {
         this.userProfileService = userProfileService;
     }
 
-    @GetMapping("/users/by-username/{username}")
-    public ResponseEntity<UserResponse> getUserAndProfileByUsername(@PathVariable("username") String username) {
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<?> getUserAndProfileByUsername(@PathVariable("username") String username) {
         try{
             UserEntity entity = userService.retrieveByUsername(username).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
@@ -41,12 +43,12 @@ public class UserController {
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
-            return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            return ResponseEntity.badRequest().body(e);
         }
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserResponse> getUserAndProfileById(@PathVariable("id") int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserAndProfileById(@PathVariable("id") int id) {
         try{
             UserEntity entity = userService.retrieveByID(id).get();
             UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
@@ -55,13 +57,13 @@ public class UserController {
             UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
-            return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            return ResponseEntity.badRequest().body(e);
         }
     }
 
     //Fix this Murphy
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<UserResponse> patchUserAndProfile(@PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchUserAndProfile(@PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
             UserEntity entity = userService.updateUserEmail(id, body).get();
@@ -72,18 +74,18 @@ public class UserController {
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
-            return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            return ResponseEntity.badRequest().body(e);
         }
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Integer> deleteUserAndProfile(@PathVariable("id") Integer id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUserAndProfile(@PathVariable("id") Integer id) {
         try{
             userProfileService.deleteUserProfileById(id);
             userService.deleteUserById(id);
             return ResponseEntity.ok(id);
         } catch (Exception e){
-            return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
+            return ResponseEntity.badRequest().body(e);
         }
     }
 }

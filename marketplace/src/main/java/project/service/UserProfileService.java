@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,11 @@ import project.util.exception.DatabaseConflictException;
 @Service
 public class UserProfileService{
     UserProfileDao dao;
+
+    @Autowired
+    public UserProfileService(UserProfileDao dao) {
+        this.dao = dao;
+    }
 
     //TODO
     public UserProfileEntity addMedia(MultipartFile file, Integer user_id)
@@ -45,9 +51,9 @@ public class UserProfileService{
     }
 
     public UserProfileEntity modelToEntity(UserProfileModel model) {
-        if (uniqueUserID(model.getUserID())){
+        if (uniqueUserID(model.getUser_id())){
             UserProfileEntity entity = new UserProfileEntity();
-            entity.setUserID(model.getUserID());
+            entity.setUserID(model.getUser_id());
             entity.setPfp_encoded(model.getPfp_encoded());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
@@ -55,7 +61,7 @@ public class UserProfileService{
             entity.setAddress(model.getAddress());
             return entity;
         }
-        UserProfileEntity entity = getProfileEntityByUserID(model.getUserID()).get();
+        UserProfileEntity entity = getProfileEntityByUserID(model.getUser_id()).get();
         return entity;
     }
 
@@ -75,7 +81,7 @@ public class UserProfileService{
     }
 
     public boolean deleteUserProfileByModel(UserProfileModel model){
-        return deleteUserProfileByUserID((model.getUserID()));
+        return deleteUserProfileByUserID((model.getUser_id()));
     }
 
     public boolean deleteUserProfileByEntity(UserProfileEntity entity){
@@ -84,7 +90,7 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     public Optional<UserProfileModel> createNewUserProfile(UserProfileModel model) throws DatabaseConflictException{
-        if(uniqueUserID(model.getUserID()) != true){
+        if(uniqueUserID(model.getUser_id()) != true){
             throw new DatabaseConflictException();
         }
         UserProfileEntity result = dao.save(modelToEntity(model));
@@ -95,4 +101,6 @@ public class UserProfileService{
     public boolean uniqueUserID(int userID){
         return dao.findUserProfileByUserID(userID) == null;
     }
+
+    
 }

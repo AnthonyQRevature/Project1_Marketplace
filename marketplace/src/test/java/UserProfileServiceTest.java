@@ -85,7 +85,7 @@ public class UserProfileServiceTest {
             
             UserProfileModel model2 = (service.updateUserProfile(1, profileRequest).get());
             
-            assertEquals(model2.getUserID(), 1);
+            assertEquals(model2.getUser_id(), 1);
             assertEquals(model2.getPfp_encoded(), profileRequest.getPfp_encoded());
             assertEquals(model2.getBio(), profileRequest.getBio());
             assertEquals(model2.getLatitude(), profileRequest.getLatitude());
@@ -111,7 +111,7 @@ public class UserProfileServiceTest {
 
         UserProfileEntity entity = service.modelToEntity(model);
 
-        assertEquals(entity.getUserID(), model.getUserID());
+        assertEquals(entity.getUserID(), model.getUser_id());
         assertEquals(entity.getPfp_encoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
@@ -133,7 +133,7 @@ public class UserProfileServiceTest {
 
         UserProfileModel model = service.entityToModel(entity);
 
-        assertEquals(entity.getUserID(), model.getUserID());
+        assertEquals(entity.getUserID(), model.getUser_id());
         assertEquals(entity.getPfp_encoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
@@ -188,7 +188,7 @@ public class UserProfileServiceTest {
             
             UserProfileModel model2 = (service.createNewUserProfile(model).get());
             
-            assertEquals(model2.getUserID(), model.getUserID());
+            assertEquals(model2.getUser_id(), model.getUser_id());
             assertEquals(model2.getPfp_encoded(), model.getPfp_encoded());
             assertEquals(model2.getBio(), model.getBio());
             assertEquals(model2.getLatitude(), model.getLatitude());

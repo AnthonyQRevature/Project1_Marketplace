@@ -20,10 +20,10 @@ public class UserProfileModel {
     public UserProfileModel(){
     }
 
-    public Integer getUserID() {
+    public Integer getUser_id() {
         return user_id;
     }
-    public void setUserID(Integer user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 

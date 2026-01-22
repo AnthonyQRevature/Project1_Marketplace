@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import project.util.TokenUtil;
 import project.util.Secure;
 import project.util.SecureIndescriminate;
+import project.util.TokenUtil;
 
 @Aspect
 @Component
@@ -79,13 +79,13 @@ public class Security {
         return checkSecure(joinPoint, authHeader, id, security);
     }
     
-    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int userId, Secure security)
+    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int user_id, Secure security)
         throws Throwable
     {
         var token = tokenUtil.asToken(authHeader);
         if (token.isValid())
         {
-            if(!token.isExpired() && token.getId() == userId) 
+            if(!token.isExpired() && token.getId() == user_id) 
             {
                 //if the function throws an exception we dont want to intercept it
                 return (ResponseEntity<?>)joinPoint.proceed();
