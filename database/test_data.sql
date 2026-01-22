@@ -36,7 +36,7 @@ DELETE FROM users;
 
 select * from users;
 UPDATE users
-set role = 'user'
+set role = 'admin'
 where id = 2;
 
 CREATE TABLE IF NOT EXISTS report (

@@ -1,6 +1,7 @@
 package project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,26 +26,27 @@ public class BlocksController {
 
 	@GetMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public void getAllBlocksBy(@RequestHeader("Authorization") String authHeader)
+	public ResponseEntity getAllBlocksBy(@RequestHeader("Authorization") String authHeader)
 	{
-
+		return null;
 	}
 
 	@PutMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public void insertBlock(	@RequestHeader("Authorization") String authHeader,
+	public ResponseEntity insertBlock(	@RequestHeader("Authorization") String authHeader,
 								@RequestBody insertBlockBody body, Errors error)
 	{
-
+		return null;
 	}
 
 	@DeleteMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.USER)
-	public void unBlock(@RequestHeader("Authorization") String authHeader,
-						@PathVariable Integer id,
-						@RequestBody unBlockBody body, Errors error)
+	public ResponseEntity unBlock(@RequestHeader("Authorization") String authHeader,
+								  @PathVariable Integer id,
+								  @RequestBody unBlockBody body, Errors error)
 	{
 		//remove the block
-		blocksService.delete(id, body.getId_blocked());
+		//blocksService.delete(id, body.getId_blocked());
+		return null;
 	}
 }
