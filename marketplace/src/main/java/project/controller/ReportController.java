@@ -10,6 +10,9 @@ import project.controller.Bodies.ReportStatusBody;
 import project.controller.Bodies.ReportsOfBody;
 import project.service.ReportService;
 import project.util.AllowCORS;
+import project.util.SecureIndescriminate;
+import project.util.SecurityLevel;
+
 import java.util.List;
 
 @RestController
@@ -26,7 +29,10 @@ public class ReportController {
 
 	//get all reports
 	@GetMapping("/reports")
-	public List<ReportEntity> getAllReports()
+	@SecureIndescriminate(SecurityLevel.ADMIN)
+	public List<ReportEntity> getAllReports(
+			@RequestHeader("Authorization") String authHeader
+	)
 	{
 		return reportService.getAllReports();
 	}
@@ -34,8 +40,11 @@ public class ReportController {
 	//change report status
 		//changes status of a report with given id, to new status
 	@PatchMapping("/reports")
+	@SecureIndescriminate(SecurityLevel.ADMIN)
 	public void ChangeStatus
-	(@RequestBody ReportStatusBody body, Errors error)
+	(
+			@RequestHeader("Authorization") String authHeader,
+			@RequestBody ReportStatusBody body, Errors error)
 	{
 		//call dao to change status
 		if(! reportService.changeReportStatus(body.getId(), body.getStatus()))
@@ -48,8 +57,11 @@ public class ReportController {
 
 	//delete report by id
 	@DeleteMapping("/reports/{id}")
-	public void DeleteReport
-		(@PathVariable Integer id)
+	@SecureIndescriminate(SecurityLevel.ADMIN)
+	public void DeleteReport(
+			@RequestHeader("Authorization") String authHeader,
+			@PathVariable Integer id
+	)
 	{
 		if(! reportService.Delete(id))
 		{
@@ -59,9 +71,13 @@ public class ReportController {
 
 	//get all reports of user id
 	@GetMapping("/users/{id}/reports")
+	@SecureIndescriminate(SecurityLevel.ADMIN)
 	public List<ReportEntity> ReportsOf
-		(@PathVariable Integer id,
-		 @RequestBody() ReportsOfBody body)
+		(
+				@RequestHeader("Authorization") String authHeader,
+				@PathVariable Integer id,
+				@RequestBody() ReportsOfBody body
+		)
 	{
 		return reportService.getReportsOf(body.getId());
 	}
@@ -71,7 +87,9 @@ public class ReportController {
 
 	//create report from user ID
 	@PostMapping("/users/{id}/reports")
+	@SecureIndescriminate(SecurityLevel.USER)
 	public ReportEntity createNewReport(
+			@RequestHeader("Authorization") String authHeader,
 			@RequestBody() ReportPostBody body,
 			@PathVariable Integer id)
 	{

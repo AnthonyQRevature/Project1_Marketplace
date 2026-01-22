@@ -12,6 +12,8 @@ INSERT INTO users(id, email, password_hash, username) VALUES
 INSERT INTO users(id, email, password_hash, username) VALUES
 (3, 'dougs@email', 'test', 'doog');
 
+select * from users;
+
 INSERT INTO user_profile(user_id, latitude, longitude) VALUES
 (1, 123, 122),
 (2, 102, 221);
@@ -28,7 +30,14 @@ INSERT INTO post_media(post_id, media_encoded) VALUES
 INSERT INTO report(reporter_id, reported_id, reason) VALUES
 (1, 2, 'Stinky!')
 
-select * from report
+select * from report;
+
+DELETE FROM users;
+
+select * from users;
+UPDATE users
+set role = 'user'
+where id = 2;
 
 CREATE TABLE IF NOT EXISTS report (
     id SERIAL PRIMARY KEY,
