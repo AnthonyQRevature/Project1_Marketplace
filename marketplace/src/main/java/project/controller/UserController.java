@@ -37,7 +37,7 @@ public class UserController {
     public ResponseEntity<?> getUserAndProfileByUsername(@PathVariable("username") String username) {
         try{
             UserEntity entity = userService.retrieveByUsername(username).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
+            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUser_id(entity.getId()).get();
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<?> getUserAndProfileById(@PathVariable("id") int id) {
         try{
             UserEntity entity = userService.retrieveByID(id).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
+            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUser_id(id).get();
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
             UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());

@@ -46,8 +46,8 @@ public class UserProfileEntity {
 
 	public Integer getId() {return id;}
 	public void setId(Integer id) {this.id = id;}
-	public Integer getUserID() {return user_id;}
-	public void setUserID(Integer user_id) {this.user_id = user_id;}
+	public Integer getUser_id() {return user_id;}
+	public void setUser_id(Integer user_id) {this.user_id = user_id;}
 	public String getPfp_encoded() {return pfp_encoded;}
 	public void setPfp_encoded(String pfp_encoded) {this.pfp_encoded = pfp_encoded;}
 	public String getBio() {return bio;}

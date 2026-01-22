@@ -29,18 +29,18 @@ public class UserProfileService{
         throw new RuntimeException("not yet implemented");
     }
 
-    public Optional<UserProfileEntity> getProfileEntityByUserID(int userID){
-        Optional<UserProfileEntity> ret = Optional.ofNullable(dao.findUserProfileByUserID(userID));
+    public Optional<UserProfileEntity> getProfileEntityByUser_id(int user_id){
+        Optional<UserProfileEntity> ret = Optional.ofNullable(dao.findUserProfileByUser_id(user_id));
         return ret;
     }
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
     public Optional<UserProfileModel> updateUserProfile(Integer id, ProfileRequest profileRequest) throws AccountNotFoundException{
-        if (uniqueUserID(id)){
+        if (uniqueUser_id(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
         }
-        UserProfileEntity entity = getProfileEntityByUserID(id).get();
+        UserProfileEntity entity = getProfileEntityByUser_id(id).get();
         entity.setPfp_encoded(profileRequest.getPfp_encoded());
         entity.setBio(profileRequest.getBio());
         entity.setLatitude(profileRequest.getLatitude());
@@ -51,9 +51,9 @@ public class UserProfileService{
     }
 
     public UserProfileEntity modelToEntity(UserProfileModel model) {
-        if (uniqueUserID(model.getUser_id())){
+        if (uniqueUser_id(model.getUser_id())){
             UserProfileEntity entity = new UserProfileEntity();
-            entity.setUserID(model.getUser_id());
+            entity.setUser_id(model.getUser_id());
             entity.setPfp_encoded(model.getPfp_encoded());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
@@ -61,12 +61,12 @@ public class UserProfileService{
             entity.setAddress(model.getAddress());
             return entity;
         }
-        UserProfileEntity entity = getProfileEntityByUserID(model.getUser_id()).get();
+        UserProfileEntity entity = getProfileEntityByUser_id(model.getUser_id()).get();
         return entity;
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUser_id(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 
@@ -75,13 +75,13 @@ public class UserProfileService{
         return dao.getReferenceById(id) == null;
     }
 
-    public boolean deleteUserProfileByUserID(int userID){
-        dao.deleteByUserID(userID);
-        return dao.findUserProfileByUserID(userID) == null;
+    public boolean deleteUserProfileByUser_id(int user_id){
+        dao.deleteByUser_id(user_id);
+        return dao.findUserProfileByUser_id(user_id) == null;
     }
 
     public boolean deleteUserProfileByModel(UserProfileModel model){
-        return deleteUserProfileByUserID((model.getUser_id()));
+        return deleteUserProfileByUser_id((model.getUser_id()));
     }
 
     public boolean deleteUserProfileByEntity(UserProfileEntity entity){
@@ -90,7 +90,7 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     public Optional<UserProfileModel> createNewUserProfile(UserProfileModel model) throws DatabaseConflictException{
-        if(uniqueUserID(model.getUser_id()) != true){
+        if(uniqueUser_id(model.getUser_id()) != true){
             throw new DatabaseConflictException();
         }
         UserProfileEntity result = dao.save(modelToEntity(model));
@@ -98,8 +98,8 @@ public class UserProfileService{
         return ret;
     }
 
-    public boolean uniqueUserID(int userID){
-        return dao.findUserProfileByUserID(userID) == null;
+    public boolean uniqueUser_id(int user_id){
+        return dao.findUserProfileByUser_id(user_id) == null;
     }
 
     

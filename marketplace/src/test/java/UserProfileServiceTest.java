@@ -37,21 +37,21 @@ public class UserProfileServiceTest {
         Mockito.reset(dao);
     }
 
-    //getProfileModelByUserID
+    //getProfileModelByUser_id
     @Test
     public void getModelByIDTest(){
         UserProfileEntity entity = new UserProfileEntity();
 
-        entity.setUserID(1);
+        entity.setUser_id(1);
 		entity.setPfp_encoded("aaa");
 		entity.setBio("bbb");
 		entity.setLatitude(2.0);
 		entity.setLongitude(3.0);
 		entity.setAddress("ccc");
 
-        when(dao.findUserProfileByUserID(1)).thenReturn(entity);
+        when(dao.findUserProfileByUser_id(1)).thenReturn(entity);
 
-        UserProfileEntity entity2 = (service.getProfileEntityByUserID(1).get());
+        UserProfileEntity entity2 = (service.getProfileEntityByUser_id(1).get());
 
         assertEquals(entity, entity2);
     }
@@ -64,17 +64,17 @@ public class UserProfileServiceTest {
             ProfileRequest profileRequest = new ProfileRequest("bb", 2.0, 3.0, "aa");
             UserProfileEntity entity = new UserProfileEntity();
             
-            entity.setUserID(1);
+            entity.setUser_id(1);
             entity.setPfp_encoded("aaa");
             entity.setBio("bbb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
             entity.setAddress("ccc");
             
-            when(dao.findUserProfileByUserID(1)).thenReturn(entity);
+            when(dao.findUserProfileByUser_id(1)).thenReturn(entity);
             
             UserProfileEntity entity2 = entity;
-            entity.setUserID(1);
+            entity.setUser_id(1);
             entity.setPfp_encoded("aa");
             entity.setBio("bb");
             entity.setLatitude(2.0);
@@ -97,7 +97,7 @@ public class UserProfileServiceTest {
     }
     @Test
     public void FailedProfileUpdateTest(){
-        when(dao.findUserProfileByUserID(1)).thenReturn(null);
+        when(dao.findUserProfileByUser_id(1)).thenReturn(null);
         
         ProfileRequest profileRequest = new ProfileRequest("bb", 2.0, 3.0, "aa");
 
@@ -111,7 +111,7 @@ public class UserProfileServiceTest {
 
         UserProfileEntity entity = service.modelToEntity(model);
 
-        assertEquals(entity.getUserID(), model.getUser_id());
+        assertEquals(entity.getUser_id(), model.getUser_id());
         assertEquals(entity.getPfp_encoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
@@ -124,7 +124,7 @@ public class UserProfileServiceTest {
     public void ModelConversionTest(){
         UserProfileEntity entity = new UserProfileEntity();
 
-        entity.setUserID(1);
+        entity.setUser_id(1);
 		entity.setPfp_encoded("aaa");
 		entity.setBio("bbb");
 		entity.setLatitude(2.0);
@@ -133,7 +133,7 @@ public class UserProfileServiceTest {
 
         UserProfileModel model = service.entityToModel(entity);
 
-        assertEquals(entity.getUserID(), model.getUser_id());
+        assertEquals(entity.getUser_id(), model.getUser_id());
         assertEquals(entity.getPfp_encoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
@@ -154,17 +154,17 @@ public class UserProfileServiceTest {
         assertFalse(service.deleteUserProfileById(1));
     }
 
-    //deleteUserProfileByUserID
+    //deleteUserProfileByUser_id
     @Test
-    public void DeleteByUserID(){
+    public void DeleteByUser_id(){
         when(dao.getReferenceById(1)).thenReturn(null);
-        assertTrue(service.deleteUserProfileByUserID(1));
+        assertTrue(service.deleteUserProfileByUser_id(1));
     }
     @Test
-    public void DeleteByUserIDFailure(){
+    public void DeleteByUser_idFailure(){
         UserProfileEntity result = new UserProfileEntity();
-        when(dao.findUserProfileByUserID(1)).thenReturn(result);
-        assertFalse(service.deleteUserProfileByUserID(1));
+        when(dao.findUserProfileByUser_id(1)).thenReturn(result);
+        assertFalse(service.deleteUserProfileByUser_id(1));
     }
 
     //createNewUserProfile
@@ -175,14 +175,14 @@ public class UserProfileServiceTest {
             UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
             UserProfileEntity entity = new UserProfileEntity();
             
-            entity.setUserID(1);
+            entity.setUser_id(1);
             entity.setPfp_encoded("aa");
             entity.setBio("bb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
             entity.setAddress("cc");
             
-            when(dao.findUserProfileByUserID(1)).thenReturn(null);
+            when(dao.findUserProfileByUser_id(1)).thenReturn(null);
             
             when(dao.save(entity)).thenReturn(entity);
             
@@ -201,24 +201,24 @@ public class UserProfileServiceTest {
     @Test
     public void FailedProfileCreationTest(){
         UserProfileEntity entity = new UserProfileEntity();
-        when(dao.findUserProfileByUserID(1)).thenReturn(entity);
+        when(dao.findUserProfileByUser_id(1)).thenReturn(entity);
 
         UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
 
         assertThrows(DatabaseConflictException.class, () -> {service.createNewUserProfile(model);}, "User Profile already exists.");
     }
 
-    //uniqueUserID
+    //uniqueUser_id
     @Test
     public void UniqueIDTest(){
-        when(dao.findUserProfileByUserID(1)).thenReturn(null);
-        assertTrue(service.uniqueUserID(1));
+        when(dao.findUserProfileByUser_id(1)).thenReturn(null);
+        assertTrue(service.uniqueUser_id(1));
     }
     @Test
     public void ExistingIDTest(){
         UserProfileEntity result = new UserProfileEntity();
-        when(dao.findUserProfileByUserID(1)).thenReturn(result);
-        assertFalse(service.uniqueUserID(1));
+        when(dao.findUserProfileByUser_id(1)).thenReturn(result);
+        assertFalse(service.uniqueUser_id(1));
     }
 
     //TODO: add in the missing methods
