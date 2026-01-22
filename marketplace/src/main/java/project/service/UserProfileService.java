@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,8 +17,8 @@ import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
-import project.util.FileEncoder;
 import project.controller.request.ProfileRequest;
+import project.util.FileEncoder;
 import project.util.exception.DatabaseConflictException;
 
 @Service
@@ -52,8 +51,8 @@ public class UserProfileService{
         }
     }
 
-    public Optional<UserProfileEntity> getProfileEntityByUser_id(int user_id){
-        Optional<UserProfileEntity> ret = Optional.ofNullable(dao.findUserProfileByUser_id(user_id));
+    public Optional<UserProfileEntity> getProfileEntityByUserID(int user_id){
+        Optional<UserProfileEntity> ret = Optional.ofNullable(dao.findUserProfileByUserID(user_id));
         return ret;
     }
 
@@ -63,8 +62,8 @@ public class UserProfileService{
         if (uniqueUser_id(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
         }
-        UserProfileEntity entity = getProfileEntityByUser_id(id).get();
-        entity.setPfp_encoded(profileRequest.getPfp_encoded());
+        UserProfileEntity entity = getProfileEntityByUserID(id).get();
+        entity.setPfpEncoded(profileRequest.getPfp_encoded());
         entity.setBio(profileRequest.getBio());
         entity.setLatitude(profileRequest.getLatitude());
         entity.setLongitude(profileRequest.getLongitude());
@@ -76,20 +75,20 @@ public class UserProfileService{
     public UserProfileEntity modelToEntity(UserProfileModel model) {
         if (uniqueUser_id(model.getUser_id())){
             UserProfileEntity entity = new UserProfileEntity();
-            entity.setUser_id(model.getUser_id());
-            entity.setPfp_encoded(model.getPfp_encoded());
+            entity.setUserID(model.getUser_id());
+            entity.setPfpEncoded(model.getPfp_encoded());
             entity.setBio(model.getBio());
             entity.setLatitude(model.getLatitude());
             entity.setLongitude(model.getLongitude());
             entity.setAddress(model.getAddress());
             return entity;
         }
-        UserProfileEntity entity = getProfileEntityByUser_id(model.getUser_id()).get();
+        UserProfileEntity entity = getProfileEntityByUserID(model.getUser_id()).get();
         return entity;
     }
 
     public UserProfileModel entityToModel(UserProfileEntity entity){
-        UserProfileModel ret = new UserProfileModel(entity.getUser_id(), entity.getPfp_encoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
+        UserProfileModel ret = new UserProfileModel(entity.getUserID(), entity.getPfpEncoded(), entity.getBio(), entity.getLatitude(), entity.getLongitude(), entity.getAddress());
         return ret;
     }
 
@@ -98,13 +97,13 @@ public class UserProfileService{
         return dao.getReferenceById(id) == null;
     }
 
-    public boolean deleteUserProfileByUser_id(int user_id){
-        dao.deleteByUser_id(user_id);
-        return dao.findUserProfileByUser_id(user_id) == null;
+    public boolean deleteUserProfileByUserID(int user_id){
+        dao.deleteByUserID(user_id);
+        return dao.findUserProfileByUserID(user_id) == null;
     }
 
     public boolean deleteUserProfileByModel(UserProfileModel model){
-        return deleteUserProfileByUser_id((model.getUser_id()));
+        return deleteUserProfileByUserID((model.getUser_id()));
     }
 
     public boolean deleteUserProfileByEntity(UserProfileEntity entity){
@@ -122,7 +121,7 @@ public class UserProfileService{
     }
 
     public boolean uniqueUser_id(int user_id){
-        return dao.findUserProfileByUser_id(user_id) == null;
+        return dao.findUserProfileByUserID(user_id) == null;
     }
 
     

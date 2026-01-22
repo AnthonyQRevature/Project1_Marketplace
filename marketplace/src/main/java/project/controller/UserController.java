@@ -37,9 +37,9 @@ public class UserController {
     public ResponseEntity<?> getUserAndProfileByUsername(@PathVariable("username") String username) {
         try{
             UserEntity entity = userService.retrieveByUsername(username).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUser_id(entity.getId()).get();
+            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -51,9 +51,9 @@ public class UserController {
     public ResponseEntity<?> getUserAndProfileById(@PathVariable("id") int id) {
         try{
             UserEntity entity = userService.retrieveByID(id).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUser_id(id).get();
+            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
@@ -70,7 +70,7 @@ public class UserController {
             ProfileRequest profileRequest = body.getProfileRequest();
             UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(id, profileRequest).get());
 
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfp_encoded());
+            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
         } catch (Exception e){
