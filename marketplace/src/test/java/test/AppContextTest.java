@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import project.Repository.dao.PostDao;
-import project.util.SecurityLevel;
-import project.util.SecureIndescriminate;
 
 @Component
 public class AppContextTest implements CommandLineRunner {
@@ -18,7 +16,7 @@ public class AppContextTest implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        getAll();
+        //getAll();
     }
 
     public void getAll()

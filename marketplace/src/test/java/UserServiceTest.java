@@ -10,26 +10,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
-import project.controller.model.LoginModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
 import project.service.UserService;
-import project.util.DatabaseConflictException;
-import project.util.DateUtil;
 import project.util.Hasher;
 import project.util.TokenUtil;
+import project.util.exception.DatabaseConflictException;
 
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock UserDao dao;
-    @Mock DateUtil dateUtil;
     @Mock Hasher hasher;
     @Mock TokenUtil tokenUtil;
     @InjectMocks UserService userService;

@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
+import AuthenticationContext, { type Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 
 function Register()
 {
   const [response, setResponse] = useState(null);
+  const [auth, setAuth] = useContext<AuthenticationState>(AuthenticationContext);
   const navigate = useNavigate();
-  const formHandler = handleSubmit(setResponse, navigate);
+  const formHandler = handleSubmit((val) => {
+    setResponse(val);
+    let auth = val as Authentication;
+    setAuth(auth);
+  }, navigate);
 
   return (
     <>
-      <form onSubmit={formHandler}>
+      <form action={formHandler}>
         <div>
           <label htmlFor="username">Username: </label>
           <input type="text" name="username" id="username" required />
@@ -28,20 +34,17 @@ function Register()
       </form>
 
       <p>output: {JSON.stringify(response)}</p>
+      <p>current authentication: {JSON.stringify(auth)}</p>
     </>
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
+function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunction)
 {
-  return async (e : any) => 
+  return async (e : FormData) => 
   {
-    e.preventDefault();
-
     // Read the form data
-    const form = e.target;
-    const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
+    const formJson = Object.fromEntries(e.entries());
     try
     {
       const result = await fetch(login.endpoint, 
@@ -56,9 +59,9 @@ function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFuncti
 
       if (result.ok)
       {
-        setResponse(await result.json());
+        const response = await result.json();
+        setResponse(response);
 
-        
         /*
          * navigate back to homepage once we recieve the response
          */

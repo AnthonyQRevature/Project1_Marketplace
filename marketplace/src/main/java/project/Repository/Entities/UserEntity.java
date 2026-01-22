@@ -1,6 +1,5 @@
 package project.Repository.Entities;
 
-import java.sql.Date;
 import java.util.Objects;
 
 import org.hibernate.annotations.JdbcType;
@@ -63,7 +62,7 @@ public class UserEntity {
         this.verifiedSeller = verifiedSeller;
     }
 
-    public UserEntity(Date createdAt, String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
+    public UserEntity(String email, String passwordHash, UserRole role, String username, Boolean verifiedSeller) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
