@@ -1,0 +1,17 @@
+.nav_bar {
+    background-color: blue;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+        "a b c";
+}
+
+.title {
+    justify-self: center;
+    align-self: center;
+    font-size: medium;
+}
+
+.profile {
+    justify-self: right;
+}

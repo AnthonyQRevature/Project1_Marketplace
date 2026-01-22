@@ -19,8 +19,8 @@ INSERT INTO user_profile(user_id, latitude, longitude) VALUES
 (2, 102, 221);
 
 INSERT INTO post(id, seller_id, description, price, status) VALUES
-(1, 3, 'A big shirt', 50.00, 'available'),
-(2, 3, 'my diamond sword', 990.00, 'available');
+(1, 2, 'A big shirt', 50.00, 'available'),
+(2, 2, 'my diamond sword', 990.00, 'available');
 
 INSERT INTO post_media(post_id, media_encoded) VALUES
 (1, 'abc'),
