@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.ReportEntity;
 import project.controller.Bodies.ReportPostBody;
 import project.controller.Bodies.ReportStatusBody;
@@ -16,14 +17,19 @@ import project.util.SecurityLevel;
 
 import java.util.List;
 
+import project.util.TokenUtil;
+import project.util.exception.InvalidRequestException;
+
 @RestController
 @AllowCORS
 public class ReportController {
 	private ReportService reportService;
+	private TokenUtil tokenUtil;
 
 	@Autowired
-	public ReportController(ReportService reportService) {
+	public ReportController(ReportService reportService, TokenUtil tokenUtil) {
 		this.reportService = reportService;
+		this.tokenUtil = tokenUtil;
 	}
 
 	//figure out user type (admin/normal)
@@ -80,26 +86,36 @@ public class ReportController {
 	public ResponseEntity<List<ReportEntity>> ReportsOf
 		(
 				@RequestHeader("Authorization") String authHeader,
-				@PathVariable Integer id,
-				@RequestBody() ReportsOfBody body
+				@PathVariable Integer id
 		)
 	{
-		return ResponseEntity.ok(reportService.getReportsOf(body.getId()));
+		return ResponseEntity.ok(reportService.getReportsOf(id));
 	}
 
 	//public void getAllReportsFromUser()
 	//{}
 
 	//create report from user ID
+	//since theres so much redundant information we have to verify it
 	@PostMapping("/users/{id}/reports")
 	@SecureIndescriminate(SecurityLevel.USER)
+	@Transactional
 	public ResponseEntity<ReportEntity> createNewReport(
 			@RequestHeader("Authorization") String authHeader,
-			@RequestBody() ReportPostBody body,
+			@RequestBody ReportPostBody body,
 			@PathVariable Integer id)
 	{
-		return ResponseEntity.ok(reportService.createReport(body));
+		try
+		{
+			var token = tokenUtil.asToken(authHeader);
+
+			if (body.getReporter_id() != token.getId()) throw new InvalidRequestException();
+			if (body.getReported_id() != id) throw new InvalidRequestException();
+			return ResponseEntity.ok(reportService.createReport(body));
+		}
+		catch (InvalidRequestException e)
+		{
+			return ResponseEntity.status(400).build();
+		}
 	}
-
-
 }

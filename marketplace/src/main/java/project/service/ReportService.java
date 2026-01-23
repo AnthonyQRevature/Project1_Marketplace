@@ -52,6 +52,7 @@ public class ReportService {
 
 	public List<ReportEntity> getReportsOf(Integer id) {return dao.getReportsOf(id);}
 
+	//TODO check that the post/message matches the reported_id
 	public ReportEntity createReport(ReportPostBody body)
 	{
 		ReportEntity newReport = new ReportEntity();
