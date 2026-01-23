@@ -7,9 +7,11 @@ import javax.security.auth.login.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
+import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
-import project.controller.model.UserModel;
+import project.Repository.dao.UserProfileDao;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
@@ -27,6 +29,7 @@ import project.util.exception.InvalidCredentialsException;
 public class UserService {
 
     UserDao dao;
+    UserProfileDao profileDao;
     Hasher hasher;
     DateUtil dateUtil;
     TokenUtil tokenUtil;
@@ -42,6 +45,7 @@ public class UserService {
     /**
      * 
      */
+    @Transactional
     public RegisterRequest registerNewUser(RegisterRequest user) throws 
         InvalidCredentialsException,
         DatabaseConflictException
@@ -76,6 +80,11 @@ public class UserService {
             entity.setPasswordHash(hash);
 
             UserEntity result = dao.save(entity);
+            
+            //create a corresponding profile
+            UserProfileEntity profileEntity = new UserProfileEntity();
+            profileEntity.setUserID(result.getId());
+            profileDao.save(profileEntity);
 
             //conversion from entity to model
             RegisterRequest ret = new RegisterRequest(result.getEmail(), null, result.getUsername());
@@ -133,9 +142,10 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
+    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
     {
         this.dao = dao;
+        this.profileDao = profileDao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
         this.tokenUtil = tokenUtil;
