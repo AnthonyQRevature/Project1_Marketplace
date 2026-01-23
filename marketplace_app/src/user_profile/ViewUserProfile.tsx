@@ -17,8 +17,6 @@ function pfp_endpoint(id: number) : Endpoint
   return {endpoint: `http://localhost:8080/users/${id}/media`, method: "POST"};
 }
 
-
-type state<T> = [T, (x : T) => void];
 type UserProfile = {
   id : number,
   username : string,

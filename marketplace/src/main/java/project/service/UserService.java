@@ -94,6 +94,11 @@ public class UserService {
     public LoginResponse attemptLogin(LoginRequest request) /* throws AuthenticationException */ {
         UserEntity logAttempt = dao.findUserByUsername(request.getUsername());
 
+        if (logAttempt == null)
+        {
+            return null;
+        }
+
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), request.getPassword())){
             String token = tokenUtil.makeToken(logAttempt.getUsername(), logAttempt.getId());
             LoginResponse response = new LoginResponse(logAttempt.getId(), logAttempt.getUsername(), token);
