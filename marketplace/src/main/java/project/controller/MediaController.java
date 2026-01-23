@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import project.service.PostMediaService;
 import project.service.UserProfileService;
+import project.util.*;
+import project.util.exception.FileNotFoundException;
 import project.util.AllowCORS;
 import project.util.Secure;
 import project.util.exception.InvalidRequestException;
@@ -83,7 +85,7 @@ public class MediaController {
     //wrong
     @PostMapping("/users/{user_id}/listings/{post_id}/media")
     @AllowCORS
-    @Secure
+    @SecureIndescriminate(SecurityLevel.ADMIN)
     public ResponseEntity<String> postImageUpload(
         @RequestHeader("Authorization") String authHeader, 
         @PathVariable("user_id") int user_id, 

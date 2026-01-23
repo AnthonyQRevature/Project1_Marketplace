@@ -1,5 +1,4 @@
 CREATE TYPE user_role_enum AS ENUM ('user', 'admin', 'super');
-
 CREATE TYPE notification_type_enum AS ENUM (
     'message_received',
     'system',
@@ -27,6 +26,25 @@ CREATE TABLE IF NOT EXISTS users (
     role user_role_enum NOT NULL DEFAULT 'user',
     verified_seller BOOLEAN DEFAULT FALSE
     );
+
+drop table user_profile;
+drop table user_demerits;
+drop table block;
+drop table notifications;
+drop table post_media;
+drop table post_tags;
+drop table tags;
+drop table report;
+drop table review;
+drop table messages;
+drop table post;
+drop table users;
+drop type media_type_enum;
+drop type demerit_action_enum;
+drop type post_status_enum;
+drop type user_role_enum;
+drop type notification_type_enum;
+drop type report_status_enum;
 
 
 CREATE TABLE IF NOT EXISTS user_profile (
@@ -106,7 +124,7 @@ CREATE TABLE IF NOT EXISTS report (
     reported_id INT REFERENCES users(id) ON DELETE CASCADE,
     post_id INT REFERENCES post(id) ON DELETE SET NULL,
     message_id INT REFERENCES messages(id) ON DELETE SET NULL,
-    reason TEXT NOT NULL,
+    reason TEXT,
     status report_status_enum DEFAULT 'open'
     );
 
