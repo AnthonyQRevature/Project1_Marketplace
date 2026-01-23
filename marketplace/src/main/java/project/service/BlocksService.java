@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.Repository.Entities.BlockEntity;
 import project.Repository.dao.BlocksDAO;
-import project.Repository.dao.ReportDAO;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class BlocksService
 		dao.delete(blockEntity);
 	}
 
-	public void insert(Integer blocker_id, Integer blocked_id)
+	public void insertBlock(Integer blocker_id, Integer blocked_id)
 	{
 		BlockEntity blockEntity = new BlockEntity();
 		blockEntity.setBlocker(blocker_id);
@@ -36,7 +35,7 @@ public class BlocksService
 		dao.save(blockEntity);
 	}
 
-	public List<BlockEntity> getAllFrom(Integer blocker_id)
+	public List<BlockEntity> getAllBy(Integer blocker_id)
 	{
 		return dao.findBlocksByUser(blocker_id);
 	}

@@ -36,7 +36,8 @@ DELETE FROM users;
 
 select * from users;
 UPDATE users
-set role = 'admin'
+set role = 'admin',
+verified_seller = FALSE
 where id = 2;
 
 CREATE TABLE IF NOT EXISTS report (
@@ -48,3 +49,9 @@ CREATE TABLE IF NOT EXISTS report (
     reason TEXT,
     status report_status_enum DEFAULT 'open'
     );
+
+INSERT INTO users(id, email, password_hash, username) VALUES
+(4, 'joes@email', 'test', 'BigJoe'),
+(5, 'janes@email', 'test', 'FancyJane');
+
+SELECT * from block;

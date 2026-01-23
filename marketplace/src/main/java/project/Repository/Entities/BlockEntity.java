@@ -1,60 +1,24 @@
 package project.Repository.Entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import project.Repository.Entities.CompositeID.BlockId;
+
 
 @Entity
 @Table(name="block")
-@IdClass(BlockEntity.BlockId.class) //composite key
+@IdClass(BlockId.class) //composite key
 public class BlockEntity {
-
 	/*
 	 * The specified primary key type must:
 	 * be a non-abstract regular Java class, or a Java record type,
 	 * have a public or protected constructor with no parameters, unless it is a record type, and
 	 * implement equals and hashCode, defining value equality consistently with equality of the mapped primary key of the database table.
 	 */
-	public static class BlockId implements Serializable
-	{
-		private int blocker_id;
-		private int blocked_id;
 
-		public BlockId(int blocked, int blocker) {
-			this.blocked_id = blocked;
-			this.blocker_id = blocker;
-		}
-
-		@Override
-		public int hashCode() {
-			int hash = 5;
-			hash = 53 * hash + this.blocker_id;
-			hash = 53 * hash + this.blocked_id;
-			return hash;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			final BlockId other = (BlockId) obj;
-			if (this.blocker_id != other.blocker_id) {
-				return false;
-			}
-			return this.blocked_id == other.blocked_id;
-		}
-	}
+//	private BlockId id;
 
 	@Id
 	@Column(name="blocker_id")
@@ -67,18 +31,21 @@ public class BlockEntity {
 	public void setBlocker(int blocker) {this.blocker_id = blocker;}
 	public int getBlocked() {return blocked_id;}
 	public void setBlocked(int blocked) {this.blocked_id = blocked;}
-
+//	public BlockId getId() {return id;}
+//	public void setId(BlockId id) {this.id = id;}
 
 	public BlockEntity() {}
 
 	public BlockEntity(BlockEntity blockEntity) {
+//		this.id = blockEntity.id;
 		this.blocker_id = blockEntity.blocker_id;
 		this.blocked_id = blockEntity.blocked_id;
 	}
 
-	public BlockEntity(int blocker, int blocked) {
-		this.blocker_id = blocker;
-		this.blocked_id = blocked;
+	public BlockEntity(/*BlockId id,*/ int blocker_id, int blocked_id) {
+//		this.id = id;
+		this.blocker_id = blocker_id;
+		this.blocked_id = blocked_id;
 	}
 
 	@Override

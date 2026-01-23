@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import project.controller.Bodies.BlockedBy;
 import project.service.BlocksService;
 import project.util.AllowCORS;
 import project.util.SecureIndescriminate;
 import project.util.SecurityLevel;
-import project.controller.Bodies.unBlockBody;
-import project.controller.Bodies.insertBlockBody;
+import project.controller.Bodies.BlockBody;
 
 import java.util.List;
 
@@ -26,27 +26,28 @@ public class BlocksController {
 
 	@GetMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public ResponseEntity getAllBlocksBy(@RequestHeader("Authorization") String authHeader)
+	public ResponseEntity getAllBlocksBy(
+			@RequestHeader("Authorization") String authHeader,
+			@RequestBody BlockedBy blockedBy)
 	{
-		return null;
+		return ResponseEntity.ok(blocksService.getAllBy(blockedBy.getId_blocker()));
 	}
 
-	@PutMapping("/users/{id}/blocks")
+	@PostMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
 	public ResponseEntity insertBlock(	@RequestHeader("Authorization") String authHeader,
-								@RequestBody insertBlockBody body, Errors error)
+								@RequestBody BlockBody body)
 	{
-		return null;
+		blocksService.insertBlock(body.getId_blocker(), body.getId_blocked());
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/users/{id}/blocks")
 	@SecureIndescriminate(SecurityLevel.USER)
 	public ResponseEntity unBlock(@RequestHeader("Authorization") String authHeader,
-								  @PathVariable Integer id,
-								  @RequestBody unBlockBody body, Errors error)
+								  @RequestBody BlockBody body, Errors error)
 	{
-		//remove the block
-		//blocksService.delete(id, body.getId_blocked());
-		return null;
+		blocksService.delete(body.getId_blocker(), body.getId_blocked());
+		return ResponseEntity.ok().build();
 	}
 }
