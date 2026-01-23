@@ -1,16 +1,20 @@
-package project.controller.response;
+package project.controller.request;
 
-public class ProfileResponse {
+public class ProfileRequest {
+    // TODO: add address?
     String pfp_encoded;
     String bio;
     Double latitude;
     Double longitude;
+    Double distance;
 
-    public ProfileResponse(String bio, Double latitude, Double longitude, String pfp_encoded) {
+    public ProfileRequest(String bio, Double latitude, Double longitude, String pfp_encoded) {
         this.bio = bio;
         this.latitude = latitude;
         this.longitude = longitude;
         this.pfp_encoded = pfp_encoded;
+        // TODO: Set this up
+        this.distance = 0.0;
     }
 
     public String getPfp_encoded() {
@@ -39,5 +43,12 @@ public class ProfileResponse {
     }
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

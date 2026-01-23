@@ -85,13 +85,13 @@ public class Security {
         return checkSecure(joinPoint, authHeader, id, security);
     }
     
-    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int userId, Secure security)
+    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int user_id, Secure security)
         throws Throwable
     {
         var token = tokenUtil.asToken(authHeader);
         if (token.isValid())
         {
-            if(!token.isExpired() && token.getId() == userId) 
+            if(!token.isExpired() && token.getId() == user_id) 
             {
                 //verify user type
                 int id = token.getId();

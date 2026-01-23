@@ -1,3 +1,4 @@
+import javax.security.auth.login.AccountNotFoundException;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,8 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
+import project.controller.request.ProfileRequest;
 import project.service.UserProfileService;
 import project.util.Hasher;
+import project.util.exception.DatabaseConflictException;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +37,7 @@ public class UserProfileServiceTest {
         Mockito.reset(dao);
     }
 
-    //getProfileModelByUserID
+    //getProfileModelByUser_id
     @Test
     public void getModelByIDTest(){
         UserProfileEntity entity = new UserProfileEntity();
@@ -58,7 +61,7 @@ public class UserProfileServiceTest {
     public void UpdateProfileTest(){
         try {
             //I have no idea how to accurately test this.
-            UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+            ProfileRequest profileRequest = new ProfileRequest("bb", 2.0, 3.0, "aa");
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
@@ -76,18 +79,18 @@ public class UserProfileServiceTest {
             entity.setBio("bb");
             entity.setLatitude(2.0);
             entity.setLongitude(3.0);
-            entity.setAddress("cc");
+            entity.setAddress("ccc");
             
             when(dao.save(entity2)).thenReturn(entity2);
             
-            UserProfileModel model2 = (service.updateUserProfile(model).get());
+            UserProfileModel model2 = (service.updateUserProfile(1, profileRequest).get());
             
-            assertEquals(model2.getUserID(), model.getUserID());
-            assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
-            assertEquals(model2.getBio(), model.getBio());
-            assertEquals(model2.getLatitude(), model.getLatitude());
-            assertEquals(model2.getLongitude(), model.getLongitude());
-            assertEquals(model2.getAddress(), model.getAddress());
+            assertEquals(model2.getUser_id(), 1);
+            assertEquals(model2.getPfp_encoded(), profileRequest.getPfp_encoded());
+            assertEquals(model2.getBio(), profileRequest.getBio());
+            assertEquals(model2.getLatitude(), profileRequest.getLatitude());
+            assertEquals(model2.getLongitude(), profileRequest.getLongitude());
+            assertEquals(model2.getAddress(), "ccc");
         } catch (Exception ex) {
             fail("There was an Exception.");
         }
@@ -95,10 +98,10 @@ public class UserProfileServiceTest {
     @Test
     public void FailedProfileUpdateTest(){
         when(dao.findUserProfileByUserID(1)).thenReturn(null);
+        
+        ProfileRequest profileRequest = new ProfileRequest("bb", 2.0, 3.0, "aa");
 
-        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
-
-        assertThrows(NoSuchFieldException.class, () -> {service.updateUserProfile(model);}, "User Profile does not exist.");
+        assertThrows(AccountNotFoundException.class, () -> {service.updateUserProfile(1, profileRequest);}, "User Profile does not exist.");
     }
 
     //modelToEntity
@@ -108,8 +111,8 @@ public class UserProfileServiceTest {
 
         UserProfileEntity entity = service.modelToEntity(model);
 
-        assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfpEncoded(), model.getPfpEncoded());
+        assertEquals(entity.getUserID(), model.getUser_id());
+        assertEquals(entity.getPfpEncoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -130,8 +133,8 @@ public class UserProfileServiceTest {
 
         UserProfileModel model = service.entityToModel(entity);
 
-        assertEquals(entity.getUserID(), model.getUserID());
-        assertEquals(entity.getPfpEncoded(), model.getPfpEncoded());
+        assertEquals(entity.getUserID(), model.getUser_id());
+        assertEquals(entity.getPfpEncoded(), model.getPfp_encoded());
         assertEquals(entity.getBio(), model.getBio());
         assertEquals(entity.getLatitude(), model.getLatitude());
         assertEquals(entity.getLongitude(), model.getLongitude());
@@ -151,14 +154,14 @@ public class UserProfileServiceTest {
         assertFalse(service.deleteUserProfileById(1));
     }
 
-    //deleteUserProfileByUserID
+    //deleteUserProfileByUser_id
     @Test
-    public void DeleteByUserID(){
+    public void DeleteByUser_id(){
         when(dao.getReferenceById(1)).thenReturn(null);
         assertTrue(service.deleteUserProfileByUserID(1));
     }
     @Test
-    public void DeleteByUserIDFailure(){
+    public void DeleteByUser_idFailure(){
         UserProfileEntity result = new UserProfileEntity();
         when(dao.findUserProfileByUserID(1)).thenReturn(result);
         assertFalse(service.deleteUserProfileByUserID(1));
@@ -185,8 +188,8 @@ public class UserProfileServiceTest {
             
             UserProfileModel model2 = (service.createNewUserProfile(model).get());
             
-            assertEquals(model2.getUserID(), model.getUserID());
-            assertEquals(model2.getPfpEncoded(), model.getPfpEncoded());
+            assertEquals(model2.getUser_id(), model.getUser_id());
+            assertEquals(model2.getPfp_encoded(), model.getPfp_encoded());
             assertEquals(model2.getBio(), model.getBio());
             assertEquals(model2.getLatitude(), model.getLatitude());
             assertEquals(model2.getLongitude(), model.getLongitude());
@@ -202,19 +205,21 @@ public class UserProfileServiceTest {
 
         UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
 
-        assertThrows(NoSuchFieldException.class, () -> {service.createNewUserProfile(model);}, "User Profile already exists.");
+        assertThrows(DatabaseConflictException.class, () -> {service.createNewUserProfile(model);}, "User Profile already exists.");
     }
 
-    //uniqueUserID
+    //uniqueUser_id
     @Test
     public void UniqueIDTest(){
         when(dao.findUserProfileByUserID(1)).thenReturn(null);
-        assertTrue(service.uniqueUserID(1));
+        assertTrue(service.uniqueUser_id(1));
     }
     @Test
     public void ExistingIDTest(){
         UserProfileEntity result = new UserProfileEntity();
         when(dao.findUserProfileByUserID(1)).thenReturn(result);
-        assertFalse(service.uniqueUserID(1));
+        assertFalse(service.uniqueUser_id(1));
     }
+
+    //TODO: add in the missing methods
 }

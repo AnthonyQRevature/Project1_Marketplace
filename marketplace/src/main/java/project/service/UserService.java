@@ -7,12 +7,15 @@ import javax.security.auth.login.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
+import project.Repository.Entities.UserProfileEntity;
 import project.Repository.Entities.UserEntity.UserRole;
 import project.Repository.dao.UserDao;
-import project.controller.model.UserModel;
+import project.Repository.dao.UserProfileDao;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
+import project.controller.request.UserUpdateRequest;
 import project.controller.response.LoginResponse;
 import project.util.DateUtil;
 import project.util.Hasher;
@@ -27,6 +30,7 @@ import project.util.exception.InvalidCredentialsException;
 public class UserService {
 
     UserDao dao;
+    UserProfileDao profileDao;
     Hasher hasher;
     DateUtil dateUtil;
     TokenUtil tokenUtil;
@@ -42,6 +46,7 @@ public class UserService {
     /**
      * 
      */
+    @Transactional
     public RegisterRequest registerNewUser(RegisterRequest user) throws 
         InvalidCredentialsException,
         DatabaseConflictException
@@ -77,6 +82,11 @@ public class UserService {
             entity.setPasswordHash(hash);
 
             UserEntity result = dao.save(entity);
+            
+            //create a corresponding profile
+            UserProfileEntity profileEntity = new UserProfileEntity();
+            profileEntity.setUserID(result.getId());
+            profileDao.save(profileEntity);
 
             //conversion from entity to model
             RegisterRequest ret = new RegisterRequest(result.getEmail(), null, result.getUsername());
@@ -109,14 +119,14 @@ public class UserService {
         }
     }
 
-    public Optional<UserEntity> updateUserEmail(UserModel userModel) throws AccountNotFoundException {
+    public Optional<UserEntity> updateUserEmail(Integer id, UserUpdateRequest body) throws AccountNotFoundException {
         //check existence
-        if (dao.findUserByUsername(userModel.getUsername()) == null) {
+        if (dao.findUserById(id) == null) {
             //not in db
             throw new AccountNotFoundException();
         } else {
-            UserEntity entity = dao.findUserByUsername(userModel.getUsername());
-            entity.setEmail(userModel.getEmail());
+            UserEntity entity = dao.findUserById(id);
+            entity.setEmail(body.getEmail());
 
             UserEntity result = dao.save(entity);
             Optional<UserEntity> ret = Optional.ofNullable(result);
@@ -139,9 +149,10 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
+    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
     {
         this.dao = dao;
+        this.profileDao = profileDao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
         this.tokenUtil = tokenUtil;
