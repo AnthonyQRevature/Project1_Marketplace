@@ -7,7 +7,9 @@ import javax.security.auth.login.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
+import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
 import project.controller.model.UserProfileModel;
 import project.controller.request.LoginRequest;
@@ -27,6 +29,7 @@ import project.util.exception.InvalidCredentialsException;
 public class UserService {
 
     UserDao dao;
+    UserProfileDao profileDao;
     Hasher hasher;
     DateUtil dateUtil;
     TokenUtil tokenUtil;
@@ -43,6 +46,7 @@ public class UserService {
     /**
      * 
      */
+    @Transactional
     public RegisterRequest registerNewUser(RegisterRequest user) throws 
         InvalidCredentialsException,
         DatabaseConflictException
@@ -140,6 +144,7 @@ public class UserService {
     public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil, UserProfileService userProfileService) 
     {
         this.dao = dao;
+        this.profileDao = profileDao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
         this.tokenUtil = tokenUtil;
