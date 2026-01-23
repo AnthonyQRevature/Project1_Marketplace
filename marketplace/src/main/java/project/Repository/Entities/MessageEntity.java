@@ -26,75 +26,73 @@ public class MessageEntity {
 	@Column(name = "id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer message_id;
+	private Integer messageId;
 
-	private Integer sender_id;
-	private Integer reciever_id;
-	private Integer post_id;
+	private Integer senderId;
+	private Integer receiverId;
+	//private Integer postId;
+	@Column(name="message_text")
 	private String message;
-	private Instant sent_at;
-	private Instant read_at;
+	private Instant sentAt;
+	private Instant readAt;
 
 	public MessageEntity() {}
 
 	public MessageEntity(MessageEntity messageEntity) {
-		this.message_id = messageEntity.message_id;
-		this.sender_id = messageEntity.sender_id;
-		this.reciever_id = messageEntity.reciever_id;
-		this.post_id = messageEntity.post_id;
+		this.messageId = messageEntity.messageId;
+		this.senderId = messageEntity.senderId;
+		this.receiverId = messageEntity.receiverId;
 		this.message = messageEntity.message;
-		this.sent_at = messageEntity.sent_at;
-		this.read_at = messageEntity.read_at;
+		this.sentAt = messageEntity.sentAt;
+		this.readAt = messageEntity.readAt;
 	}
 
-	public MessageEntity(Integer message_id, Integer sender_id, Integer reciever_id, Integer post_id, String message, Instant sent_at, Instant read_at) {
-		this.message_id = message_id;
-		this.sender_id = sender_id;
-		this.reciever_id = reciever_id;
-		this.post_id = post_id;
+	public MessageEntity(Integer message_id, Integer sender_id, Integer receiver_id, String message, Instant sent_at, Instant read_at) {
+		this.messageId = message_id;
+		this.senderId = sender_id;
+		this.receiverId = receiver_id;
 		this.message = message;
-		this.sent_at = sent_at;
-		this.read_at = read_at;
+		this.sentAt = sent_at;
+		this.readAt = read_at;
 	}
 
-	public Integer getMessage_id() {return message_id;}
-	public void setMessage_id(Integer message_id) {this.message_id = message_id;}
-	public Integer getSender_id() {return sender_id;}
-	public void setSender_id(Integer sender_id) {this.sender_id = sender_id;}
-	public Integer getReciever_id() {return reciever_id;}
-	public void setReciever_id(Integer reciever_id) {this.reciever_id = reciever_id;}
-	public Integer getPost_id() {return post_id;}
-	public void setPost_id(Integer post_id) {this.post_id = post_id;}
+	public Integer getMessageId() {return messageId;}
+	public void setMessageId(Integer messageId) {this.messageId = messageId;}
+	public Integer getSenderId() {return senderId;}
+	public void setSenderId(Integer senderId) {this.senderId = senderId;}
+	public Integer getReceiverId() {return receiverId;}
+	public void setReceiverId(Integer receiverId) {this.receiverId = receiverId;}
+/*  public Integer getPostId() {return postId;}
+	public void setPostId(Integer postId) {this.postId = postId;}*/
 	public String getMessage() {return message;}
 	public void setMessage(String message) {this.message = message;}
-	public Instant getSent_at() {return sent_at;}
-	public void setSent_at(Instant sent_at) {this.sent_at = sent_at;}
-	public Instant getRead_at() {return read_at;}
-	public void setRead_at(Instant read_at) {this.read_at = read_at;}
+	public Instant getSentAt() {return sentAt;}
+	public void setSentAt(Instant sentAt) {this.sentAt = sentAt;}
+	public Instant getReadAt() {return readAt;}
+	public void setReadAt(Instant readAt) {this.readAt = readAt;}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) return false;
 		if (!super.equals(object)) return false;
 		MessageEntity that = (MessageEntity) object;
-		return java.util.Objects.equals(message_id, that.message_id) && java.util.Objects.equals(sender_id, that.sender_id) && java.util.Objects.equals(reciever_id, that.reciever_id) && java.util.Objects.equals(post_id, that.post_id) && java.util.Objects.equals(message, that.message) && java.util.Objects.equals(sent_at, that.sent_at) && java.util.Objects.equals(read_at, that.read_at);
+		return java.util.Objects.equals(messageId, that.messageId) && java.util.Objects.equals(senderId, that.senderId) && java.util.Objects.equals(receiverId, that.receiverId) && java.util.Objects.equals(message, that.message) && java.util.Objects.equals(sentAt, that.sentAt) && java.util.Objects.equals(readAt, that.readAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(super.hashCode(), message_id, sender_id, reciever_id, post_id, message, sent_at, read_at);
+		return java.util.Objects.hash(super.hashCode(), messageId, senderId, receiverId, message, sentAt, readAt);
 	}
 
 	@Override
 	public java.lang.String toString() {
 		return "MessageEntity{" +
-				"message_id=" + message_id +
-				", sender_id=" + sender_id +
-				", reciever_id=" + reciever_id +
-				", post_id=" + post_id +
+				"message_id=" + messageId +
+				", sender_id=" + senderId +
+				", receiver_id=" + receiverId +
 				", message='" + message + '\'' +
-				", sent_at=" + sent_at +
-				", read_at=" + read_at +
+				", sent_at=" + sentAt +
+				", read_at=" + readAt +
 				'}';
 	}
 }

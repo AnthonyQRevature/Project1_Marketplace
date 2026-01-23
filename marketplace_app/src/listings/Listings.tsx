@@ -1,4 +1,5 @@
 import "./Listings.css";
+import Messages from "./Messages";
 import AsyncLoader from "../util/AsyncLoaderPlain";
 import getAsset from "../util/AssetLoader";
 
