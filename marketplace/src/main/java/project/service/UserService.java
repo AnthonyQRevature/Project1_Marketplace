@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
-import project.controller.model.UserModel;
+import project.controller.model.UserProfileModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
@@ -30,6 +30,7 @@ public class UserService {
     Hasher hasher;
     DateUtil dateUtil;
     TokenUtil tokenUtil;
+    UserProfileService userProfileService;
 
     /*
      * a response entity represents an HTML response
@@ -76,6 +77,9 @@ public class UserService {
             entity.setPasswordHash(hash);
 
             UserEntity result = dao.save(entity);
+            UserProfileModel model = new UserProfileModel();
+            model.setUser_id(result.getId());
+            userProfileService.createNewUserProfile(model);
 
             //conversion from entity to model
             RegisterRequest ret = new RegisterRequest(result.getEmail(), null, result.getUsername());
@@ -133,11 +137,12 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
+    public UserService(UserDao dao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil, UserProfileService userProfileService) 
     {
         this.dao = dao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
         this.tokenUtil = tokenUtil;
+        this.userProfileService = userProfileService;
     }
 }

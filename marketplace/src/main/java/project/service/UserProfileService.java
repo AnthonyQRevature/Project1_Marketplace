@@ -23,9 +23,7 @@ import project.util.exception.DatabaseConflictException;
 
 @Service
 public class UserProfileService{
-    @Autowired
     UserProfileDao dao;
-    @Autowired
     FileEncoder encoder;
     Rectangle targetDimensions;
 
@@ -124,5 +122,11 @@ public class UserProfileService{
         return dao.findUserProfileByUserID(user_id) == null;
     }
 
+    @Autowired
+    public UserProfileService(UserProfileDao dao, FileEncoder encoder) {
+        this.dao = dao;
+        this.encoder = encoder;
+        this.targetDimensions = new Rectangle(32, 32);
+    }
     
 }

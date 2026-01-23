@@ -12,3 +12,5 @@ SELECT * FROM (
     ORDER BY estimated_distance ASC
 )
 WHERE estimated_distance < 5;
+
+SELECT * FROM users;
