@@ -6,12 +6,12 @@ package project.controller.model;
  */
 public class LoginModel {
     //an object is Jackson serializable if it has getters and setters
-    Integer userId;
+    Integer user_id;
     String username;
     String token;
 
-    public LoginModel(Integer userId, String username, String token) {
-        this.userId = userId;
+    public LoginModel(Integer user_id, String username, String token) {
+        this.user_id = user_id;
         this.username = username;
         this.token = token;
     }
@@ -28,11 +28,11 @@ public class LoginModel {
     }
 
     public Integer getUserId() {
-        return userId;
+        return user_id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public String getToken() {

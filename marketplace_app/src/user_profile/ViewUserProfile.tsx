@@ -1,15 +1,21 @@
 import { createContext, useContext, useState } from "react";
 import "./ViewUserProfile.css";
 import { Link, useNavigate, useParams, type NavigateFunction } from "react-router";
-import AuthenticationContext, { type Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
+import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
 import AsyncLoader from "../util/AsyncLoader";
 import { EncodedImage } from "../util/EncodedImage";
+import type { Endpoint } from "../util/Endpoint";
 
-//const userProfile = {endpoint: "http://localhost:8080/login", method: "POST"};
-function makeEndpoint(id: number)
+//get user profile endpoint
+function makeEndpoint(id: number) : Endpoint
 {
   return {endpoint: `http://localhost:8080/users/${id}`, method: "GET"};
 }
+function pfp_endpoint(id: number) : Endpoint
+{
+  return {endpoint: `http://localhost:8080/users/${id}/media`, method: "POST"};
+}
+
 
 type state<T> = [T, (x : T) => void];
 type UserProfile = {
@@ -18,25 +24,20 @@ type UserProfile = {
   email : string,
   profile: 
   {
-    encoded_pfp : string,
+    pfp_encoded : string,
     bio : string,
     latitude : number,
     longitude : number,
     distance : number
   }
 }
-type UserProfileState = {
-  username : string,
-  encoded_pfp : state<string>,
-  bio : state<string>
-}
-const userProfileContext = createContext<UserProfileState>({username: "", encoded_pfp: ["", (_x:string)=>{}], bio: ["", (_x:string)=>{}]});
 
 function ViewUserProfile()
 {
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
 
+  /*
   const TMP_USR_PF : UserProfile = {
     id: 3,
     username: "SlickSalesman94",
@@ -48,31 +49,134 @@ function ViewUserProfile()
       longitude: -96.696956,
       distance:0
     }
-  };
+  };*/
   
   return (
-    <>
-      {edit_user_profile_page(TMP_USR_PF)}
-    </>
-  )
-  /*return (
-    <AsyncLoader endpoint={makeEndpoint(Number(user_id))} then={edit_user_profile_page} otherwise={<p>Loading</p>}/>
-  );*/
+    <AsyncLoader<UserProfile> endpoint={makeEndpoint(Number(user_id))} then={view_user_profile()} otherwise={<p>Loading</p>}/>
+  );
 }
 
-function edit_user_profile_page(initialProfile : UserProfile)
+function view_user_profile()
 {
-  console.log(initialProfile);
+  return (initialProfile : UserProfile) => {
+    return (
+      <Display profile={initialProfile}/>
+    );
+  }
+}
+
+function Display(props : {profile : UserProfile})
+{
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const {user_id} = useParams();
+  const [auth, _] = useContext(AuthenticationContext);
+  const {profile} = props;
+  
+  let owner = false;
+  if (Number(user_id) == auth.id)
+  {
+    owner = true;
+  }
+  
+  if (!editMode)
+  {
+    return (
+      <>
+        <EncodedImage img={profile.profile.pfp_encoded} />
+        {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+        <h1>{profile.username}</h1>
+        <p>{profile.email}</p>
+        <p>BIO:</p>
+        <p>{profile.profile.bio}</p>
+        <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+      </>
+    );
+  }
+  else
+  {
+    return (
+      <DisplayEdit init={profile}/>
+    );
+  }
+}
+
+function DisplayEdit(props : {init : UserProfile})
+{
+  //const [profile, setProfile] = useState(props.init);
+  const profile = props.init;
+  const [preview, setPreview] = useState<string | null>(null);
+  const [auth, _] = useContext(AuthenticationContext);
+  const {user_id} = useParams();
+  const nav = useNavigate();
+
+  function handleOnChange(e : any) {
+    let file : File;
+    [file] = e.target.files;
+    setPreview(URL.createObjectURL(file));
+  }
+
+  //a hack
+  let submitEndpoint = makeEndpoint(Number(user_id));
+  submitEndpoint.method = "PATCH";
+
   return (
-    <>
-      <EncodedImage img={initialProfile.profile.encoded_pfp} />
-      <h1>{initialProfile.username}</h1>
-      <p>{initialProfile.email}</p>
+    <form action={submitProfile(auth.encryptedToken, submitEndpoint, pfp_endpoint(Number(user_id)), profile, async () => {nav("/")})}>
+      {preview == null? <EncodedImage img={profile.profile.pfp_encoded} /> : <img src={preview} />}
+      <input type="file" name="pfp" onChange={handleOnChange} />
+      <h1>{profile.username}</h1>
+      <label htmlFor="email">Email: </label><input type="email" name="email" defaultValue={profile.email} />
       <p>BIO:</p>
-      <p>{initialProfile.profile.bio}</p>
-      <p>Location: {initialProfile.profile.latitude}, {initialProfile.profile.longitude}</p>
-    </>
-  )
+      <label htmlFor="bio">Bio: </label><textarea name="bio" defaultValue={profile.profile.bio} rows={5} cols={33} />
+      <label htmlFor="latitude">Latitude: </label><input type="text" name="latitude" defaultValue={profile.profile.latitude} />
+      <label htmlFor="longitude">Longitude: </label><input type="text" name="longitude" defaultValue={profile.profile.longitude} />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint : Endpoint, init : UserProfile, redirect : () => void)
+{
+  return async (e : FormData) => 
+  {
+    let struct : any = {};
+    struct.email = e.get("email");
+    struct.profile = {};
+    struct.profile.pfp_encoded = init.profile.pfp_encoded;
+    struct.profile.bio = e.get("bio");
+    struct.profile.latitude = e.get("latitude");
+    struct.profile.longitude = e.get("longitude");
+
+    /*
+    let request = fetch(profile_endpoint.endpoint, {
+      method: profile_endpoint.method,
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(struct)
+    });*/
+
+    let request2 = null
+
+    if ((e.get("pfp") as File).size > 0)
+    {
+      let rb = new FormData();
+      rb.append("file", Object(e.get("pfp")));
+      request2 = fetch(pfp_endpoint.endpoint, {
+        method: pfp_endpoint.method,
+        headers: {
+          "Authorization": token
+        },
+        body: rb
+      });
+    }
+
+    //maybe check these
+    //await request;
+    request2 && await request2;
+
+    redirect();
+  }
 }
 
 export default ViewUserProfile;

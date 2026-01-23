@@ -1,7 +1,5 @@
 package project.service;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,15 +11,12 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import project.Repository.Entities.PostMediaEntity;
 import project.Repository.Entities.PostMediaEntity.MediaTypeEnum;
 import project.Repository.dao.PostMediaDao;
 import project.util.FileEncoder;
-import project.util.FileSystemProvider;
-import project.util.exception.FileNotFoundException;
 import project.util.exception.InvalidRequestException;
 
 @Service
@@ -59,13 +54,14 @@ public class PostMediaService {
                 break;
             default:
                 System.out.printf("Found file type %s\n", file.getContentType());
+                throw new RuntimeException(String.format("Found file type %s\n", file.getContentType()));
         }
 
         //base64 encode the image
         try (InputStream stream = file.getInputStream())
         {
             //removes the alpha channel
-            BufferedImage resized = cropAndResize(ImageIO.read(stream));
+            BufferedImage resized = encoder.cropAndResize(ImageIO.read(stream), targetDimensions);
             encodedFile = encoder.base64Encode(resized);
         }
         return new PostMediaEntity(type, encodedFile, postId);
@@ -82,42 +78,6 @@ public class PostMediaService {
         this.acceptedMediaTypes.add("image/jpeg");
 
         this.targetDimensions = new Rectangle(200, 200);
-    }
-
-    public BufferedImage cropAndResize(Image img)
-    {
-        double sfx, sfy;
-        int imgWidth, imgHeight;
-        imgWidth = img.getWidth(null);
-        imgHeight = img.getHeight(null);
-        sfx = (double)targetDimensions.width/imgWidth;
-        sfy = (double)targetDimensions.height/imgHeight;
-        Rectangle printBox = new Rectangle(0, 0, targetDimensions.width, targetDimensions.height);
-        //not perfect
-        if (sfx > sfy)
-        {
-            //offset the y
-            double sf = sfx;
-            printBox.y = -(int)Math.round((sf * imgHeight - targetDimensions.height) / 2);
-            printBox.width = (int)Math.round(imgWidth * sf);
-            printBox.height = (int)Math.round(imgHeight * sf);
-        }
-        else if (sfy > sfx)
-        {
-            //offset the x
-            double sf = sfy;
-            printBox.x = -(int)Math.round((sf * imgWidth - targetDimensions.width) / 2);
-            printBox.width = (int)Math.round(imgWidth * sf);
-            printBox.height = (int)Math.round(imgHeight * sf);
-        }
-        
-
-        int imageType = BufferedImage.TYPE_INT_RGB;
-        BufferedImage result = new BufferedImage(targetDimensions.width, targetDimensions.height, imageType);
-        Graphics2D g = result.createGraphics();
-        g.drawImage(img, printBox.x, printBox.y, printBox.width, printBox.height, null);
-        System.out.println(printBox.toString());
-        return result;
     }
 
     public PostMediaEntity addMedia(MultipartFile file, Integer postId) throws 
