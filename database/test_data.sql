@@ -55,3 +55,5 @@ INSERT INTO users(id, email, password_hash, username) VALUES
 (5, 'janes@email', 'test', 'FancyJane');
 
 SELECT * from block;
+
+select * from post;
