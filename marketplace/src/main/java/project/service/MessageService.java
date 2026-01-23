@@ -1,6 +1,7 @@
 //CHANGED
 package project.service;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,15 +21,15 @@ public class MessageService {
     // SEND MESSAGE
     public MessageEntity sendMessage(
             Integer senderId,
-            Integer recieverId,
-            Integer postId,
+            Integer receiverId,
+//          Integer postId,
             String message
     ) {
         MessageEntity msg = new MessageEntity();
-        msg.setSender_id(senderId);
-        msg.setReciever_id(recieverId);
-        msg.setPost_id(postId);
+        msg.setSenderId(senderId);
+        msg.setReceiverId(receiverId);
         msg.setMessage(message);
+        msg.setSentAt(Instant.now());
 
         return messageDao.save(msg);
     }
@@ -39,7 +40,7 @@ public class MessageService {
             Integer user2Id
     ) {
         return messageDao
-                .findBySender_idAndReciever_idOrSender_idAndReciever_id(
+                .findBySenderIdAndReceiverIdOrSenderIdAndReceiverId(
                         user1Id, user2Id,
                         user2Id, user1Id
                 );

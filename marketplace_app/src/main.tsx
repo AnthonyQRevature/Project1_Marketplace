@@ -10,6 +10,7 @@ import Login from './login/Login.tsx'
 import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
 import Upload from './file_upload_test/Upload.tsx';
+import Messages, { MessagesTest } from './listings/Messages.tsx';
 
 AuthenticationContext;
 
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/register" element={<Register />} />
           <Route path="/listings" element={<Listings/>} />
           <Route path="/uploads" element={<Upload/>} />
+          <Route path="/debug" element={<MessagesTest />} />
         </Routes>
       </BrowserRouter>
     </AuthenticationProvider>

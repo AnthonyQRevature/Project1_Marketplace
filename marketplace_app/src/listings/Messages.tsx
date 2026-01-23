@@ -4,18 +4,28 @@ import { useEffect, useState } from "react";
 import "./Messages.css";
 
 type MessageEntity = {
-  message_id: number;
-  sender_id: number;
-  receiver_id: number;
-  post_id: number;
+  messageId: number;
+  senderId: number;
+  receiverId: number;
   message: string;
-  sent_at: string;
+  sentAt: string;
 };
 
+function makeSendEndpoint(sender: number, receiver : number)
+{
+  return {endpoint: `http://localhost:8080/messages/send?senderId=${sender}&receiverId=${receiver}`, method: "POST"};
+}
 const get_messages = (user1Id: number, user2Id: number) => ({
   endpoint: `http://localhost:8080/messages/conversation?user1Id=${user1Id}&user2Id=${user2Id}`,
   method: "GET"
 });
+
+export function MessagesTest()
+{
+  return (
+    <Messages currentUserId={1} receiverId={2} />
+  )
+}
 
 function Messages(props: { currentUserId: number; receiverId: number }) {
   const [messages, setMessages] = useState<MessageEntity[]>([]);
@@ -32,15 +42,10 @@ function Messages(props: { currentUserId: number; receiverId: number }) {
   const sendMessage = async () => {
     if (!text.trim()) return;
 
-    await fetch("http://localhost:8080/messages/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        senderId: props.currentUserId.toString(),
-        receiverId: props.receiverId.toString(),
-        postId: "0",  // irrelevant, can be set to 0 in the backend
-        message: text
-      })
+    const send = makeSendEndpoint(props.currentUserId, props.receiverId);
+    await fetch(send.endpoint, {
+      method: send.method,
+      body: text
     });
 
     setText("");
@@ -56,8 +61,8 @@ function Messages(props: { currentUserId: number; receiverId: number }) {
 
       <div className="messagesList">
         {messages.map(msg => (
-          <div key={msg.message_id} className="message">
-            <b>{msg.sender_id === props.currentUserId ? "You" : "Them"}:</b>{" "}
+          <div key={msg.messageId} className="message">
+            <b>{msg.senderId === props.currentUserId ? "You" : "Them"}:</b>
             <span>{msg.message}</span>
           </div>
         ))}

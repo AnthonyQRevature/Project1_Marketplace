@@ -3,13 +3,16 @@ package project.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import project.Repository.Entities.MessageEntity;
 import project.service.MessageService;
+import project.util.AllowCORS;
 
 @RestController
 @RequestMapping("/messages")
+@AllowCORS
 public class MessageController {
 
     private final MessageService messageService;
@@ -20,27 +23,26 @@ public class MessageController {
 
     // SEND MESSAGE
     @PostMapping("/send")
-    public MessageEntity sendMessage(
+    public ResponseEntity<MessageEntity> sendMessage(
             @RequestParam Integer senderId,
-            @RequestParam Integer recieverId,
-            @RequestParam Integer postId,
-            @RequestParam String message
+            @RequestParam Integer receiverId,
+//          @RequestParam Integer postId,
+            @RequestBody String message
     ) {
-        return messageService.sendMessage(
-                senderId,
-                recieverId,
-                postId,
-                message
-        );
+        return ResponseEntity.ok(messageService.sendMessage(
+            senderId,
+            receiverId,
+            message
+        ));
     }
 
     // GET PRIVATE CONVERSATION BETWEEN TWO PEOPLE
     @GetMapping("/conversation")
-    public List<MessageEntity> getConversation(
+    public ResponseEntity<List<MessageEntity>> getConversation(
             @RequestParam Integer user1Id,
             @RequestParam Integer user2Id
     ) {
-        return messageService.getConversation(user1Id, user2Id);
+        return ResponseEntity.ok(messageService.getConversation(user1Id, user2Id));
     }
 }
 

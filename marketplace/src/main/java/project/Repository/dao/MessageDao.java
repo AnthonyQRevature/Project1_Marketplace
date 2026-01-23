@@ -12,17 +12,17 @@ import project.Repository.Entities.MessageEntity;
 public interface MessageDao extends JpaRepository<MessageEntity, Integer> {
 
     // Messages sent from A to B
-    List<MessageEntity> findBySender_idAndReciever_id(
+    List<MessageEntity> findBySenderIdAndReceiverId(
             Integer senderId,
-            Integer recieverId
+            Integer receiverId
     );
 
     // Full private conversation between two users
-    List<MessageEntity> findBySender_idAndReciever_idOrSender_idAndReciever_id(
+    List<MessageEntity> findBySenderIdAndReceiverIdOrSenderIdAndReceiverId(
             Integer sender1,
-            Integer reciever1,
+            Integer receiver1,
             Integer sender2,
-            Integer reciever2
+            Integer receiver2
     );
 }
 
