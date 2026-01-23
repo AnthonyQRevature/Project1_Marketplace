@@ -1,5 +1,5 @@
 import "./Listings.css";
-import AsyncLoader from "../util/AsyncLoader";
+import AsyncLoader from "../util/AsyncLoaderPlain";
 import getAsset from "../util/AssetLoader";
 
 const get_tags = {endpoint: "http://localhost:8080/tags", method: "GET"};

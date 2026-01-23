@@ -52,6 +52,7 @@ public class FileEncoder {
     }
     */
 
+    //this might not be the perfect policy
     public BufferedImage cropAndResize(Image img, Rectangle targetDimensions)
     {
         double sfx, sfy;
@@ -84,7 +85,6 @@ public class FileEncoder {
         BufferedImage result = new BufferedImage(targetDimensions.width, targetDimensions.height, imageType);
         Graphics2D g = result.createGraphics();
         g.drawImage(img, printBox.x, printBox.y, printBox.width, printBox.height, null);
-        System.out.println(printBox.toString());
         return result;
     }
 

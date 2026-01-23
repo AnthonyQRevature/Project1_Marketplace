@@ -1,78 +1,87 @@
-import { useEffect, useState, type JSX } from "react";
+import { useEffect, useState, type FC } from "react";
+import type { Endpoint } from "./Endpoint";
+import AsyncLoader from "./AsyncLoaderPlain";
 import logError from "./logError";
 
-type Endpoint = {
-  endpoint: string,
-  method: string
-};
 type AsyncLoaderInit<T> = 
 {
-  then : (value : T) => JSX.Element, 
-  repititions? : number,
-  endpoint : Endpoint,
-  otherwise? : JSX.Element,
-  abort? : JSX.Element
+  foward? : any,
+  then : FC<any>, 
+  otherwise? : FC,
+  abort? : FC
 };
 
-/*
- * Component that makes a request to the backend and waits for a response before rendering
- * the component
- */
-function AsyncLoader<T>(props : AsyncLoaderInit<T>)
+type AsyncLoader<T> = FC<AsyncLoaderInit<T>>;
+
+export default function useLoader<T>(endpoint : Endpoint, repititions : number = 5) : [AsyncLoader<T>, () => void]
 {
-  let otherwise = props.otherwise || <></>;
-  let abort = props.abort || props.otherwise || <></>;
-  let repititions = props.repititions || 5;
   const LOADER_STATE = 
   {
     LOADING: 0,
     ABORTED: 1
   }
-
-  const [currentState, setState] = useState<T | number>(LOADER_STATE.LOADING);
   
-  //try a certain number of times
-  const async_fetch = async (rep: number) => {
-    let i = 0;
-    while (true) {
-      try {
-        const response = await fetch(props.endpoint.endpoint, { method: props.endpoint.method });
-        const value: T = await response.json();
-        setState(value);
-        return;
-      }
-      catch (e) {
-        //fail
-        logError(e);
-      }
+  const [currentState, setState] = useState<T | number>(LOADER_STATE.LOADING);
 
-      //failed
-      i++;
-      if (i < rep) {
-        logError("Fetch request failed. Retrying.");
+  const resetFunction = () => 
+  {
+    setState(LOADER_STATE.LOADING);
+  }
+  
+  const LoaderComponent = (props : AsyncLoaderInit<T>) =>
+  {
+    let Then = props.then;
+    let Otherwise : FC = props.otherwise || (() => <></>);
+    let Abort : FC = props.abort || props.otherwise || (() => <></>);
+
+    //run fetch up to rep times
+    const async_fetch = async (rep: number) => {
+      let i = 0;
+      while (true) {
+        try {
+          const response = await fetch(endpoint.endpoint, { method: endpoint.method });
+          const value: T = await response.json();
+          setState(value);
+          return;
+        }
+        catch (e) {
+          //fail
+          logError(e);
+        }
+  
+        //failed
+        i++;
+        if (i < rep) {
+          logError("Fetch request failed. Retrying.");
+        }
+        else {
+          logError("Fetch request failed. Too many attempts. Aborting.")
+          setState(LOADER_STATE.ABORTED);
+          break;
+        }
       }
-      else {
-        logError("Fetch request failed. Too many attempts. Aborting.")
-        setState(LOADER_STATE.ABORTED);
-        break;
-      }
+    };
+
+    //run whenever currentState is set to LOADING
+    useEffect(() => {
+      if (currentState === LOADER_STATE.LOADING)
+      async_fetch(repititions)
+    }, [currentState]);
+
+    if (currentState == LOADER_STATE.LOADING)
+    {
+      return (<Otherwise />);
     }
-  };
-  useEffect(() => {async_fetch(repititions)}, []);
-
-  if (currentState == LOADER_STATE.LOADING)
-  {
-    return otherwise;
+    else if (currentState == LOADER_STATE.ABORTED)
+    {
+      return (<Abort />);
+    }
+    else
+    {
+      //loaded the resource
+      const resource = currentState as T;
+      return (<Then {...{resource: resource, ...props.foward}}/>);
+    }
   }
-  else if (currentState == LOADER_STATE.ABORTED)
-  {
-    return abort;
-  }
-  else
-  {
-    //loaded the resource
-    return props.then(currentState as T);
-  }
+  return [LoaderComponent, resetFunction];
 }
-
-export default AsyncLoader;
