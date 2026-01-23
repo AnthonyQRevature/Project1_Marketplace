@@ -1,7 +1,6 @@
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import project.AppConfig;
 import project.HelloWorldBean;

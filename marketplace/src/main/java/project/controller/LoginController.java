@@ -64,5 +64,8 @@ public class LoginController {
     }
 
     @Autowired
-    public LoginController(UserService userService) { this.userService = userService; }
+    public LoginController(UserService userService) 
+    { 
+        this.userService = userService; 
+    }
 }

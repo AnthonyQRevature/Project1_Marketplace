@@ -39,7 +39,7 @@ function Register()
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunction)
+function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
 {
   return async (e : FormData) => 
   {
@@ -65,7 +65,7 @@ function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunct
         /*
          * navigate back to homepage once we recieve the response
          */
-        //navigate("/");
+        navigate("/");
       }
       else
       {
