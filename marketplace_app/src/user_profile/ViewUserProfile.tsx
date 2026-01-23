@@ -81,7 +81,6 @@ function Display(props : {profile : UserProfile})
   {
     return (
       <>
-        <DeleteButton />
         <EncodedImage img={profile.profile.pfp_encoded} />
         {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
         <h1>{profile.username}</h1>
@@ -120,17 +119,20 @@ function DisplayEdit(props : {init : UserProfile})
   submitEndpoint.method = "PATCH";
 
   return (
-    <form action={submitProfile(auth.encryptedToken, submitEndpoint, pfp_endpoint(Number(user_id)), profile, async () => {nav("/")})}>
-      {preview == null? <EncodedImage img={profile.profile.pfp_encoded} /> : <img src={preview} />}
-      <input type="file" name="pfp" onChange={handleOnChange} />
-      <h1>{profile.username}</h1>
-      <label htmlFor="email">Email: </label><input type="email" name="email" defaultValue={profile.email} />
-      <p>BIO:</p>
-      <label htmlFor="bio">Bio: </label><textarea name="bio" defaultValue={profile.profile.bio} rows={5} cols={33} />
-      <label htmlFor="latitude">Latitude: </label><input type="text" name="latitude" defaultValue={profile.profile.latitude} />
-      <label htmlFor="longitude">Longitude: </label><input type="text" name="longitude" defaultValue={profile.profile.longitude} />
-      <button type="submit">Submit</button>
-    </form>
+    <>
+      <DeleteButton />
+      <form action={submitProfile(auth.encryptedToken, submitEndpoint, pfp_endpoint(Number(user_id)), profile, async () => {nav("/")})}>
+        {preview == null? <EncodedImage img={profile.profile.pfp_encoded} /> : <img src={preview} />}
+        <input type="file" name="pfp" onChange={handleOnChange} />
+        <h1>{profile.username}</h1>
+        <label htmlFor="email">Email: </label><input type="email" name="email" defaultValue={profile.email} />
+        <p>BIO:</p>
+        <label htmlFor="bio">Bio: </label><textarea name="bio" defaultValue={profile.profile.bio} rows={5} cols={33} />
+        <label htmlFor="latitude">Latitude: </label><input type="text" name="latitude" defaultValue={profile.profile.latitude} />
+        <label htmlFor="longitude">Longitude: </label><input type="text" name="longitude" defaultValue={profile.profile.longitude} />
+        <button type="submit">Submit</button>
+      </form>
+    </>
   );
 }
 
