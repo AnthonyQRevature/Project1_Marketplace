@@ -5,11 +5,11 @@ public class UserProfileModel {
     Integer user_id;
 	String pfp_encoded;
 	String bio;
-	double latitude;
-	double longitude;
+	Double latitude;
+	Double longitude;
 	String address;
 
-    public UserProfileModel(Integer user_id, String pfp_encoded, String bio, double latitude, double longitude, String address) {
+    public UserProfileModel(Integer user_id, String pfp_encoded, String bio, Double latitude, Double longitude, String address) {
         this.user_id = user_id;
         this.pfp_encoded = pfp_encoded;
         this.bio = bio;

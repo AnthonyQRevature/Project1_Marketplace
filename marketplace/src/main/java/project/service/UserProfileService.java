@@ -18,6 +18,7 @@ import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
 import project.controller.request.ProfileRequest;
+import project.controller.request.UserUpdateRequest;
 import project.util.FileEncoder;
 import project.util.exception.DatabaseConflictException;
 
@@ -56,6 +57,7 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
+    @Deprecated //this function doesnt behave correctly
     public Optional<UserProfileModel> updateUserProfile(Integer id, ProfileRequest profileRequest) throws AccountNotFoundException{
         if (uniqueUser_id(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
@@ -65,6 +67,19 @@ public class UserProfileService{
         entity.setBio(profileRequest.getBio());
         entity.setLatitude(profileRequest.getLatitude());
         entity.setLongitude(profileRequest.getLongitude());
+        UserProfileEntity result = dao.save(entity);
+        Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
+        return ret;
+    }
+    public Optional<UserProfileModel> updateUserProfileByUserId(Integer userId, UserUpdateRequest.Profile profile) throws AccountNotFoundException
+    {
+        if (uniqueUser_id(userId)){
+            throw new AccountNotFoundException("User Profile does not exist.");
+        }
+        UserProfileEntity entity = getProfileEntityByUserID(userId).get();
+        entity.setBio(profile.getBio());
+        entity.setLatitude(profile.getLatitude());
+        entity.setLongitude(profile.getLongitude());
         UserProfileEntity result = dao.save(entity);
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
         return ret;
@@ -119,7 +134,7 @@ public class UserProfileService{
     }
 
     public boolean uniqueUser_id(int user_id){
-        return dao.findUserProfileByUserID(user_id) == null;
+        return !dao.existsByUserID(user_id);
     }
 
     @Autowired
