@@ -22,9 +22,16 @@ import jakarta.persistence.Table;
 public class UserEntity {
     public static enum UserRole
     {
-        user,
-        admin,
-        super_user //super is a keyword
+        user(1),
+        admin(2),
+        super_user(3); //super is a keyword
+
+        public final int value;
+
+        UserRole(int val)
+        {
+            this.value = val;
+        }
     }
 
     @Column(name="id")

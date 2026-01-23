@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import project.Repository.Entities.UserEntity.UserRole;
+import project.Repository.dao.UserDao;
+import project.service.UserService;
 import project.util.Secure;
 import project.util.SecureIndescriminate;
+import project.util.SecurityLevel;
 import project.util.TokenUtil;
 
 @Aspect
@@ -18,12 +22,14 @@ import project.util.TokenUtil;
 @SuppressWarnings("unused")
 public class Security {
 
+    UserDao dao;
     TokenUtil tokenUtil;
 
     @Autowired
-    Security(TokenUtil tokenUtil)
+    Security(TokenUtil tokenUtil, UserDao dao)
     {
         this.tokenUtil = tokenUtil;
+        this.dao = dao;
     }
 
     @Pointcut("@annotation(security)")
@@ -87,8 +93,15 @@ public class Security {
         {
             if(!token.isExpired() && token.getId() == user_id) 
             {
-                //if the function throws an exception we dont want to intercept it
-                return (ResponseEntity<?>)joinPoint.proceed();
+                //verify user type
+                int id = token.getId();
+                var usr = dao.findById(id);
+                SecurityLevel level = security.value();
+                if (usr.isPresent() && usr.get().getRole().value >= level.value)
+                {
+                    //if the function throws an exception we dont want to intercept it
+                    return (ResponseEntity<?>)joinPoint.proceed();
+                }
             }
         }
 
@@ -107,8 +120,15 @@ public class Security {
         {
             if(!token.isExpired())
             {
-                //if the function throws an exception we dont want to intercept it
-                return (ResponseEntity<?>)joinPoint.proceed();
+                //verify user type
+                int id = token.getId();
+                var usr = dao.findById(id);
+                SecurityLevel level = security.value();
+                if (usr.isPresent() && usr.get().getRole().value >= level.value)
+                {
+                    //if the function throws an exception we dont want to intercept it
+                    return (ResponseEntity<?>)joinPoint.proceed();
+                }
             }
         }
 
