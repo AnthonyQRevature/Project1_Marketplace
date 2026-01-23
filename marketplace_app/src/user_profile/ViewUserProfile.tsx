@@ -120,12 +120,12 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
     let struct : any = {};
     struct.email = e.get("email");
     struct.profile = {};
-    struct.profile.pfp_encoded = init.profile.pfp_encoded;
     struct.profile.bio = e.get("bio");
     struct.profile.latitude = e.get("latitude");
     struct.profile.longitude = e.get("longitude");
 
-    /*
+    console.log(JSON.stringify(struct));
+
     let request = fetch(profile_endpoint.endpoint, {
       method: profile_endpoint.method,
       headers: {
@@ -133,7 +133,7 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
         "Content-Type": "application/json"
       },
       body: JSON.stringify(struct)
-    });*/
+    });
 
     let request2 = null
 
@@ -151,7 +151,7 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
     }
 
     //maybe check these
-    //await request;
+    await request;
     request2 && await request2;
 
     //sets edit mode to false and re requests the profile from the server

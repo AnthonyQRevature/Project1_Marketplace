@@ -32,11 +32,11 @@ public class UserUpdateRequest {
         }
     }
     String email;
-    Profile profileRequest;
+    Profile profile;
 
-    public UserUpdateRequest(String email, Profile profileRequest) {
+    public UserUpdateRequest(String email, Profile profile) {
         this.email = email;
-        this.profileRequest = profileRequest;
+        this.profile = profile;
     }
 
     public String getEmail() {
@@ -46,10 +46,10 @@ public class UserUpdateRequest {
         this.email = email;
     }
 
-    public Profile getProfileRequest() {
-        return profileRequest;
+    public Profile getProfile() {
+        return profile;
     }
-    public void setProfileRequest(Profile profileRequest) {
-        this.profileRequest = profileRequest;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

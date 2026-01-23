@@ -71,7 +71,7 @@ public class UserController {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
             UserEntity entity = userService.updateUserEmail(id, body).get();
-            var profile = body.getProfileRequest();
+            var profile = body.getProfile();
             UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfileByUserId(id, profile).get());
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
