@@ -57,7 +57,6 @@ public class UserProfileService{
 
     //Worried about this function, feels like I should rewrite it.
     //Maybe make it so you can partially update a Profile?
-    @Deprecated //this function doesnt behave correctly
     public Optional<UserProfileModel> updateUserProfile(Integer id, ProfileRequest profileRequest) throws AccountNotFoundException{
         if (uniqueUser_id(id)){
             throw new AccountNotFoundException("User Profile does not exist.");
