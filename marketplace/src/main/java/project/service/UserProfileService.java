@@ -18,14 +18,13 @@ import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserProfileDao;
 import project.controller.model.UserProfileModel;
 import project.controller.request.ProfileRequest;
+import project.controller.request.UserUpdateRequest;
 import project.util.FileEncoder;
 import project.util.exception.DatabaseConflictException;
 
 @Service
 public class UserProfileService{
-    @Autowired
     UserProfileDao dao;
-    @Autowired
     FileEncoder encoder;
     Rectangle targetDimensions;
 
@@ -67,6 +66,19 @@ public class UserProfileService{
         entity.setBio(profileRequest.getBio());
         entity.setLatitude(profileRequest.getLatitude());
         entity.setLongitude(profileRequest.getLongitude());
+        UserProfileEntity result = dao.save(entity);
+        Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
+        return ret;
+    }
+    public Optional<UserProfileModel> updateUserProfileByUserId(Integer userId, UserUpdateRequest.Profile profile) throws AccountNotFoundException
+    {
+        if (uniqueUser_id(userId)){
+            throw new AccountNotFoundException("User Profile does not exist.");
+        }
+        UserProfileEntity entity = getProfileEntityByUserID(userId).get();
+        entity.setBio(profile.getBio());
+        entity.setLatitude(profile.getLatitude());
+        entity.setLongitude(profile.getLongitude());
         UserProfileEntity result = dao.save(entity);
         Optional<UserProfileModel> ret = Optional.ofNullable(entityToModel(result));
         return ret;
@@ -121,8 +133,14 @@ public class UserProfileService{
     }
 
     public boolean uniqueUser_id(int user_id){
-        return dao.findUserProfileByUserID(user_id) == null;
+        return !dao.existsByUserID(user_id);
     }
 
+    @Autowired
+    public UserProfileService(UserProfileDao dao, FileEncoder encoder) {
+        this.dao = dao;
+        this.encoder = encoder;
+        this.targetDimensions = new Rectangle(32, 32);
+    }
     
 }

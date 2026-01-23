@@ -107,7 +107,7 @@ public class UserProfileServiceTest {
     //modelToEntity
     @Test
     public void EntityConversionTest(){
-        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2.0, 3.0, "cc");
 
         UserProfileEntity entity = service.modelToEntity(model);
 
@@ -172,7 +172,7 @@ public class UserProfileServiceTest {
     public void CreateProfileTest(){
         try {
             //I have no idea how to accurately test this.
-            UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+            UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2.0, 3.0, "cc");
             UserProfileEntity entity = new UserProfileEntity();
             
             entity.setUserID(1);
@@ -203,7 +203,7 @@ public class UserProfileServiceTest {
         UserProfileEntity entity = new UserProfileEntity();
         when(dao.findUserProfileByUserID(1)).thenReturn(entity);
 
-        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2, 3, "cc");
+        UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2.0, 3.0, "cc");
 
         assertThrows(DatabaseConflictException.class, () -> {service.createNewUserProfile(model);}, "User Profile already exists.");
     }

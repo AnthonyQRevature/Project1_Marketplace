@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
 import project.controller.request.ProfileRequest;
@@ -19,6 +21,7 @@ import project.controller.response.UserResponse;
 import project.service.UserProfileService;
 import project.service.UserService;
 import project.util.AllowCORS;
+import project.util.Secure;
 
 @RestController
 @AllowCORS
@@ -61,14 +64,15 @@ public class UserController {
         }
     }
 
-    //Fix this Murphy
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchUserAndProfile(@PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
+    @Transactional
+    @Secure
+    public ResponseEntity<?> patchUserAndProfile(@RequestHeader("Authorization") String auth, @PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
         try{
             //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
             UserEntity entity = userService.updateUserEmail(id, body).get();
-            ProfileRequest profileRequest = body.getProfileRequest();
-            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfile(id, profileRequest).get());
+            var profile = body.getProfileRequest();
+            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfileByUserId(id, profile).get());
 
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
@@ -79,7 +83,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUserAndProfile(@PathVariable("id") Integer id) {
+    @Secure
+    public ResponseEntity<?> deleteUserAndProfile(@RequestHeader("Authorization") String auth, @PathVariable("id") Integer id) {
         try{
             userProfileService.deleteUserProfileById(id);
             userService.deleteUserById(id);
