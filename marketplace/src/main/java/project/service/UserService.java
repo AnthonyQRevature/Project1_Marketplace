@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
-import project.Repository.Entities.UserProfileEntity;
 import project.Repository.Entities.UserEntity.UserRole;
+import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
 import project.Repository.dao.UserProfileDao;
 import project.controller.request.LoginRequest;
@@ -18,6 +18,7 @@ import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.LoginResponse;
 import project.util.DateUtil;
+import project.util.DefaultPfp;
 import project.util.Hasher;
 import project.util.TokenUtil;
 import project.util.exception.DatabaseConflictException;
@@ -30,6 +31,7 @@ import project.util.exception.InvalidCredentialsException;
 public class UserService {
 
     UserDao dao;
+    DefaultPfp defaultPfp;
     UserProfileDao profileDao;
     Hasher hasher;
     DateUtil dateUtil;
@@ -86,6 +88,7 @@ public class UserService {
             //create a corresponding profile
             UserProfileEntity profileEntity = new UserProfileEntity();
             profileEntity.setUserID(result.getId());
+            profileEntity.setPfpEncoded(defaultPfp.get());
             profileDao.save(profileEntity);
 
             //conversion from entity to model
@@ -149,9 +152,10 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil) 
+    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil, DefaultPfp defaultPfp) 
     {
         this.dao = dao;
+        this.defaultPfp = defaultPfp;
         this.profileDao = profileDao;
         this.hasher = hasher;
         this.dateUtil = dateUtil;
