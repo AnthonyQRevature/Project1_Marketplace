@@ -19,7 +19,7 @@ export default function NavBar()
 function MyProfile(props : {auth: Authentication})
 {
   const {auth} = props;
-  if (auth.id != -1)
+  if (!auth.isGuest())
   {
     return (
       <div className="profile"><Link to={`/users/${auth.id}`}><p>My Profile</p></Link></div>

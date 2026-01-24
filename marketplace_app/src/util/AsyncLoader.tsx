@@ -1,7 +1,8 @@
-import { useEffect, useState, type FC } from "react";
+import { useContext, useEffect, useState, type FC } from "react";
 import type { Endpoint } from "./Endpoint";
 import AsyncLoader from "./AsyncLoaderPlain";
 import logError from "./logError";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 
 type AsyncLoaderInit<T> = 
 {
@@ -34,15 +35,25 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
     let Otherwise : FC = props.otherwise || (() => <></>);
     let Abort : FC = props.abort || props.otherwise || (() => <></>);
 
+    const [auth, _] = useContext(AuthenticationContext);
+
     //run fetch up to rep times
     const async_fetch = async (rep: number) => {
       let i = 0;
       while (true) {
         try {
-          const response = await fetch(endpoint.endpoint, { method: endpoint.method });
-          const value: T = await response.json();
-          setState(value);
-          return;
+          const response = await fetch(endpoint.endpoint, { 
+            method: endpoint.method,
+            headers: {
+              Authorization: auth.encryptedToken
+            }
+          });
+          if (response.ok)
+          {
+            const value: T = await response.json();
+            setState(value);
+            return;
+          }
         }
         catch (e) {
           //fail

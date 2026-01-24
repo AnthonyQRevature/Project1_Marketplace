@@ -12,4 +12,4 @@ export type UserProfile = {
   }
 }
 
-export type Blocks = Array<{}>;
+export type Blocks = Array<{blocker: number, blocked: number}>;

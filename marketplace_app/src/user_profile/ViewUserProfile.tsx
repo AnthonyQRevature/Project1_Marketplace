@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import "./ViewUserProfile.css";
 import { Link, useNavigate, useParams, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
@@ -24,6 +24,9 @@ function ViewUserProfilePage()
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
   const [AsyncLoader, reset] = useLoader<UserProfile>(makeEndpoint(Number(user_id)));
+
+  //reload on param change
+  useEffect(reset, [user_id]);
 
   return (
     <AsyncLoader foward={{reset: reset}} then={Display} otherwise={() => <p>Loading</p>}/>
