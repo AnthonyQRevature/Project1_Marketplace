@@ -17,6 +17,7 @@ import project.util.SecurityLevel;
 
 import java.util.List;
 
+import project.util.Secure;
 import project.util.TokenUtil;
 import project.util.exception.InvalidRequestException;
 
@@ -102,9 +103,9 @@ public class ReportController {
 	@Transactional
 	public ResponseEntity<ReportEntity> createNewReport(
 			@RequestHeader("Authorization") String authHeader,
-			@RequestBody ReportPostBody body,
-			@PathVariable Integer id)
-	{
+			@PathVariable int id,
+			@RequestBody ReportPostBody body
+	) {
 		try
 		{
 			var token = tokenUtil.asToken(authHeader);

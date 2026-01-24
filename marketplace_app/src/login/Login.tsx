@@ -12,9 +12,7 @@ function Register()
   const navigate = useNavigate();
   const formHandler = handleSubmit((val) => {
     setResponse(val);
-    let auth = val as Authentication;
-    setAuth(auth);
-  }, navigate);
+  }, setAuth, navigate);
 
   return (
     <>
@@ -39,7 +37,7 @@ function Register()
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
+function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => void, navigate : NavigateFunction)
 {
   return async (e : FormData) => 
   {
@@ -61,6 +59,9 @@ function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFuncti
       {
         const response = await result.json();
         setResponse(response);
+
+        //set auth
+        setAuth(new Authentication(response));
 
         /*
          * navigate back to homepage once we recieve the response

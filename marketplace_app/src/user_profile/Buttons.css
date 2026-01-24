@@ -1,0 +1,28 @@
+.button-grid {
+    display: flex;
+}
+
+.danger {
+    width: 20vw;
+}
+
+.delete, .confirm {
+    background-color: red;
+}
+
+.reset {
+    background-color: lightgray;
+}
+
+.icon {
+    width: 35px;
+    height: 35px;
+    
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+.icon:hover {
+    border-color: #646cff;
+}
