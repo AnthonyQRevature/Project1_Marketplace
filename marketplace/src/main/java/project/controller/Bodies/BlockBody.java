@@ -4,39 +4,45 @@ import java.util.Objects;
 
 public class BlockBody {
 	private Integer id_blocked;
-	private Integer id_blocker;
+	//private Integer id_blocker;
 
 	public BlockBody() {}
-	public BlockBody(Integer id_blocked, Integer id_blocker) {
+	public BlockBody(Integer id_blocked) {
 		this.id_blocked = id_blocked;
-		this.id_blocker = id_blocker;
 	}
 
 	public Integer getId_blocked() {return id_blocked;}
 	public void setId_blocked(Integer id_blocked) {this.id_blocked = id_blocked;}
-	public Integer getId_blocker() {return id_blocker;}
-	public void setId_blocker(Integer id_blocker) {this.id_blocker = id_blocker;}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.id_blocked);
+        return hash;
+    }
 
-		BlockBody blockBody = (BlockBody) o;
-		return Objects.equals(id_blocked, blockBody.id_blocked) && Objects.equals(id_blocker, blockBody.id_blocker);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BlockBody other = (BlockBody) obj;
+        return Objects.equals(this.id_blocked, other.id_blocked);
+    }
 
-	@Override
-	public int hashCode() {
-		int result = Objects.hashCode(id_blocked);
-		result = 31 * result + Objects.hashCode(id_blocker);
-		return result;
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("BlockBody{");
+        sb.append("id_blocked=").append(id_blocked);
+        sb.append('}');
+        return sb.toString();
+    }
 
-	@Override
-	public String toString() {
-		return "BlockBody{" +
-				"id_blocked=" + id_blocked +
-				", id_blocker=" + id_blocker +
-				'}';
-	}
 }

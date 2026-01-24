@@ -1,20 +1,22 @@
 package project.controller;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.controller.Bodies.BlockBody;
-import project.controller.Bodies.BlockedBy;
 import project.service.BlocksService;
 import project.util.AllowCORS;
-import project.util.SecureIndescriminate;
+import project.util.Secure;
 import project.util.SecurityLevel;
 
 @RestController
@@ -28,29 +30,53 @@ public class BlocksController {
 	}
 
 	@GetMapping("/users/{id}/blocks")
-	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public ResponseEntity getAllBlocksBy(
+	@Secure(SecurityLevel.USER)
+	public ResponseEntity<?> getAllBlocksBy(
 			@RequestHeader("Authorization") String authHeader,
-			@RequestBody BlockedBy blockedBy)
-	{
-		return ResponseEntity.ok(blocksService.getAllBy(blockedBy.getId_blocker()));
+			@PathVariable int id
+	) {
+		try {
+			return ResponseEntity.ok(blocksService.getAllBy(id));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping("/users/{id}/blocks")
-	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public ResponseEntity insertBlock(	@RequestHeader("Authorization") String authHeader,
-								@RequestBody BlockBody body)
+	@Secure(SecurityLevel.USER)
+	public ResponseEntity<?> insertBlock(	
+		@RequestHeader("Authorization") String authHeader,
+		@PathVariable int id,
+		@RequestBody BlockBody body)
 	{
-		blocksService.insertBlock(body.getId_blocker(), body.getId_blocked());
-		return ResponseEntity.ok().build();
+		try
+		{
+			blocksService.insertBlock(id, body.getId_blocked());
+			return ResponseEntity.ok().build();
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@DeleteMapping("/users/{id}/blocks")
-	@SecureIndescriminate(SecurityLevel.USER)
-	public ResponseEntity unBlock(@RequestHeader("Authorization") String authHeader,
-								  @RequestBody BlockBody body, Errors error)
+	@Secure(SecurityLevel.USER)
+	public ResponseEntity<?> unBlock(
+		@RequestHeader("Authorization") String authHeader,
+		@PathVariable int id,
+		@RequestBody BlockBody body, Errors error)
 	{
-		blocksService.delete(body.getId_blocker(), body.getId_blocked());
-		return ResponseEntity.ok().build();
+		try
+		{
+			blocksService.delete(id, body.getId_blocked());
+			return ResponseEntity.ok().build();
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
