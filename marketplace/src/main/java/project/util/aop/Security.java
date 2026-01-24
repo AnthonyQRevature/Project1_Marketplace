@@ -9,21 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import project.util.TokenUtil;
+import project.Repository.Entities.UserEntity.UserRole;
+import project.Repository.dao.UserDao;
+import project.service.UserService;
 import project.util.Secure;
 import project.util.SecureIndescriminate;
+import project.util.SecurityLevel;
+import project.util.TokenUtil;
 
 @Aspect
 @Component
 @SuppressWarnings("unused")
 public class Security {
 
+    UserDao dao;
     TokenUtil tokenUtil;
 
     @Autowired
-    Security(TokenUtil tokenUtil)
+    Security(TokenUtil tokenUtil, UserDao dao)
     {
         this.tokenUtil = tokenUtil;
+        this.dao = dao;
     }
 
     @Pointcut("@annotation(security)")
@@ -79,20 +85,27 @@ public class Security {
         return checkSecure(joinPoint, authHeader, id, security);
     }
     
-    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int userId, Secure security)
+    public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, int user_id, Secure security)
         throws Throwable
     {
         var token = tokenUtil.asToken(authHeader);
         if (token.isValid())
         {
-            if(!token.isExpired() && token.getId() == userId) 
+            if(!token.isExpired() && token.getId() == user_id) 
             {
-                //if the function throws an exception we dont want to intercept it
-                return (ResponseEntity<?>)joinPoint.proceed();
+                //verify user type
+                int id = token.getId();
+                var usr = dao.findById(id);
+                SecurityLevel level = security.value();
+                if (usr.isPresent() && usr.get().getRole().value >= level.value)
+                {
+                    //if the function throws an exception we dont want to intercept it
+                    return (ResponseEntity<?>)joinPoint.proceed();
+                }
             }
         }
 
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(403).build();
     }
     public ResponseEntity<?> checkSecure(ProceedingJoinPoint joinPoint, String authHeader, SecureIndescriminate security)
         throws Throwable
@@ -107,11 +120,18 @@ public class Security {
         {
             if(!token.isExpired())
             {
-                //if the function throws an exception we dont want to intercept it
-                return (ResponseEntity<?>)joinPoint.proceed();
+                //verify user type
+                int id = token.getId();
+                var usr = dao.findById(id);
+                SecurityLevel level = security.value();
+                if (usr.isPresent() && usr.get().getRole().value >= level.value)
+                {
+                    //if the function throws an exception we dont want to intercept it
+                    return (ResponseEntity<?>)joinPoint.proceed();
+                }
             }
         }
 
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(403).build();
     }
 }

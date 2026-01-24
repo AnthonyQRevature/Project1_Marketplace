@@ -23,7 +23,7 @@ public class NotificationEntity {
 	private  String text;
 	public static enum Notification_Type
 	{
-		message_recieved,
+		message_received,
 		system,
 		admin_action;
 	}

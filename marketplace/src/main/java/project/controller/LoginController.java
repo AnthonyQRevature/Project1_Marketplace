@@ -3,7 +3,6 @@ package project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,13 +47,13 @@ public class LoginController {
      * returns a status code of 400 when either the username or password are invalid
      * returns a status code of 409 when a UserEntity with the same Username already exists in the database
      */
-    @PutMapping("/login")
+    @PostMapping("/register")
     @AllowCORS
     public ResponseEntity<RegisterRequest> registerUser(@RequestBody RegisterRequest body)
     {
         try {
             var response = userService.registerNewUser(body);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok().build();
         }
         catch (InvalidCredentialsException e) {
             return ResponseEntity.status(400).build();
@@ -65,5 +64,8 @@ public class LoginController {
     }
 
     @Autowired
-    public LoginController(UserService userService) { this.userService = userService; }
+    public LoginController(UserService userService) 
+    { 
+        this.userService = userService; 
+    }
 }

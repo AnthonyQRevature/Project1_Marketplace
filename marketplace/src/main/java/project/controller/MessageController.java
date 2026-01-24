@@ -1,4 +1,54 @@
+//CHANGED
 package project.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import project.Repository.Entities.MessageEntity;
+import project.service.MessageService;
+import project.util.AllowCORS;
+
+@RestController
+@RequestMapping("/messages")
+@AllowCORS
+public class MessageController {
+
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    // SEND MESSAGE
+    @PostMapping("/send")
+    public ResponseEntity<MessageEntity> sendMessage(
+            @RequestParam Integer senderId,
+            @RequestParam Integer receiverId,
+//          @RequestParam Integer postId,
+            @RequestBody String message
+    ) {
+        return ResponseEntity.ok(messageService.sendMessage(
+            senderId,
+            receiverId,
+            message
+        ));
+    }
+
+    // GET PRIVATE CONVERSATION BETWEEN TWO PEOPLE
+    @GetMapping("/conversation")
+    public ResponseEntity<List<MessageEntity>> getConversation(
+            @RequestParam Integer user1Id,
+            @RequestParam Integer user2Id
+    ) {
+        return ResponseEntity.ok(messageService.getConversation(user1Id, user2Id));
+    }
+}
+
+
+
+/*package project.controller;
 
 import java.util.List;
 
@@ -19,7 +69,7 @@ public class MessageController {
 
     // SEND MESSAGE
     @PostMapping("/send")
-    public MessageEntity sendMessage(
+    public MessageEntity sendMessage( //dont put message in message parameter message
             @RequestParam Integer senderId,
             @RequestParam Integer recieverId,
             @RequestParam Integer postId,
@@ -30,7 +80,9 @@ public class MessageController {
 
     // GET MESSAGES FOR A POST
     @GetMapping("/post/{postId}")
-    public List<MessageEntity> getMessagesForPost(@PathVariable Integer postId) {
-        return messageService.getMessagesForPost(postId);
+    public List<MessageEntity> getMessagesForPost(@PathVariable Integer postId) { //specify between which 2 ppl
+        return messageService.getMessagesForPost(postId); //and which 2 front end
     }
 }
+
+*/
