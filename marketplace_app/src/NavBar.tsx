@@ -10,7 +10,7 @@ export default function NavBar()
   return (
     <div className="nav_bar">
       <div></div>
-      <h1 className="title"><Link to={`/`}><p>Secondhand</p></Link></h1>
+      <Link to={`/`} className="title">Secondhand</Link>
       <MyProfile auth={auth}/>
     </div>
   )

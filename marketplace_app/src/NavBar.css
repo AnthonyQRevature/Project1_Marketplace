@@ -9,7 +9,13 @@
 .title {
     justify-self: center;
     align-self: center;
-    font-size: medium;
+
+    color:black;
+    font-size: larger;
+    font-weight: bold;
+}
+.title:hover {
+    color: black;
 }
 
 .profile {
