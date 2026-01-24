@@ -1,6 +1,8 @@
 package project.controller;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +35,13 @@ public class BlocksController {
 			@RequestHeader("Authorization") String authHeader,
 			@PathVariable int id
 	) {
-		return ResponseEntity.ok(blocksService.getAllBy(id));
+		try {
+			return ResponseEntity.ok(blocksService.getAllBy(id));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping("/users/{id}/blocks")
@@ -43,8 +51,15 @@ public class BlocksController {
 		@PathVariable int id,
 		@RequestBody BlockBody body)
 	{
-		blocksService.insertBlock(id, body.getId_blocked());
-		return ResponseEntity.ok().build();
+		try
+		{
+			blocksService.insertBlock(id, body.getId_blocked());
+			return ResponseEntity.ok().build();
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@DeleteMapping("/users/{id}/blocks")
@@ -54,7 +69,14 @@ public class BlocksController {
 		@PathVariable int id,
 		@RequestBody BlockBody body, Errors error)
 	{
-		blocksService.delete(id, body.getId_blocked());
-		return ResponseEntity.ok().build();
+		try
+		{
+			blocksService.delete(id, body.getId_blocked());
+			return ResponseEntity.ok().build();
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
