@@ -51,6 +51,11 @@ public class BlocksController {
 		@PathVariable int id,
 		@RequestBody BlockBody body)
 	{
+		if(id == body.getId_blocked())
+		{
+			//a user cannot block themself
+			return ResponseEntity.badRequest().build();
+		}
 		try
 		{
 			blocksService.insertBlock(id, body.getId_blocked());
