@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import './DeleteButton.css'
+import './Buttons.css'
 import { useNavigate, useParams, type NavigateFunction } from 'react-router';
 import type { Endpoint } from '../util/Endpoint';
 import AuthenticationContext, { Authentication } from '../authentication/AuthenticationContext';
@@ -22,7 +22,7 @@ export default function DeleteButton()
   if (!confirm)
   {
     return (
-      <div className='delete-grid'>
+      <div className='button-grid'>
         <button className='delete danger' onClick={() => setConfirm(true)}>Delete</button>
       </div>
     );

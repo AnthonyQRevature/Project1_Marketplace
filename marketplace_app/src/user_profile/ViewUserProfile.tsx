@@ -6,6 +6,8 @@ import { EncodedImage } from "../util/EncodedImage";
 import type { Endpoint } from "../util/Endpoint";
 import DeleteButton from "./DeleteButton";
 import useLoader from "../util/AsyncLoader";
+import type { UserProfile } from "../util/DataStructure";
+import ProfileSocialButtons from "./SocialButtons";
 
 //get user profile endpoint
 function makeEndpoint(id: number) : Endpoint
@@ -17,21 +19,7 @@ function pfp_endpoint(id: number) : Endpoint
   return {endpoint: `http://localhost:8080/users/${id}/media`, method: "POST"};
 }
 
-type UserProfile = {
-  id : number,
-  username : string,
-  email : string,
-  profile: 
-  {
-    pfp_encoded : string,
-    bio : string,
-    latitude : number,
-    longitude : number,
-    distance : number
-  }
-}
-
-function ViewUserProfile()
+function ViewUserProfilePage()
 {
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
@@ -58,15 +46,20 @@ function Display(props : {resource : UserProfile, reset: () => void})
   if (!editMode)
   {
     return (
-      <>
-        <EncodedImage img={profile.profile.pfp_encoded} />
-        {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-        <h1>{profile.username}</h1>
-        <p>{profile.email}</p>
-        <p>BIO:</p>
-        <p>{profile.profile.bio}</p>
-        <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
-      </>
+      <div className="profile-columns">
+        <div>
+          <EncodedImage img={profile.profile.pfp_encoded} />
+          {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+          <h1>{profile.username}</h1>
+          <p>{profile.email}</p>
+          <p>BIO:</p>
+          <p>{profile.profile.bio}</p>
+          <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+        </div>
+        <div>
+          <ProfileSocialButtons />
+        </div>
+      </div>
     );
   }
   else
@@ -159,4 +152,4 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
   }
 }
 
-export default ViewUserProfile;
+export default ViewUserProfilePage;
