@@ -113,28 +113,32 @@ function ReportButton()
 
   const report = async () =>
   {
+    
     const reason = prompt("Reason");
 
-    console.log(reason);
-
-    const endpoint = makeReportEndpoint(Number(user_id));
-    const response = await fetch(endpoint.endpoint, {
-      method: endpoint.method,
-      body: JSON.stringify({
-        reporter_id: auth.id, 
-        reported_id: Number(user_id),
-        reason: reason
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: auth.encryptedToken
-      }
-    });
-
-    if (response.ok)
+    if(reason != null)
     {
-      alert("your response has been successfully submitted");
-    }
+      console.log(reason);
+
+      const endpoint = makeReportEndpoint(Number(user_id));
+      const response = await fetch(endpoint.endpoint, {
+        method: endpoint.method,
+        body: JSON.stringify({
+          reporter_id: auth.id, 
+          reported_id: Number(user_id),
+          reason: reason
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth.encryptedToken
+        }
+      });
+
+      if (response.ok)
+      {
+        alert("your response has been successfully submitted");
+      }
+  }
   }
 
   return (
