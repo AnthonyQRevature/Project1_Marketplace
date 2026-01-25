@@ -112,6 +112,7 @@ public class ReportController {
 
 			if (body.getReporter_id() != token.getId()) throw new InvalidRequestException();
 			if (body.getReported_id() != id) throw new InvalidRequestException();
+			if (body.getReported_id() == body.getReporter_id()) throw new InvalidRequestException();
 			return ResponseEntity.ok(reportService.createReport(body));
 		}
 		catch (InvalidRequestException e)

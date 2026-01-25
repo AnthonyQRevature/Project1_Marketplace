@@ -39,10 +39,11 @@ function makeReportEndpoint(target : number) : Endpoint
 export default function ProfileSocialButtons()
 {
   const [auth, _] = useContext(AuthenticationContext);
+  const {user_id} = useParams();
   const blockEndpoint = makeBlockGetter(auth.id);
   const [AsyncLoader, reset] = useLoader(blockEndpoint);
 
-  if (auth.isGuest())
+  if (auth.isGuest() || auth.id == Number(user_id))
   {
     return <></>;
   }
