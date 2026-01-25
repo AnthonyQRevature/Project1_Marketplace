@@ -51,7 +51,7 @@ export default function ProfileSocialButtons()
   {
     return (
       <div className='button-grid'>
-        <AsyncLoader then={BlockButton} foward={{reset: reset}}/>
+        <AsyncLoader then={BlockButton} foward={{reset: reset}} otherwise={() => <button className='block'>...</button>}/>
         <ReportButton />
       </div>
     );
@@ -119,8 +119,6 @@ function ReportButton()
 
     if(reason != null)
     {
-      console.log(reason);
-
       const endpoint = makeReportEndpoint(Number(user_id));
       const response = await fetch(endpoint.endpoint, {
         method: endpoint.method,
@@ -139,7 +137,7 @@ function ReportButton()
       {
         alert("your response has been successfully submitted");
       }
-  }
+    }
   }
 
   return (

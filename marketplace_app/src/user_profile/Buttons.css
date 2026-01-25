@@ -14,6 +14,10 @@
     background-color: lightgray;
 }
 
+.block {
+    width: 100px;
+}
+
 .icon {
     width: 35px;
     height: 35px;
