@@ -36,7 +36,7 @@ function makeReportEndpoint(target : number) : Endpoint
   };
 }
 
-export default function ProfileSocialButtons()
+export default function ProfileSocialButtons(props: { user_id : number })
 {
   const [auth, _] = useContext(AuthenticationContext);
   const {user_id} = useParams();
@@ -51,7 +51,7 @@ export default function ProfileSocialButtons()
   {
     return (
       <div className='button-grid'>
-        <AsyncLoader then={BlockButton} foward={{reset: reset}}/>
+        <AsyncLoader then={BlockButton} foward={{reset: reset}} otherwise={() => <button className='block'>...</button>}/>
         <ReportButton />
       </div>
     );
@@ -119,8 +119,6 @@ function ReportButton()
 
     if(reason != null)
     {
-      console.log(reason);
-
       const endpoint = makeReportEndpoint(Number(user_id));
       const response = await fetch(endpoint.endpoint, {
         method: endpoint.method,
@@ -139,10 +137,10 @@ function ReportButton()
       {
         alert("your response has been successfully submitted");
       }
-  }
+    }
   }
 
   return (
-    <img className='icon report' onClick={report} src={flag_icon} />
+    <img className='icon report link' onClick={report} src={flag_icon} />
   )
 }

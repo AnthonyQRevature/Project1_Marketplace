@@ -14,15 +14,16 @@
     background-color: lightgray;
 }
 
-.icon {
-    width: 35px;
-    height: 35px;
-    
+.block {
+    width: 100px;
+}
+
+.report {    
     border-radius: 8px;
     border: 1px solid transparent;
     cursor: pointer;
     transition: border-color 0.25s;
 }
-.icon:hover {
+.report:hover {
     border-color: #646cff;
 }

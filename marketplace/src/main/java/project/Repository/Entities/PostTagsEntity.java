@@ -19,6 +19,9 @@ public class PostTagsEntity
 		public Integer post;
 		public Integer tag;
 
+		public PostTagsID() {
+		}
+
 		public PostTagsID(Integer postID, Integer tagID) {
 			this.post = postID;
 			this.tag = tagID;

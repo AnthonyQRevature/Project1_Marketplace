@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import "./ViewUserProfile.css";
 import { Link, useNavigate, useParams, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
 import { EncodedImage } from "../util/EncodedImage";
@@ -8,6 +7,9 @@ import DeleteButton from "./DeleteButton";
 import useLoader from "../util/AsyncLoader";
 import type { UserProfile } from "../util/DataStructure";
 import ProfileSocialButtons from "./SocialButtons";
+
+import mailIcon from "../assets/mail.png";
+import "./ViewUserProfile.css";
 
 //get user profile endpoint
 function makeEndpoint(id: number) : Endpoint
@@ -22,14 +24,16 @@ function pfp_endpoint(id: number) : Endpoint
 function ViewUserProfilePage()
 {
   const {user_id} = useParams();
-  const [auth, _] = useContext(AuthenticationContext);
   const [AsyncLoader, reset] = useLoader<UserProfile>(makeEndpoint(Number(user_id)));
 
   //reload on param change
   useEffect(reset, [user_id]);
 
   return (
-    <AsyncLoader foward={{reset: reset}} then={Display} otherwise={() => <p>Loading</p>}/>
+    <>
+      <AsyncLoader foward={{reset: reset}} then={Display} otherwise={() => <p>Loading</p>}/>
+      <Attribution />
+    </>
   );
 }
 
@@ -49,20 +53,23 @@ function Display(props : {resource : UserProfile, reset: () => void})
   if (!editMode)
   {
     return (
-      <div className="profile-columns">
-        <div>
-          <EncodedImage img={profile.profile.pfp_encoded} />
-          {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-          <h1>{profile.username}</h1>
-          <p>{profile.email}</p>
-          <p>BIO:</p>
-          <p>{profile.profile.bio}</p>
-          <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+      <>
+        {owner? <InboxIcon /> : <MsgIcon /> }
+        <div className="profile-columns">
+          <div>
+            <EncodedImage img={profile.profile.pfp_encoded} />
+            {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+            <h1>{profile.username}</h1>
+            <p>{profile.email}</p>
+            <p>BIO:</p>
+            <p>{profile.profile.bio}</p>
+            <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+          </div>
+          <div>
+            <ProfileSocialButtons user_id={Number(user_id)}/>
+          </div>
         </div>
-        <div>
-          <ProfileSocialButtons />
-        </div>
-      </div>
+      </>
     );
   }
   else
@@ -153,6 +160,32 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
     //sets edit mode to false and re requests the profile from the server
     reset();
   }
+}
+
+function InboxIcon()
+{
+  const nav = useNavigate();
+
+  return (
+    <img className="icon link" src={mailIcon} onClick={() => nav("/inbox")} />
+  );
+}
+
+function MsgIcon()
+{
+  const nav = useNavigate();
+  const {user_id} = useParams();
+
+  return (
+    <img className="icon link" src={mailIcon} onClick={() => nav(`/message/${user_id}`)} />
+  );
+}
+
+function Attribution()
+{
+  return (
+    <a className="attribution" href="https://www.flaticon.com/free-icons/email" title="email icons">Email icon created by Freepik - Flaticon</a>
+  );
 }
 
 export default ViewUserProfilePage;

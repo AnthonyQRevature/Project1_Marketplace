@@ -13,4 +13,18 @@ SELECT * FROM (
 )
 WHERE estimated_distance < 5;
 
-SELECT * FROM users;
+SELECT sender, reciever, username, user_profile.id FROM 
+(
+    SELECT DISTINCT messages.sender_id AS sender, messages.receiver_id AS reciever
+    FROM messages
+    UNION
+    SELECT DISTINCT messages.receiver_id AS sender, messages.sender_id AS reciever
+    FROM messages
+) INNER JOIN users ON reciever = users.id
+INNER JOIN user_profile ON users.id = user_profile.user_id
+WHERE (sender, reciever) NOT IN (
+    SELECT blocker_id, blocked_id FROM block
+);
+
+DROP VIEW conversations;
+SELECT * FROM conversations;
