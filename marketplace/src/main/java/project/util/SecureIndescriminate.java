@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
  */
 public @interface SecureIndescriminate {
 
-    SecurityLevel value();
+    SecurityLevel value() default SecurityLevel.USER;
 }

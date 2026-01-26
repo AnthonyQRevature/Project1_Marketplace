@@ -1,6 +1,7 @@
 import './Homepage.css'
 import Head from './Head.tsx'
 import { Link } from 'react-router';
+import SearchBar from './SearchBar.tsx';
 
 function Homepage()
 {
@@ -15,10 +16,10 @@ function Homepage()
           <LinkTo path="/listings" label='Listings' />
         </div>
         <div className="card">
-          <p>Content</p>
+          <LinkTo path="/uploads" label="uploads" />
         </div>
         <div className="card">
-          <p>Content</p>
+          <SearchBar />
         </div>
       </div>
     </>

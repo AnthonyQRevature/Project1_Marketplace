@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
-import AuthenticationContext, { type Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
+import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
+//import logo from '../assets/Logo.png'
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 
@@ -12,9 +13,7 @@ function Register()
   const navigate = useNavigate();
   const formHandler = handleSubmit((val) => {
     setResponse(val);
-    let auth = val as Authentication;
-    setAuth(auth);
-  }, navigate);
+  }, setAuth, navigate);
 
   return (
     <>
@@ -39,7 +38,7 @@ function Register()
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunction)
+function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => void, navigate : NavigateFunction)
 {
   return async (e : FormData) => 
   {
@@ -48,7 +47,7 @@ function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunct
     try
     {
       const result = await fetch(login.endpoint, 
-        { 
+        {
           method: login.method, 
           body: JSON.stringify(formJson),
           headers: new Headers({'content-type': 'application/json'})
@@ -62,10 +61,13 @@ function handleSubmit(setResponse : (val : any)=>void, _navigate : NavigateFunct
         const response = await result.json();
         setResponse(response);
 
+        //set auth
+        setAuth(new Authentication(response));
+
         /*
          * navigate back to homepage once we recieve the response
          */
-        //navigate("/");
+        navigate("/");
       }
       else
       {

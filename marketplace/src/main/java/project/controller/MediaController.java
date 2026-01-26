@@ -1,30 +1,22 @@
 package project.controller;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.service.PostMediaService;
 import project.service.UserProfileService;
-import project.util.AllowCORS;
-import project.util.FileSystemProvider;
-import project.util.Secure;
+import project.util.*;
 import project.util.exception.FileNotFoundException;
+import project.util.AllowCORS;
+import project.util.Secure;
 import project.util.exception.InvalidRequestException;
 
 @RestController
@@ -82,7 +74,7 @@ public class MediaController {
         try
         {
             var entity = profileService.addMedia(file, user_id);
-            return ResponseEntity.ok(entity.getPfp_encoded());
+            return ResponseEntity.ok(entity.getPfpEncoded());
         }
         catch (Exception e)
         {
@@ -93,7 +85,7 @@ public class MediaController {
     //wrong
     @PostMapping("/users/{user_id}/listings/{post_id}/media")
     @AllowCORS
-    @Secure
+    @SecureIndescriminate(SecurityLevel.ADMIN)
     public ResponseEntity<String> postImageUpload(
         @RequestHeader("Authorization") String authHeader, 
         @PathVariable("user_id") int user_id, 

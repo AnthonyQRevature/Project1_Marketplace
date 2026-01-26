@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Upload.css";
 import logError from "../util/logError";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 
 const file_upload = {endpoint: "http://localhost:8080/users/3/listings/1/media", method: "POST"};
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXdfdXNlciIsImp0aSI6IjMiLCJpYXQiOjE3Njg5MzgxNzEsImV4cCI6MTc2ODk4MTM3MX0.9B9XeC8k3nyYqw0HezVo7I89Yu3XcxSvTOcMmzSMo7A";
 
 function Upload()
 {
   const [response, setResponse] = useState<any>(null);
   const [preview, setPreview] = useState<string>("");
+  const [auth, _] = useContext(AuthenticationContext);
+
+  console.log(auth);
 
   let handleOnChange = (e: any) => 
   {
@@ -21,7 +24,7 @@ function Upload()
 
   return (
     <>
-      <form action={handleSubmit(setResponse)}>
+      <form action={handleSubmit(auth.encryptedToken, setResponse)}>
         <table>
           <thead>
             <tr><td>File to upload:</td><td><input type="file" name="file" onChange={handleOnChange} /></td></tr>
@@ -51,7 +54,7 @@ function ImagePreview(props : {url:string})
     );
   }
 }
-function handleSubmit(setResponse : (val : any)=>void)
+function handleSubmit(token : string, setResponse : (val : any)=>void)
 {
   return async (e : FormData) => 
   {

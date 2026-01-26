@@ -1,5 +1,5 @@
 import "./Head.css";
-import logo from '../assets/react.svg'; //replace this with the logo
+import logo from '../assets/Logo.png'; //replace this with the logo
 
 function Test()
 {

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -17,8 +19,24 @@ import io.jsonwebtoken.security.Keys;
 // Roles are not yet implemented into this, as part of how this works we need isAdmin
 @Component
 public class TokenUtil {
+    @ConfigurationProperties("security")
+    public static class TokenProperties
+    {
+        private String secret;
 
-    private final SecretKey key = Keys.hmacShaKeyFor("HVmw2nb7Zgbo0BLtoY3Iv7Sh2CnEgfUd".getBytes(StandardCharsets.UTF_8));
+        public TokenProperties() {
+        }
+
+        public String getSecret() {
+            return secret;
+        }
+
+        public void setSecret(String secret) {
+            this.secret = secret;
+        }
+    }
+
+    private final SecretKey key;
     private final int tokenLifetime = 43200000;
 
     public static class Token
@@ -76,6 +94,8 @@ public class TokenUtil {
         }
     }
 
-    public TokenUtil() {
+    @Autowired
+    public TokenUtil(TokenProperties properties) {
+        key = Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8));
     }
 }

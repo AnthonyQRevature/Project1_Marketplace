@@ -1,5 +1,6 @@
 import "./Listings.css";
-import AsyncLoader from "../util/AsyncLoader";
+import Messages from "../message/Messages";
+import AsyncLoader from "../util/AsyncLoaderPlain";
 import getAsset from "../util/AssetLoader";
 import { useState } from "react";
 
