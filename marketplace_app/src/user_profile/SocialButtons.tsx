@@ -36,7 +36,7 @@ function makeReportEndpoint(target : number) : Endpoint
   };
 }
 
-export default function ProfileSocialButtons()
+export default function ProfileSocialButtons(props: { user_id : number })
 {
   const [auth, _] = useContext(AuthenticationContext);
   const {user_id} = useParams();
@@ -141,6 +141,6 @@ function ReportButton()
   }
 
   return (
-    <img className='icon report' onClick={report} src={flag_icon} />
+    <img className='icon report link' onClick={report} src={flag_icon} />
   )
 }

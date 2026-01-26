@@ -2,20 +2,25 @@
 package project.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import project.Repository.Entities.MessageEntity;
+import project.Repository.dao.ConversationDao;
 import project.Repository.dao.MessageDao;
+import project.controller.response.ProfileBriefResponse;
 
 @Service
 public class MessageService {
 
     private final MessageDao messageDao;
+    private ConversationDao conversationDao;
 
-    public MessageService(MessageDao messageDao) {
+    public MessageService(MessageDao messageDao, ConversationDao conversationDao) {
         this.messageDao = messageDao;
+        this.conversationDao = conversationDao;
     }
 
     // SEND MESSAGE
@@ -44,6 +49,16 @@ public class MessageService {
                         user1Id, user2Id,
                         user2Id, user1Id
                 );
+    }
+
+    public List<ProfileBriefResponse> getConversations(int id) {
+        var list = conversationDao.getBySender(id);
+        List<ProfileBriefResponse> ret = new ArrayList<>();
+        for(var e : list)
+        {
+            ret.add(new ProfileBriefResponse(e.getReciever(), e.getUsername(), e.getPfpEncoded()));
+        }
+        return ret;
     }
 }
 
