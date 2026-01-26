@@ -1,15 +1,16 @@
 package project.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.PostEntity;
-import project.Repository.Entities.PostTagsEntity;
 import project.service.PostService;
 import project.util.AllowCORS;
 @RestController
@@ -29,9 +30,8 @@ public class PostController {
     @ResponseBody
     public ResponseEntity<List<PostEntity>> getPostsByTag(
             @RequestParam(name = "tags", required = false) List<Integer> tagIds,
-            @RequestParam(name = "distance", required = false) Integer distance){
-        System.out.println(distance);
-
+            @RequestParam(name = "distance", required = false) Integer distance
+    ) {
         if ((tagIds==null) || (distance==null)){
             return ResponseEntity.ok(postService.getAllPosts());
         }
