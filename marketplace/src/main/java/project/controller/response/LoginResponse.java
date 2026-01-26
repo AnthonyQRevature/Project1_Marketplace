@@ -1,14 +1,18 @@
 package project.controller.response;
 
+import project.Repository.Entities.UserEntity.UserRole;
+
 public class LoginResponse {
     Integer id;
+    Integer role;
     String username;
     String encryptedToken;
 
-    public LoginResponse(Integer id, String username, String encryptedToken) {
+    public LoginResponse(Integer id, UserRole role, String username, String encryptedToken) {
         this.encryptedToken = encryptedToken;
         this.id = id;
         this.username = username;
+        this.role = role.value;
     }
 
     public Integer getId() {
@@ -33,5 +37,13 @@ public class LoginResponse {
 
     public void setEncryptedToken(String encryptedToken) {
         this.encryptedToken = encryptedToken;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

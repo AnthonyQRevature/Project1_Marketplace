@@ -4,7 +4,7 @@ import logo from '../assets/Logo.png'; //replace this with the logo
 function Test()
 {
   return (
-    <div className="media">
+    <div className="title">
       <div className="content">
         <h1>
           Secondhand

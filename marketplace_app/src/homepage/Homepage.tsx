@@ -16,12 +16,13 @@ function Homepage()
           <LinkTo path="/listings" label='Listings' />
         </div>
         <div className="card">
-          <LinkTo path="/uploads" label="uploads" />
+          <p>EMPTY USE THIS FOR SOMETHING</p>
         </div>
         <div className="card">
           <SearchBar />
         </div>
       </div>
+      <Link to='/'><p className='danger'>view reports</p></Link>
     </>
   );
 }
