@@ -1,19 +1,28 @@
 package project.service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import project.Repository.Entities.*;
 import project.Repository.dao.PostDao;
+import project.Repository.dao.PostMediaDao;
+import project.Repository.dao.PostTagsDao;
 import project.Repository.dao.UserDao;
+import project.controller.request.CreatePostRequest;
 
 @Service
 public class PostService {
     PostDao dao;
     UserDao userDao;
+    PostMediaDao postMediaDao;
+    PostTagsDao postTagsDao;
     @Autowired
     public PostService(PostDao dao) {
         this.dao = dao;
@@ -49,6 +58,41 @@ public class PostService {
 
 
 
+
+    @Transactional
+    public PostEntity createPost(Integer sellerId, CreatePostRequest request) {
+        //create PostEntity
+        PostEntity newPost = new PostEntity();
+        newPost.setSellerId(sellerId);
+        newPost.setDescription(request.getDescription());
+        newPost.setPrice(request.getPrice());
+        newPost.setStatus(PostEntity.PostStatusEnum.valueOf(request.getStatus()));
+        newPost = dao.save(newPost);
+
+        //save media
+        if (request.getMedia() != null) {
+            for (CreatePostRequest.Media m : request.getMedia()) {
+                PostMediaEntity media = new PostMediaEntity();
+                media.setPostId(newPost.getId());
+                media.setMediaEncoded(m.getMedia_encoded());
+                media.setMediaType(PostMediaEntity.MediaTypeEnum.valueOf(m.getMedia_type()));
+                postMediaDao.save(media);
+            }
+        }
+
+        //save tags
+        if (request.getTags() != null) {
+            for (Integer tagId : request.getTags()) {
+                PostTagsEntity tagLink = new PostTagsEntity(newPost.getId(), tagId);
+                postTagsDao.save(tagLink);
+            }
+        }
+
+        return newPost;
+    }
 }
+
+
+
 
 

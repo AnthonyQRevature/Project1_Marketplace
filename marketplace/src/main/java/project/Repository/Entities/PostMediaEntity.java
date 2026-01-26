@@ -90,5 +90,36 @@ public class PostMediaEntity {
         video
     }
 
-    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Integer postId) {
+        this.postId = postId;
+    }
+
+    @Nonnull
+    public String getMediaEncoded() {
+        return mediaEncoded;
+    }
+
+    public void setMediaEncoded(@Nonnull String mediaEncoded) {
+        this.mediaEncoded = mediaEncoded;
+    }
+
+    public MediaTypeEnum getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(MediaTypeEnum mediaType) {
+        this.mediaType = mediaType;
+    }
 }

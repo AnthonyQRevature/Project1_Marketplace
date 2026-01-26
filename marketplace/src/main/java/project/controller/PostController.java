@@ -1,5 +1,6 @@
 package project.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import project.Repository.Entities.PostEntity;
+import project.Repository.Entities.PostMediaEntity;
 import project.Repository.Entities.PostTagsEntity;
+import project.controller.request.CreatePostRequest;
 import project.service.PostService;
 import project.util.AllowCORS;
 @RestController
@@ -41,6 +44,10 @@ public class PostController {
         return ResponseEntity.ok(postService.removePostsFromListWithoutTheseTags(postService.getAllPosts(), tagIds, distance));
     }
 
+    @PostMapping("/createpost")
+    public PostEntity createPost(@RequestParam Integer sellerId, @RequestBody CreatePostRequest request) {
+        return postService.createPost(sellerId, request);
+    }
 
 }
 
