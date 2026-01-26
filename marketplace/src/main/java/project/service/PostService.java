@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.Repository.Entities.*;
+import project.Repository.Entities.PostEntity;
+import project.Repository.Entities.PostTagsEntity;
+import project.Repository.Entities.UserDistanceEntity;
+import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.PostDao;
 import project.Repository.dao.UserDao;
 
@@ -37,13 +40,14 @@ public class PostService {
 
     public List<PostEntity> removePostsFromListWithoutTheseTags(List<PostEntity> posts, List<Integer> wantedTagIds, Integer distance){
         List<PostEntity> finalPostList = new ArrayList<>();
-        for (PostEntity post : posts){
-            for (PostTagsEntity postTag : post.tags){
-                if (wantedTagIds.contains(postTag.getTag())){
-                    finalPostList.add(post);
-                }
-            }
-        }
+        finalPostList = finalPostList.stream()
+            .filter((PostEntity e) -> 
+                wantedTagIds.stream().allMatch(
+                    (Integer id) -> e.tags.stream().anyMatch(
+                        (PostTagsEntity t) -> t.getTag().equals(id)
+                    )
+                )
+            ).toList();
         return finalPostList;
     }
 
