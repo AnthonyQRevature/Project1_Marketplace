@@ -1,0 +1,4 @@
+.conversation {
+    display: grid;
+    grid-template-columns: fit-content(200px) 1fr;
+}

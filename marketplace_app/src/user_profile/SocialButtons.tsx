@@ -141,6 +141,6 @@ function ReportButton()
   }
 
   return (
-    <img className='icon report' onClick={report} src={flag_icon} />
+    <img className='icon report link' onClick={report} src={flag_icon} />
   )
 }
