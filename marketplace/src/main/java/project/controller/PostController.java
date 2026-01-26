@@ -13,6 +13,7 @@ import project.Repository.Entities.PostEntity;
 import project.Repository.Entities.PostMediaEntity;
 import project.Repository.Entities.PostTagsEntity;
 import project.controller.request.CreatePostRequest;
+import project.controller.response.ListingResponse;
 import project.service.PostService;
 import project.util.AllowCORS;
 @RestController
@@ -49,6 +50,10 @@ public class PostController {
         return postService.createPost(sellerId, request);
     }
 
+    @GetMapping("listings/{id}")
+    public ListingResponse getListing(@PathVariable Integer id) {
+        return postService.getListingById(id);
+    }
 }
 
 

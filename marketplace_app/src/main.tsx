@@ -11,6 +11,7 @@ import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
 import Upload from './file_upload_test/Upload.tsx';
 import CreatePost from './createpost/CreatePost.tsx';
+import ViewPost from './view_post/ViewPost.tsx';
 
 AuthenticationContext;
 
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/listings" element={<Listings/>} />
           <Route path="/uploads" element={<Upload/>} />
           <Route path="/createpost" element={<CreatePost/>}/>
+          <Route path="/listings/:postId" element={<ViewPost/>}/>
         </Routes>
       </BrowserRouter>
     </AuthenticationProvider>

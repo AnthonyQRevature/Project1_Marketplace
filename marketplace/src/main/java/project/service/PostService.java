@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import project.Repository.Entities.*;
-import project.Repository.dao.PostDao;
-import project.Repository.dao.PostMediaDao;
-import project.Repository.dao.PostTagsDao;
-import project.Repository.dao.UserDao;
+import project.Repository.dao.*;
 import project.controller.request.CreatePostRequest;
+import project.controller.response.ListingResponse;
 
 @Service
 public class PostService {
@@ -23,9 +21,14 @@ public class PostService {
     UserDao userDao;
     PostMediaDao postMediaDao;
     PostTagsDao postTagsDao;
+    TagDao tagDao;
     @Autowired
-    public PostService(PostDao dao) {
+    public PostService(PostDao dao, UserDao userDao, PostMediaDao postMediaDao, PostTagsDao postTagsDao, TagDao tagDao) {
         this.dao = dao;
+        this.userDao = userDao;
+        this.postMediaDao=postMediaDao;
+        this.postTagsDao=postTagsDao;
+        this.tagDao=tagDao;
     }
 
     //maybe add limit and offset
@@ -90,7 +93,53 @@ public class PostService {
 
         return newPost;
     }
+
+
+
+
+
+
+    public ListingResponse getListingById(Integer id) {
+        PostEntity post = dao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        ListingResponse response = new ListingResponse();
+        response.id = post.id;
+        response.description = post.description;
+        response.price = post.price;
+        response.status = post.status.name();
+
+        // Media
+        List<PostMediaEntity> mediaEntities = postMediaDao.findByPostId(id);
+        response.media = new ArrayList<>();
+        for (PostMediaEntity m : mediaEntities) {
+            response.media.add(
+                    new ListingResponse.MediaResponse(
+                            m.mediaEncoded,
+                            m.mediaType.name()
+                    )
+            );
+        }
+
+        // Tags
+        List<PostTagsEntity> postTags = postTagsDao.findByPost(id);
+        response.tags = new ArrayList<>();
+        for (PostTagsEntity pt : postTags) {
+            TagEntity tag = tagDao.findById(pt.getTag()).orElse(null);
+            if (tag != null) {
+                response.tags.add(
+                        new ListingResponse.TagResponse(
+                                tag.getId(),
+                                tag.getTag_name()
+                        )
+                );
+            }
+        }
+
+        return response;
+    }
 }
+
 
 
 
