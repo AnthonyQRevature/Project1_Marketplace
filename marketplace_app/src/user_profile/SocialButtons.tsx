@@ -36,7 +36,7 @@ function makeReportEndpoint(target : number) : Endpoint
   };
 }
 
-export default function ProfileSocialButtons()
+export default function ProfileSocialButtons(props: { user_id : number })
 {
   const [auth, _] = useContext(AuthenticationContext);
   const {user_id} = useParams();
