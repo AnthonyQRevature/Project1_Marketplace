@@ -35,7 +35,7 @@ public class PostService {
         return postsWithinDistance;
     }
 
-    public List<PostEntity> removePostsFromListWithoutTheseTags(List<PostEntity> posts, List<Integer> wantedTagIds){
+    public List<PostEntity> removePostsFromListWithoutTheseTags(List<PostEntity> posts, List<Integer> wantedTagIds, Integer distance){
         List<PostEntity> finalPostList = new ArrayList<>();
         for (PostEntity post : posts){
             for (PostTagsEntity postTag : post.tags){
@@ -46,6 +46,7 @@ public class PostService {
         }
         return finalPostList;
     }
+
 
 
 }

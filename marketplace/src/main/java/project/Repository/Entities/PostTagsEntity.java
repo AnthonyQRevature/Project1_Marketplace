@@ -14,11 +14,13 @@ import java.util.Objects;
 @IdClass(PostTagsEntity.PostTagsID.class)
 public class PostTagsEntity
 {
+
 	public static class PostTagsID
 	{
 		public Integer post;
 		public Integer tag;
 
+        public PostTagsID(){}
 		public PostTagsID(Integer postID, Integer tagID) {
 			this.post = postID;
 			this.tag = tagID;

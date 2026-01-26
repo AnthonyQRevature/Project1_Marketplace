@@ -1,6 +1,7 @@
 package project.Repository.Entities;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -39,6 +40,6 @@ public class PostEntity {
     @OneToMany(targetEntity=PostMediaEntity.class, mappedBy="postId")
     public List<PostMediaEntity> media;
 
-    @OneToMany(targetEntity=PostTagsEntity.class, mappedBy="postID")
+    @OneToMany(targetEntity=PostTagsEntity.class, mappedBy="post")
     public List<PostTagsEntity> tags;
 }
