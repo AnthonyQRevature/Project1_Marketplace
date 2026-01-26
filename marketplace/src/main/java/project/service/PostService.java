@@ -39,8 +39,8 @@ public class PostService {
     }
 
     public List<PostEntity> removePostsFromListWithoutTheseTags(List<PostEntity> posts, List<Integer> wantedTagIds, Integer distance){
-        List<PostEntity> finalPostList = new ArrayList<>();
-        finalPostList = finalPostList.stream()
+        List<PostEntity> finalPostList;
+        finalPostList = posts.stream()
             .filter((PostEntity e) -> 
                 wantedTagIds.stream().allMatch(
                     (Integer id) -> e.tags.stream().anyMatch(

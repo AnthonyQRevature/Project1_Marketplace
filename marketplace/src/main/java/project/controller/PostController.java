@@ -35,9 +35,6 @@ public class PostController {
         if ((tagIds==null) || (distance==null)){
             return ResponseEntity.ok(postService.getAllPosts());
         }
-        for (Integer t:tagIds){
-            System.out.println(t);
-        }
         return ResponseEntity.ok(postService.removePostsFromListWithoutTheseTags(postService.getAllPosts(), tagIds, distance));
     }
 
