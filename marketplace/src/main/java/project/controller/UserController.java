@@ -1,5 +1,7 @@
 package project.controller;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,7 +80,7 @@ public class UserController {
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
-        } catch (Exception e){
+        } catch (AccountNotFoundException e){
             return ResponseEntity.badRequest().body(e);
         }
     }

@@ -28,8 +28,8 @@ import project.util.exception.InvalidRequestException;
 @RestController
 @AllowCORS
 public class ReportController {
-	private ReportService reportService;
-	private TokenUtil tokenUtil;
+	private final ReportService reportService;
+	private final TokenUtil tokenUtil;
 
 	@Autowired
 	public ReportController(ReportService reportService, TokenUtil tokenUtil) {
@@ -53,7 +53,7 @@ public class ReportController {
 		//changes status of a report with given id, to new status
 	@PatchMapping("/reports")
 	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public ResponseEntity ChangeStatus
+	public ResponseEntity<?> ChangeStatus
 	(
 			@RequestHeader("Authorization") String authHeader,
 			@RequestBody ReportStatusBody body, Errors error)

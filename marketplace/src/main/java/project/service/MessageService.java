@@ -16,7 +16,7 @@ import project.controller.response.ProfileBriefResponse;
 public class MessageService {
 
     private final MessageDao messageDao;
-    private ConversationDao conversationDao;
+    private final ConversationDao conversationDao;
 
     public MessageService(MessageDao messageDao, ConversationDao conversationDao) {
         this.messageDao = messageDao;

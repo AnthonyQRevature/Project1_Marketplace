@@ -1,8 +1,7 @@
 package project.Repository.Entities.CompositeID;
 
-import jakarta.persistence.Embeddable;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 public class BlockId implements Serializable
 {
@@ -41,10 +40,10 @@ public class BlockId implements Serializable
 			return false;
 		}
 		final BlockId other = (BlockId) obj;
-		if (this.blocker_id != other.blocker_id) {
+		if (!Objects.equals(this.blocker_id, other.blocker_id)) {
 			return false;
 		}
-		return this.blocked_id == other.blocked_id;
+		return Objects.equals(this.blocked_id, other.blocked_id);
 	}
 
 	@Override

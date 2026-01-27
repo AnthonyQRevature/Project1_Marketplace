@@ -10,11 +10,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 // Roles are not yet implemented into this, as part of how this works we need isAdmin
 @Component
@@ -41,7 +45,7 @@ public class TokenUtil {
 
     public static class Token
     {
-        private Jws<Claims> token;
+        private final Jws<Claims> token;
 
         public Token(Jws<Claims> token) {
             this.token = token;
@@ -73,7 +77,7 @@ public class TokenUtil {
             var claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return new Token(claims);
             
-        }catch(Exception e){
+        }catch(ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e){
             return new Token(null);
         }
     }
@@ -89,7 +93,7 @@ public class TokenUtil {
         try{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }catch(Exception e){
+        }catch(ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e){
             return false;
         }
     }

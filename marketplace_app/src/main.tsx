@@ -10,7 +10,7 @@ import Login from './login/Login.tsx'
 import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
 import Upload from './file_upload_test/Upload.tsx';
-import Messages, { MessagesTest } from './listings/Messages.tsx';
+import { MessagesTest } from './listings/Messages.tsx';
 import ViewUserProfile from './user_profile/ViewUserProfile.tsx';
 import Report from './report/Report.tsx'
 import UserReports from './report/UserReportOf.tsx'

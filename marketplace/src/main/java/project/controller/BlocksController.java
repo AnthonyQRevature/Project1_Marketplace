@@ -24,7 +24,7 @@ import project.util.SecurityLevel;
 @RestController
 @AllowCORS
 public class BlocksController {
-	private BlocksService blocksService;
+	private final BlocksService blocksService;
 
 	@Autowired
 	public BlocksController(BlocksService blocksService) {

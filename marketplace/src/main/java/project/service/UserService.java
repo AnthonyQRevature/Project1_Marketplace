@@ -17,7 +17,6 @@ import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.LoginResponse;
-import project.util.DateUtil;
 import project.util.DefaultPfp;
 import project.util.Hasher;
 import project.util.TokenUtil;
@@ -34,7 +33,6 @@ public class UserService {
     DefaultPfp defaultPfp;
     UserProfileDao profileDao;
     Hasher hasher;
-    DateUtil dateUtil;
     TokenUtil tokenUtil;
 
     /*
@@ -152,13 +150,12 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, DateUtil dateUtil, TokenUtil tokenUtil, DefaultPfp defaultPfp) 
+    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, TokenUtil tokenUtil, DefaultPfp defaultPfp) 
     {
         this.dao = dao;
         this.defaultPfp = defaultPfp;
         this.profileDao = profileDao;
         this.hasher = hasher;
-        this.dateUtil = dateUtil;
         this.tokenUtil = tokenUtil;
     }
 }

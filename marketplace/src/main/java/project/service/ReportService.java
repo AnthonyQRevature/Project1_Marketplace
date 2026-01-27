@@ -30,7 +30,6 @@ public class ReportService {
 			return true;
 		}catch (RuntimeException e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -44,7 +43,6 @@ public class ReportService {
 		}catch(RuntimeException e)
 		{
 			//TODO handle exceptions
-			e.printStackTrace();
 			return false;
 		}
 	}
