@@ -34,6 +34,14 @@ Insert into post_media (post_id, media_encoded) VALUES
 (3, 'media1.jpg'),
 (4, 'media3.jpg');
 
+update post_media
+set media_encoded = 'media3.jpeg'
+where post_id = 4;
+
+update post
+set description='the best tie'
+where id = 4;
+
 TRUNCATE table post_media;
 
 select * from tags;
