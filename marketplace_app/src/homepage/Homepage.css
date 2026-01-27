@@ -5,14 +5,19 @@ h1 {
 p {
     text-align: center;
 }
+p.danger {
+    color: maroon;
+}
 
 .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin-left: 5vw;
+    margin-right: 5vw;
 }
 
 .card {
-    aspect-ratio: 1/1;
+    aspect-ratio: 2/1;
     border: 15px solid black;
     margin: 15px;
 }

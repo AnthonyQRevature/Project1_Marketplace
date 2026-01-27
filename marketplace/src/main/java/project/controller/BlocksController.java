@@ -1,6 +1,7 @@
 package project.controller;
 
-import org.postgresql.util.PSQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.Repository.Entities.BlockEntity;
 import project.controller.Bodies.BlockBody;
 import project.service.BlocksService;
 import project.util.AllowCORS;
@@ -31,7 +33,7 @@ public class BlocksController {
 
 	@GetMapping("/users/{id}/blocks")
 	@Secure(SecurityLevel.USER)
-	public ResponseEntity<?> getAllBlocksBy(
+	public ResponseEntity<List<BlockEntity>> getAllBlocksBy(
 			@RequestHeader("Authorization") String authHeader,
 			@PathVariable int id
 	) {
@@ -51,6 +53,11 @@ public class BlocksController {
 		@PathVariable int id,
 		@RequestBody BlockBody body)
 	{
+		if(id == body.getId_blocked())
+		{
+			//a user cannot block themself
+			return ResponseEntity.badRequest().build();
+		}
 		try
 		{
 			blocksService.insertBlock(id, body.getId_blocked());

@@ -14,8 +14,6 @@ public class UserResponse {
         this.username = username;
         this.verified_seller = verified_seller;
     }
-    public UserResponse() {
-    }
 
     public int getId() {
         return id;

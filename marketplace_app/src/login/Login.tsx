@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
+//import logo from '../assets/Logo.png'
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 
@@ -12,9 +13,7 @@ function Register()
   const navigate = useNavigate();
   const formHandler = handleSubmit((val) => {
     setResponse(val);
-    let auth = val as Authentication;
-    setAuth(auth);
-  }, navigate);
+  }, setAuth, navigate);
 
   return (
     <>
@@ -39,7 +38,11 @@ function Register()
   );
 }
 
+<<<<<<< HEAD
 function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
+=======
+function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => void, navigate : NavigateFunction)
+>>>>>>> fb293b6a16fdaebce9a67603b34f6b957c358c4e
 {
   return async (e : FormData) => 
   {
@@ -61,6 +64,9 @@ function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFuncti
       {
         const response = await result.json();
         setResponse(response);
+
+        //set auth
+        setAuth(new Authentication(response));
 
         /*
          * navigate back to homepage once we recieve the response

@@ -1,13 +1,13 @@
 
 package project.Repository.Entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-
-import java.util.Objects;
 
 @Entity
 @Table(name="post_tags")
@@ -18,6 +18,9 @@ public class PostTagsEntity
 	{
 		public Integer post;
 		public Integer tag;
+
+		public PostTagsID() {
+		}
 
 		public PostTagsID(Integer postID, Integer tagID) {
 			this.post = postID;

@@ -4,11 +4,20 @@ package project.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import project.Repository.Entities.MessageEntity;
+import project.controller.response.ProfileBriefResponse;
 import project.service.MessageService;
 import project.util.AllowCORS;
+import project.util.Secure;
 
 @RestController
 @RequestMapping("/messages")
@@ -43,6 +52,16 @@ public class MessageController {
             @RequestParam Integer user2Id
     ) {
         return ResponseEntity.ok(messageService.getConversation(user1Id, user2Id));
+    }
+
+    // get list of conversations for a given user
+    @GetMapping("/{id}")
+    @Secure
+    public ResponseEntity<List<ProfileBriefResponse>> getConversations(
+        @RequestHeader("Authorization") String auth,
+        @PathVariable int id
+    ) {
+        return ResponseEntity.ok(messageService.getConversations(id));
     }
 }
 
