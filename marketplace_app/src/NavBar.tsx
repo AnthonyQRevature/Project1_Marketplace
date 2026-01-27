@@ -10,7 +10,7 @@ export default function NavBar()
   return (
     <div className="nav_bar">
       <div></div>
-      <Link to={`/`} className="title">Secondhand</Link>
+      <Link to={`/`} className="nav_title">Secondhand</Link>
       <MyProfile auth={auth}/>
     </div>
   )
@@ -28,7 +28,7 @@ function MyProfile(props : {auth: Authentication})
   else
   {
     return (
-      <div className="login_loc"><Link to={"/login"} className="login"><p>Login</p></Link></div>
+      <div className="nav_login_loc"><Link to={"/login"} className="nav_login"><p>Login</p></Link></div>
     )
   }
 }

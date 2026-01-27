@@ -6,7 +6,7 @@
         "a b c";
 }
 
-.title {
+.nav_title {
     justify-self: center;
     align-self: center;
 
@@ -14,7 +14,7 @@
     font-size: larger;
     font-weight: bold;
 }
-.title:hover {
+.nav_title:hover {
     color: black;
 }
 
@@ -22,11 +22,11 @@
     justify-self: right;
 }
 
-.login_loc {
+.nav_login_loc {
 	justify-self:right;
 }
 
-.login {
+.nav_login {
 	justify-self:left;
 
 	color: black;
