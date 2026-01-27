@@ -31,6 +31,18 @@ p {
     aspect-ratio: 1/1;
 }
 
+.post-image
+{
+    width: 60%;
+    aspect-ratio: 4/3;
+}
+.post-image img 
+{
+    width: 100%;
+    object-fit:cover;
+    aspect-ratio: initial;
+}
+
 body {
 	background-color: #8BD3E6;
 }

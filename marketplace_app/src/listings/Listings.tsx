@@ -99,7 +99,7 @@ function PostsGrid(props: { posts: PostEntity[] }) {
 function PostCard(props: { post: PostEntity }) {
   return (
     <div className="postCard">
-      <EncodedImage img={props.post.media[0].mediaEncoded} />
+      <div className="post-image"><EncodedImage img={props.post.media[0].mediaEncoded} /></div>
       <h1>{props.post.price.toLocaleString("en-US", { style: "currency", currency: "USD" })}</h1>
       <p>{props.post.description}</p>
     </div>
