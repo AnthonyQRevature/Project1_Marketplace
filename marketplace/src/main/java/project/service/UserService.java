@@ -13,7 +13,6 @@ import project.Repository.Entities.UserEntity.UserRole;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
 import project.Repository.dao.UserProfileDao;
-import project.controller.model.UserProfileModel;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
@@ -115,7 +114,7 @@ public class UserService {
 
         if(hasher.verifyPassword(logAttempt.getPasswordHash(), request.getPassword())){
             String token = tokenUtil.makeToken(logAttempt.getUsername(), logAttempt.getId());
-            LoginResponse response = new LoginResponse(logAttempt.getId(), logAttempt.getUsername(), token);
+            LoginResponse response = new LoginResponse(logAttempt.getId(), logAttempt.getRole(), logAttempt.getUsername(), token);
             return response;
         }
         else{

@@ -55,6 +55,7 @@ function Display(props : {resource : UserProfile, reset: () => void})
     return (
       <>
         {owner? <InboxIcon /> : <MsgIcon /> }
+        {auth.isAdmin()? <DeleteButton /> : <></>}
         <div className="profile-columns">
           <div>
             <EncodedImage img={profile.profile.pfp_encoded} />
