@@ -1,5 +1,5 @@
 import "./Head.css";
-import logo from '../assets/Logo.png';
+import logo from '../assets/Logo100.png';
 import SearchBar from './SearchBar.tsx';
 
 function Test()
