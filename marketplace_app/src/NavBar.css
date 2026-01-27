@@ -18,8 +18,16 @@
     color: black;
 }
 
-.profile {
-    justify-self: right;
+.nav_profile_loc {
+	justify-self: right;
+}
+
+.nav_profile {
+    color: black;
+}
+
+.nav_profile:hover {
+	color: black;
 }
 
 .nav_login_loc {

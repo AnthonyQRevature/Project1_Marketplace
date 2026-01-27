@@ -22,7 +22,7 @@ function MyProfile(props : {auth: Authentication})
   if (!auth.isGuest())
   {
     return (
-      <div className="profile"><Link to={`/users/${auth.id}`}><p>My Profile</p></Link></div>
+      <div className="nav_profile_loc"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link></div>
     );
   }
   else
