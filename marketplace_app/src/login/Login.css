@@ -2,28 +2,32 @@ p {
     text-align: left;
 }
 
-.userInput {
+.logUserInput {
 	display: flex;
+	flex-direction: column;
    	justify-content: center;
    	align-items: center;
 }
 
-.passInput {
+.logPassInput {
 	display: flex;
+	flex-direction: column;
    	justify-content: center;
    	align-items: center;
 }
 
-.submit {
+.logSubmit {
 	display: flex;
+	flex-direction: column;
    	justify-content: center;
    	align-items: center;
 }
 
-.regLink {
+.logRegLink {
 	display: flex;
    	justify-content: center;
    	align-items: center;
+   	text-align: center;
 }
 
 .loginBox {

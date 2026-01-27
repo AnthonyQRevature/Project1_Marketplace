@@ -37,8 +37,8 @@ Insert into post_media (post_id, media_encoded) VALUES
 (4, 'media3.jpg');
 
 update post_media
-set media_encoded = 'media3.jpeg'
-where post_id = 4;
+set media_encoded = 'media1.png'
+where post_id = 3;
 
 update post
 set description='the best tie'
@@ -50,3 +50,4 @@ select * from tags;
 select * from post;
 select * from post_tags;
 select * from users;
+select * from post_media;

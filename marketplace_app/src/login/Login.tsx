@@ -19,18 +19,18 @@ function Register()
     <>
       <form action={formHandler}>
         <div className = "loginBox">
-	  	  <div className ="userInput">
+	  	  <div className ="logUserInput">
             <label htmlFor="username">Username: </label>
             <input type="text" name="username" id="username" required />
           </div>
-          <div className="passInput">
+          <div className="logPassInput">
             <label htmlFor="password">Password: </label>
             <input type="password" name="password" id="password" required />
           </div>
-          <div className="regLink">
+          <div className="logRegLink">
             <Link to="/register"><p>Register an Account</p></Link>
           </div>
-          <div className="submit">
+          <div className="logSubmit">
             <input type="submit" value="Login" />
           </div>
         </div>
