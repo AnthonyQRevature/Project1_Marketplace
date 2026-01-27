@@ -22,7 +22,7 @@ export type PostEntity = {
   media: {
     postId: number;
     mediaType: string;
-    mediaUrl: string;
+    mediaEncoded: string;
   }[];
   postTags: {
     postNum: number;
