@@ -1,3 +1,5 @@
+
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,6 +13,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-1:#0d1b2a;
+  --color0: #1b263b;
+  --color1: #415a77;
+  --color2: #778da9;
+  --colorbg:#e0e1dd;
 }
 
 .icon {
