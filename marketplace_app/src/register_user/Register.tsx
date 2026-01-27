@@ -12,19 +12,19 @@ function Register()
   return (
     <>
       <form onSubmit={formHandler} className="form-example">
-        <div className="form-example">
+        <div className="regUserInput">
           <label htmlFor="username">Enter your name: </label>
           <input type="text" name="username" id="username" required />
         </div>
-        <div className="form-example">
+        <div className="regPassInput">
           <label htmlFor="password">Enter your password: </label>
           <input type="password" name="password" id="password" required />
         </div>
-        <div className="form-example">
+        <div className="regEmail">
           <label htmlFor="email">Enter your email: </label>
           <input type="email" name="email" id="email" required />
         </div>
-        <div className="form-example">
+        <div className="regSubmit">
           <input type="submit" value="register" />
         </div>
       </form>

@@ -6,7 +6,7 @@
         "a b c";
 }
 
-.title {
+.nav_title {
     justify-self: center;
     align-self: center;
 
@@ -14,12 +14,12 @@
     font-size: larger;
     font-weight: bold;
 }
-.title:hover {
+.nav_title:hover {
     /*color: black;*/
 }
 
-.profile {
-    justify-self: right;
+.nav_profile_loc {
+	justify-self: right;
 }
 .profile p {
     justify-self: center;
@@ -30,11 +30,27 @@
     font-weight: bold;
 }
 
-.login_loc {
+.nav_profile {
+    color: black;
+}
+
+.nav_profile:hover {
+	color: black;
+}
+.nav_profile p {
+    justify-self: center;
+    align-self: center;
+
+    color:var(--color0);
+    font-size: larger;
+    font-weight: bold;
+}
+
+.nav_login_loc {
 	justify-self:right;
 }
 
-.login {
+.nav_login {
 	justify-self:left;
 
 	color: var(--color0);
@@ -42,6 +58,6 @@
 	font-weight: bold;
 }
 
-.login:hover {
+.nav_login:hover {
 	color: black
 }

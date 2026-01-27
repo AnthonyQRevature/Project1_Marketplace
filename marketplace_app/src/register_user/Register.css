@@ -1,3 +1,48 @@
 p {
     text-align: left;
 }
+
+.regUserInput {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	display: flex;
+	flex-direction: column;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.regPassInput {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	display: flex;
+	flex-direction: column;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.regEmail {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	display: flex;
+	flex-direction: column;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.regSubmit {
+	padding-top: 15px;
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+
+.form-example {
+	position:relative;
+	top: 100px;
+	vertical-align: center;
+	background-color: grey;
+	justify-self: center;
+	border: 2px solid #1C6EA4;
+	width: 300px;
+}
