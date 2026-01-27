@@ -1,17 +1,23 @@
 package project.service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
-import project.Repository.Entities.*;
-import project.Repository.dao.*;
+
+import project.Repository.Entities.PostEntity;
+import project.Repository.Entities.PostMediaEntity;
+import project.Repository.Entities.PostTagsEntity;
+import project.Repository.Entities.TagEntity;
+import project.Repository.Entities.UserDistanceEntity;
+import project.Repository.Entities.UserProfileEntity;
+import project.Repository.dao.PostDao;
+import project.Repository.dao.PostMediaDao;
+import project.Repository.dao.PostTagsDao;
+import project.Repository.dao.TagDao;
+import project.Repository.dao.UserDao;
 import project.controller.request.CreatePostRequest;
 import project.controller.response.ListingResponse;
 
@@ -48,14 +54,15 @@ public class PostService {
     }
 
     public List<PostEntity> removePostsFromListWithoutTheseTags(List<PostEntity> posts, List<Integer> wantedTagIds, Integer distance){
-        List<PostEntity> finalPostList = new ArrayList<>();
-        for (PostEntity post : posts){
-            for (PostTagsEntity postTag : post.tags){
-                if (wantedTagIds.contains(postTag.getTag())){
-                    finalPostList.add(post);
-                }
-            }
-        }
+        List<PostEntity> finalPostList;
+        finalPostList = posts.stream()
+            .filter((PostEntity e) -> 
+                wantedTagIds.stream().allMatch(
+                    (Integer id) -> e.tags.stream().anyMatch(
+                        (PostTagsEntity t) -> t.getTag().equals(id)
+                    )
+                )
+            ).toList();
         return finalPostList;
     }
 
