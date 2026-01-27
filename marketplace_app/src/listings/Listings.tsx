@@ -5,6 +5,7 @@ import getAsset from "../util/AssetLoader";
 import Head from '../homepage/Head.tsx'
 import { useEffect, useState } from "react";
 import type { PostEntity } from "../util/DataStructure";
+import { EncodedImage } from "../util/EncodedImage";
 
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
 type TagEntity = {
@@ -98,7 +99,7 @@ function PostsGrid(props: { posts: PostEntity[] }) {
 function PostCard(props: { post: PostEntity }) {
   return (
     <div className="postCard">
-      <img src={getAsset(props.post.media[0].mediaUrl)} />
+      <EncodedImage img={props.post.media[0].mediaEncoded} />
       <h1>{props.post.price.toLocaleString("en-US", { style: "currency", currency: "USD" })}</h1>
       <p>{props.post.description}</p>
     </div>
