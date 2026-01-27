@@ -22,6 +22,9 @@ p {
 .postCard 
 {
     border: 2px solid black;
+    margin: 20px;
+    display: grid;
+    justify-items: center;
 }
 
 .postCard > img
