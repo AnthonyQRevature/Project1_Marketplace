@@ -1,8 +1,9 @@
 import "./Listings.css";
 import Messages from "../message/Messages";
-import AsyncLoader from "../util/AsyncLoaderPlain";
+import useLoader from "../util/AsyncLoader";
 import getAsset from "../util/AssetLoader";
 import { useState } from "react";
+import type { PostEntity } from "../util/DataStructure";
 
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
 type TagEntity = {
@@ -10,26 +11,10 @@ type TagEntity = {
   tag_name: string;
 };
 
-type PostEntity = {
-  id: number;
-  description: string;
-  price: number;
-  status: string;
-  createdAt: string;
-  lastEditTime: string;
-  media: {
-    postId: number;
-    mediaType: string;
-    mediaUrl: string;
-  }[];
-  postTags: {
-    postNum: number;
-    postTagId: number;
-  }[];
-};
 
 function Listings() {
   const [posts, setPosts] = useState<PostEntity[]>([]);
+  const [AsyncLoader, _] = useLoader<TagEntity[]>(get_tags);
 
   // handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +26,8 @@ function Listings() {
 
     const url = new URL("http://localhost:8080/listings");
     url.searchParams.append("distance", distance);
-    tags.forEach(tag => url.searchParams.append("tags", tag));
+    url.searchParams.append("tags", tags.join(','));
+    //tags.forEach(tag => url.searchParams.append("tags", tag));
 
     const response = await fetch(url.toString());
     const data = await response.json();
@@ -49,17 +35,16 @@ function Listings() {
     setPosts(data); // update state to re-render PostsGrid
   };
 
-  const renderTags = (tags: TagEntity[]) => (
-    <TagsList tags={tags} onSubmit={handleSubmit} />
+  const renderTags = (props: {resource: TagEntity[]}) => (
+    <TagsList tags={props.resource} onSubmit={handleSubmit} />
   );
 
   return (
     <>
-      <AsyncLoader<TagEntity[]>
-        endpoint={get_tags}
+      <AsyncLoader
         then={renderTags}
-        otherwise={<p>Loading...</p>}
-        abort={<p>Failed</p>}
+        otherwise={() => <p>Loading...</p>}
+        abort={() => <p>Failed</p>}
       />
       {/* Render PostsGrid from state, so it updates after submit */}
       <PostsGrid posts={posts} />

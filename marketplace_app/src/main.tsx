@@ -15,6 +15,8 @@ import ViewUserProfilePage from './user_profile/ViewUserProfile.tsx';
 import NavBar from './NavBar.tsx';
 import ProfileSocialButtons from './user_profile/SocialButtons.tsx';
 import InboxPage from './inbox/Inbox.tsx';
+import CreatePost from './createpost/CreatePost.tsx';
+import ViewPost from './view_post/ViewPost.tsx';
 
 AuthenticationContext;
 
@@ -34,6 +36,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/inbox" element={<InboxPage />} />
           <Route path="/message/:user_id" element={<MessagePage />} />
 
+          <Route path="/createpost" element={<CreatePost/>}/>
+          <Route path="/listings/:postId" element={<ViewPost/>}/>
         </Routes>
       </BrowserRouter>
     </AuthenticationProvider>

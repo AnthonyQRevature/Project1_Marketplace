@@ -1,5 +1,5 @@
 import "./Head.css";
-import logo from '../assets/Logo.png'; //replace this with the logo
+import logo from '../assets/Logo100.png';
 
 function Test()
 {

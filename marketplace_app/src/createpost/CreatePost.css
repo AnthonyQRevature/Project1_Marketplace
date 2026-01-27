@@ -1,0 +1,35 @@
+.create-post {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.create-post form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-post label {
+  margin-top: 10px;
+}
+
+.create-post input,
+.create-post textarea,
+.create-post button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.tag-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.preview img {
+  max-width: 100px;
+  margin-top: 5px;
+}
