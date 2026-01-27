@@ -11,13 +11,6 @@ CREATE FUNCTION haversine_formula(lat1 DOUBLE PRECISION, lon1 DOUBLE PRECISION, 
     );
 $$ LANGUAGE SQL
 
-<<<<<<< HEAD
-CREATE VIEW user_distances AS(
-    SELECT users.id, users.username, user_profile.pfp_encoded, user_profile.latitude, user_profile.longitude
-    FROM users INNER JOIN user_profile ON users.id = user_profile.id
-
-);
-=======
 CREATE VIEW user_distances AS (
     SELECT users.id, users.username, user_profile.pfp_encoded, user_profile.latitude, user_profile.longitude
     FROM users INNER JOIN user_profile ON users.id = user_profile.id
@@ -38,4 +31,3 @@ CREATE VIEW conversations AS (
         SELECT blocker_id, blocked_id FROM block
     )
 );
->>>>>>> fb293b6a16fdaebce9a67603b34f6b957c358c4e
