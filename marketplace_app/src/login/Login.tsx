@@ -18,19 +18,24 @@ function Register()
   return (
     <>
       <form action={formHandler}>
-        <div>
-          <label htmlFor="username">Username: </label>
-          <input type="text" name="username" id="username" required />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" required />
-        </div>
-        <Link to="/register"><p>Register an Account</p></Link>
-        <div>
-          <input type="submit" value="Login" />
+        <div className = "loginBox">
+	  	  <div className ="userInput">
+            <label htmlFor="username">Username: </label>
+            <input type="text" name="username" id="username" required />
+          </div>
+          <div className="passInput">
+            <label htmlFor="password">Password: </label>
+            <input type="password" name="password" id="password" required />
+          </div>
+          <div className="regLink">
+            <Link to="/register"><p>Register an Account</p></Link>
+          </div>
+          <div className="submit">
+            <input type="submit" value="Login" />
+          </div>
         </div>
       </form>
+
 
       <p>output: {JSON.stringify(response)}</p>
       <p>current authentication: {JSON.stringify(auth)}</p>

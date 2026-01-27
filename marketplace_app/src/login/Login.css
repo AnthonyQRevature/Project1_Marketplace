@@ -1,3 +1,37 @@
 p {
     text-align: left;
 }
+
+.userInput {
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.passInput {
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.submit {
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.regLink {
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.loginBox {
+	position:relative;
+	top: 100px;
+	vertical-align: center;
+	background-color: grey;
+	justify-self: center;
+	border: 2px solid #1C6EA4;
+	width: 300px;
+}
