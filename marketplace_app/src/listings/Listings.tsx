@@ -2,7 +2,7 @@ import "./Listings.css";
 import Messages from "../message/Messages";
 import useLoader from "../util/AsyncLoader";
 import getAsset from "../util/AssetLoader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { PostEntity } from "../util/DataStructure";
 
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
@@ -15,6 +15,16 @@ type TagEntity = {
 function Listings() {
   const [posts, setPosts] = useState<PostEntity[]>([]);
   const [AsyncLoader, _] = useLoader<TagEntity[]>(get_tags);
+
+  //load posts in when the webpage is opened
+  useEffect(() => {
+    fetch("http://localhost:8080/listings")
+      .then((value) => {
+        return value.json();
+      }).then((data) => {
+        setPosts(data);
+      });
+  }, [])
 
   // handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
