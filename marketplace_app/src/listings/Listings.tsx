@@ -2,6 +2,7 @@ import "./Listings.css";
 import Messages from "../message/Messages";
 import AsyncLoader from "../util/AsyncLoaderPlain";
 import getAsset from "../util/AssetLoader";
+import Head from '../homepage/Head.tsx'
 
 const get_tags = {endpoint: "http://localhost:8080/tags", method: "GET"};
 type TagEntity = {
@@ -14,14 +15,14 @@ type PostEntity = {
   id: number,
   description: string,
   price: number,
-//sellerId: number,
+  sellerId: number,
   status: string,
   createdAt: string,
   lastEditTime: string,
   media: {
     postId: number,
     mediaType: string,
-    mediaUrl: string,
+    mediaEncoded: string,
   }[]
 };
 
@@ -32,6 +33,7 @@ function Listings()
   
   return (
     <>
+      <Head/>
       <AsyncLoader<TagEntity[]> endpoint={get_tags} then={renderTags} otherwise={(<p>Loading...</p>)} abort={<p>Failed</p>} />
       <AsyncLoader<PostEntity[]> endpoint={get_posts} then={(posts)=>(<PostsGrid posts={posts}/>)} otherwise={(<p>Loading...</p>)}/>
     </>
@@ -81,7 +83,7 @@ function PostCard(props : {post: PostEntity})
   //add title and user and stuff
   return (
     <div className="postCard">
-      <img src={getAsset(props.post.media[0].mediaUrl)}/>
+      <img src={getAsset(props.post.media[0].mediaEncoded)}/>
       <h1>{props.post.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h1>
       <p>{props.post.description}</p>
     </div>

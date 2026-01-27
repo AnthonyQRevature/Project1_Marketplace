@@ -30,3 +30,7 @@ p {
     max-width: 60%;
     aspect-ratio: 1/1;
 }
+
+body {
+	background-color: #8BD3E6;
+}

@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
-//import logo from '../assets/Logo.png'
+import logo from '../assets/Logo.png'
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 

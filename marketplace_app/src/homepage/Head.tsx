@@ -1,10 +1,14 @@
 import "./Head.css";
-import logo from '../assets/Logo.png'; //replace this with the logo
+import logo from '../assets/Logo.png';
+import SearchBar from './SearchBar.tsx';
 
 function Test()
 {
   return (
     <div className="title">
+      <div className="userSearch">
+        <SearchBar/>
+      </div>
       <div className="content">
         <h1>
           Secondhand

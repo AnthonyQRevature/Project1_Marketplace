@@ -28,7 +28,7 @@ function MyProfile(props : {auth: Authentication})
   else
   {
     return (
-      <div></div>
+      <div className="login_loc"><Link to={"/login"} className="login"><p>Login</p></Link></div>
     )
   }
 }

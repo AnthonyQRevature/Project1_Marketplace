@@ -2,6 +2,7 @@ import './Homepage.css'
 import Head from './Head.tsx'
 import { Link } from 'react-router';
 import SearchBar from './SearchBar.tsx';
+import listing from '../listings/Listings.tsx';
 
 function Homepage()
 {
@@ -10,7 +11,7 @@ function Homepage()
       <Head />
       <div className="cards">
         <div className="card">
-          <Link to="/login"><p>Login</p></Link>
+          <p>EMPTY, moved login to top right</p>
         </div>
         <div className="card">
           <LinkTo path="/listings" label='Listings' />
@@ -23,6 +24,7 @@ function Homepage()
         </div>
       </div>
       <Link to='/'><p className='danger'>view reports</p></Link>
+      
     </>
   );
 }

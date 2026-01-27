@@ -37,3 +37,8 @@ p {
       "image content";
   }
 }
+
+.userSearch {
+  justify-self: left;
+  justify-content: left;
+}
