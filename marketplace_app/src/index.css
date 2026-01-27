@@ -14,6 +14,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /*change and use these color variables*/
   --color-1:#0d1b2a;
   --color0: #1b263b;
   --color1: #415a77;
@@ -24,6 +25,11 @@
 .icon {
   width: 32px;
   height: 32px;
+}
+
+/* Global background */
+body {
+	background-color: var(--colorbg);
 }
 
 .link {

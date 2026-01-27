@@ -1,5 +1,5 @@
 .nav_bar {
-    background-color: #99844D;
+    background-color: var(--color2);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 
@@ -10,16 +10,24 @@
     justify-self: center;
     align-self: center;
 
-    color:black;
+    color:var(--color0);
     font-size: larger;
     font-weight: bold;
 }
 .title:hover {
-    color: black;
+    /*color: black;*/
 }
 
 .profile {
     justify-self: right;
+}
+.profile p {
+    justify-self: center;
+    align-self: center;
+
+    color:var(--color0);
+    font-size: larger;
+    font-weight: bold;
 }
 
 .login_loc {
@@ -29,7 +37,7 @@
 .login {
 	justify-self:left;
 
-	color: black;
+	color: var(--color0);
 	font-size:larger;
 	font-weight: bold;
 }
