@@ -44,21 +44,21 @@ function ReactRoot()
   return (
     <AuthenticationProvider>
       <BrowserRouter>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="/test" element={<Test />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/listings" element={<Listings/>} />
-              <Route path="/uploads" element={<Upload/>} />
-              <Route path="/users/:user_id" element={<ViewUserProfilePage />} />
-              <Route path="/inbox" element={<InboxPage />} />
-              <Route path="/message/:user_id" element={<MessagePage />} />
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/listings" element={<Listings/>} />
+          <Route path="/uploads" element={<Upload/>} />
+          <Route path="/users/:user_id" element={<ViewUserProfilePage />} />
+          <Route path="/inbox" element={<InboxPage />} />
+          <Route path="/message/:user_id" element={<MessagePage />} />
 
-              <Route path="/createpost" element={<CreatePost/>}/>
-              <Route path="/listings/:postId" element={<ViewPost/>}/>
-            </Routes>
+          <Route path="/createpost" element={<CreatePost/>}/>
+          <Route path="/listings/:postId" element={<ViewPost/>}/>
+        </Routes>
       </BrowserRouter>
     </AuthenticationProvider>
   )

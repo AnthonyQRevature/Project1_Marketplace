@@ -17,7 +17,8 @@
   --color0: #1b263b;
   --color1: #415a77;
   --color2: #778da9;
-  --colorbg:#e0e1dd;
+  --colorbg:#dfe0dc;
+  --colorbg1:#adb6c4; /*pick a good button color*/
 }
 
 .icon {

@@ -22,13 +22,13 @@ function MyProfile(props : {auth: Authentication})
   if (!auth.isGuest())
   {
     return (
-      <div className="nav_profile_loc"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link></div>
+      <div className="right"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link></div>
     );
   }
   else
   {
     return (
-      <div className="nav_login_loc"><Link to={"/login"} className="nav_login"><p>Login</p></Link></div>
+      <div className="right"><Link to={"/login"} className="nav_login"><p>Login</p></Link></div>
     )
   }
 }
