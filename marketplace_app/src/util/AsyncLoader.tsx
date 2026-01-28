@@ -93,7 +93,6 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
     else
     {
       //loaded the resource
-      console.log(currentState);
       const resource = currentState as T;
       return (<Then {...{resource: resource, ...props.foward}}/>);
     }
