@@ -1,3 +1,4 @@
+//I know theres a way to put className on this component but im not gonna bother
 export function EncodedImage(props : {img: string, foward?:React.ImgHTMLAttributes<HTMLImageElement>})
 {
     let {img, foward} = props;
