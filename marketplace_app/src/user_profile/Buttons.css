@@ -16,6 +16,10 @@
 
 .block {
     width: 100px;
+    text-align: center;
+    text-anchor: middle;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .report {    
