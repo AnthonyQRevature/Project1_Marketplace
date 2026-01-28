@@ -59,7 +59,7 @@ function Display(props : {resource : UserProfile, reset: () => void})
         <div className="profile-columns">
           <div>
           	<div className="profile_pic_loc">
-              <EncodedImage img={profile.profile.pfp_encoded} className="profile_pic" />
+              <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
             </div>
             <div className="profile_edit_loc">
               {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
