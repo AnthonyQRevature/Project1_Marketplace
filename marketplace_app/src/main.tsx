@@ -23,7 +23,11 @@ import 'overlayscrollbars/overlayscrollbars.css';
 
 AuthenticationContext;
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById("root")!;
+const root = createRoot(rootElement);
+const osInstance = OverlayScrollbars(document.body, { scrollbars: { autoHide: "scroll" } });
+
+root.render(
   <StrictMode>
     <ReactRoot />
   </StrictMode>
@@ -31,10 +35,10 @@ createRoot(document.getElementById('root')!).render(
 
 function ReactRoot()
 {
-  
+  /*
   useEffect(() => {
     const osInstance = OverlayScrollbars(document.querySelector('#viewport') as HTMLElement, {paddingAbsolute:true});
-  }, []);
+  }, []);*/
   
 
   return (
