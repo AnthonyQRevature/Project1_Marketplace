@@ -17,7 +17,7 @@ type AsyncLoader = FC<AsyncLoaderInit>;
 //this thing isnt perfect
 //if i had a better understanding of typescript i could fix the lack of type safety
 //the loader state is shared with the data when they should be seperate
-export default function useLoader<T>(endpoint : Endpoint, repititions : number = 5) : [AsyncLoader<T>, () => void]
+export default function useLoader<T>(endpoint : Endpoint, repititions : number = 5) : [AsyncLoader, () => void]
 {
   const LOADER_STATE = 
   {
@@ -101,7 +101,7 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
   return [LoaderComponent, resetFunction];
 }
 
-export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5) : [AsyncLoader<T>, () => void]
+export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5) : [AsyncLoader, () => void]
 {
   const LOADER_STATE = 
   {
@@ -118,7 +118,7 @@ export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5
     setState(LOADER_STATE.LOADING);
   }
   
-  const LoaderComponent = (props : AsyncLoaderInit<T>) =>
+  const LoaderComponent = (props : AsyncLoaderInit) =>
   {
     let Then = props.then;
     let Otherwise : FC = props.otherwise || (() => <></>);

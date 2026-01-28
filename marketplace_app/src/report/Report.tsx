@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import "./Report.css";
 import { Link, useNavigate } from "react-router";
-import AuthenticationContext, { type AuthenticationState } from "../authentication/AuthenticationContext";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 import useLoader from "../util/AsyncLoader";
 import { EncodedImage } from "../util/EncodedImage";
 
@@ -15,6 +15,20 @@ interface ReportEntity {
   message_id?: number;
   reason: string;
   status: "open" | "resolved";
+}
+
+type UserProfile = {
+  id : number,
+  username : string,
+  email : string,
+  profile: 
+  {
+    pfp_encoded : string,
+    bio : string,
+    latitude : number,
+    longitude : number,
+    distance : number
+  }
 }
 
 function Report() {
