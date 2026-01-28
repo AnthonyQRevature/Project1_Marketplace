@@ -100,6 +100,13 @@ public class TokenUtil {
 
     @Autowired
     public TokenUtil(TokenProperties properties) {
-        key = Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8));
+        if (properties.getSecret() == null)
+        {
+            throw new RuntimeException("security.secret not defined in application.properties");
+        }
+        else
+        {
+            key = Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8));
+        }
     }
 }
