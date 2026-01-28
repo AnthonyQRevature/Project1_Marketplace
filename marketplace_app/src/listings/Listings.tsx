@@ -83,10 +83,7 @@ function TagsList(props: { tags: TagEntity[]; onSubmit: (e: React.FormEvent<HTML
     <form method="GET" onSubmit={props.onSubmit}>
       <div className="TagsList">{Checkboxes}</div>
 
-      <label htmlFor="distance">Maximum Distance:</label>
-      <input type="range" id="distance" name="distance" min="0" max="150" defaultValue="100" />
-
-      <button type="submit">Submit</button>
+      <button type="submit" className="listings_search_submit_button">Submit</button>
     </form>
   );
 }
