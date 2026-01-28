@@ -349,7 +349,8 @@ function ViewAllReports({
   );
 }
 
-function UserBrief(props : {user_id : number, lhs : string})
+//TODO: extract this component
+export function UserBrief(props : {user_id : number, lhs : string})
 {
   const {user_id, lhs} = props;
   const endpoint = {

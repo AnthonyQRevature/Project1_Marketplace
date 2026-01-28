@@ -35,7 +35,8 @@
 }
 
 .profile_BIO_loc {
-	border: 2px solid var(--color2);
+	margin-left: 5%;
+	margin-right: 5%;
 }
 
 .profile_BIO_title {
@@ -43,7 +44,9 @@
 }
 
 .profile_BIO_content {
-
+	border: 2px solid var(--color2);
+	padding: 20px;
+	min-height: 10vh;
 }
 
 p {
