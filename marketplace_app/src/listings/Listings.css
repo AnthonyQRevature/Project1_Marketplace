@@ -26,7 +26,6 @@ p {
     display: grid;
     justify-items: center;
 }
-
 .postCard > img
 {
     object-fit: cover;
@@ -44,4 +43,9 @@ p {
     width: 100%;
     object-fit:cover;
     aspect-ratio: initial;
+}
+
+.postCard > p > a
+{
+    margin-right: 10px;
 }
