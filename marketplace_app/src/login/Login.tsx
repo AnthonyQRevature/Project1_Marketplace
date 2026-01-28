@@ -38,11 +38,7 @@ function Register()
   );
 }
 
-<<<<<<< HEAD
-function handleSubmit(setResponse : (val : any)=>void, navigate : NavigateFunction)
-=======
 function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => void, navigate : NavigateFunction)
->>>>>>> fb293b6a16fdaebce9a67603b34f6b957c358c4e
 {
   return async (e : FormData) => 
   {
