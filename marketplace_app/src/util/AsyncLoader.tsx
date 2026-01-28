@@ -17,7 +17,7 @@ type AsyncLoader = FC<AsyncLoaderInit>;
 //this thing isnt perfect
 //if i had a better understanding of typescript i could fix the lack of type safety
 //the loader state is shared with the data when they should be seperate
-export default function useLoader<T>(endpoint : Endpoint, repititions : number = 5) : [AsyncLoader, () => void]
+export default function useLoader<T>(endpoint : Endpoint, repititions : number = 5) : [AsyncLoader<T>, () => void]
 {
   const LOADER_STATE = 
   {
@@ -93,6 +93,7 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
     else
     {
       //loaded the resource
+      console.log(currentState);
       const resource = currentState as T;
       return (<Then {...{resource: resource, ...props.foward}}/>);
     }
@@ -100,7 +101,7 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
   return [LoaderComponent, resetFunction];
 }
 
-export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5) : [AsyncLoader, () => void]
+export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5) : [AsyncLoader<T>, () => void]
 {
   const LOADER_STATE = 
   {
@@ -117,7 +118,7 @@ export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5
     setState(LOADER_STATE.LOADING);
   }
   
-  const LoaderComponent = (props : AsyncLoaderInit) =>
+  const LoaderComponent = (props : AsyncLoaderInit<T>) =>
   {
     let Then = props.then;
     let Otherwise : FC = props.otherwise || (() => <></>);
@@ -163,9 +164,9 @@ export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5
     //run whenever currentState is set to LOADING
     useEffect(() => {
       let runner = async () => {
-        let aborted = false;
         if (currentState !== LOADER_STATE.LOADING) return;
         
+        let aborted = false;
         let result = new Array<T>(endpoints.length);
         let promises = endpoints.map((endpoint) => async_fetch(repititions, endpoint));
 

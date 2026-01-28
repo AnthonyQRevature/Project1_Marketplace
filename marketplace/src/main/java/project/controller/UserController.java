@@ -23,8 +23,6 @@ import project.service.UserProfileService;
 import project.service.UserService;
 import project.util.AllowCORS;
 import project.util.Secure;
-import project.util.SecureIndescriminate;
-import project.util.SecurityLevel;
 
 @RestController
 @AllowCORS
@@ -97,6 +95,8 @@ public class UserController {
         }
     }
 
+    /*
+    Not needed
     @GetMapping("/ADMIN")
     @SecureIndescriminate(SecurityLevel.ADMIN)
     public ResponseEntity<?> privilegeCheck(@RequestHeader("Authorization") String authHeader) {
@@ -106,4 +106,5 @@ public class UserController {
             return ResponseEntity.badRequest().body(e);
         }
     }
+    */
 }

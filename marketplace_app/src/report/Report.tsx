@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import "./Report.css";
-import { Link } from "react-router";
-import AuthenticationContext from "../authentication/AuthenticationContext";
+import { Link, useNavigate } from "react-router";
+import AuthenticationContext, { type AuthenticationState } from "../authentication/AuthenticationContext";
+import useLoader from "../util/AsyncLoader";
+import { EncodedImage } from "../util/EncodedImage";
 
 const API_BASE = "http://localhost:8080";
 
@@ -17,10 +19,20 @@ interface ReportEntity {
 
 function Report() {
   const [auth, _] = useContext(AuthenticationContext);
-  const [activeTab, setActiveTab] = useState<"create" | "view">("create");
+//const [activeTab, setActiveTab] = useState<"create" | "view">("create");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [admin, setAdmin] = useState(false);
+  const nav = useNavigate();
+  const admin = auth.isAdmin();
 
+  if (!admin)
+  {
+    //not allowed
+    useEffect(()=>{
+      nav("/login");
+    }, [])
+  }
+
+  /*
   const fetchStatus = async () => {
     try {
       const response = await fetch(`${API_BASE}/users/ADMIN`, {
@@ -40,10 +52,14 @@ function Report() {
       console.error(e);
     }
   };
+  */
 
+  /*
   useEffect(() => {
     fetchStatus();
   }, []);
+  */
+
 
   return (
     <div className="report-container">
@@ -53,7 +69,10 @@ function Report() {
         </div>
       )}
 
-      <div className="tabs">
+      <ViewAllReports auth={auth} setMessage={setMessage} />
+    </div>
+  );
+  /* <div className="tabs">
         <button 
           className={`tab ${activeTab === "create" ? "active" : ""}`}
           onClick={() => setActiveTab("create")}
@@ -68,14 +87,12 @@ function Report() {
             View All Reports
           </button>
         )}
-      </div>
-
+          
       {activeTab === "create" && <CreateReport auth={auth} setMessage={setMessage} />}
-      {activeTab === "view" && admin && <ViewAllReports auth={auth} setMessage={setMessage} />}
-    </div>
-  );
+      </div>*/
 }
 
+/*
 function CreateReport({ 
   auth, 
   setMessage 
@@ -166,6 +183,7 @@ function CreateReport({
     </form>
   );
 }
+*/
 
 function ViewAllReports({ 
   auth, 
@@ -229,8 +247,6 @@ function ViewAllReports({
         setMessage({ type: "success", text: "Report status updated!" });
         fetchReports();
       } else {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
         setMessage({ type: "error", text: `Failed to update status: ${response.status}` });
       }
     } catch (e) {
@@ -243,16 +259,12 @@ function ViewAllReports({
     if (!window.confirm("Are you sure you want to delete this report?")) return;
 
     try {
-      console.log("Deleting report:", report_id);
-
       const response = await fetch(`${API_BASE}/reports/${report_id}`, {
         method: "DELETE",
         headers: {
           Authorization: auth.encryptedToken
         }
       });
-
-      console.log("Delete response status:", response.status);
 
       if (response.ok) {
         setMessage({ type: "success", text: "Report deleted!" });
@@ -284,8 +296,8 @@ function ViewAllReports({
           <div className="report-header">
             <div>
               <strong>Report #{report.report_id}</strong>
-              <Link to={`/users/${report.reporter_id}`}><p>Reporter: User {report.reporter_id}</p></Link>
-              <Link to={`/users/${report.reported_id}`}><p>Reported: User {report.reported_id}</p></Link>
+              <UserBrief lhs="Reporter:" user_id={report.report_id}/>
+              <UserBrief lhs="Reported:" user_id={report.reported_id}/>
             </div>
             <span className={`report-status ${report.status.toLowerCase()}`}>
               {report.status}
@@ -321,6 +333,38 @@ function ViewAllReports({
       ))}
     </div>
   );
+}
+
+function UserBrief(props : {user_id : number, lhs : string})
+{
+  const {user_id, lhs} = props;
+  const endpoint = {
+    endpoint: `http://localhost:8080/users/${user_id}`,
+    method: "GET"
+  }
+  const [AsyncLoader, _] = useLoader(endpoint);
+
+  const brief = function(props : {resource : UserProfile})
+  {
+    const profile = props.resource;
+
+    console.log(profile);
+    return (
+      <>
+        <Link className="inline" to={`/users/${user_id}`}>
+          <EncodedImage img={profile.profile.pfp_encoded}/>
+          <p>{profile.username}</p>
+        </Link>
+      </>
+    )
+  }
+
+  return (
+    <div className="inline">
+      <p>{lhs}</p>
+      <AsyncLoader then={brief} otherwise={() => <p>...</p>}/>
+    </div>
+  )
 }
 
 export default Report;

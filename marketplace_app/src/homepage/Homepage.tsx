@@ -1,9 +1,15 @@
-import './Homepage.css'
 import Head from './Head.tsx'
 import { Link } from 'react-router';
+import SearchBar from './SearchBar.tsx';
+import AuthenticationContext from '../authentication/AuthenticationContext.tsx';
+import { useContext } from 'react';
+
+import './Homepage.css'
 
 function Homepage()
 {
+  const [auth, _] = useContext(AuthenticationContext)
+
   return (
     <>
       <Head />
@@ -15,18 +21,16 @@ function Homepage()
           <LinkTo path="/listings" label='Listings' />
         </div>
         <div className="card">
-          <LinkTo path="/uploads" label="uploads" />
+          <p>EMPTY USE THIS FOR SOMETHING</p>
         </div>
         <div className="card">
-          <p>Content</p>
-        </div>
-        <div className="card">
-          <LinkTo path="/reports" label="Reports" />
+          <SearchBar />
         </div>
       </div>
+      {auth.isAdmin()? <Link to='/reports'><p className='danger'>view reports</p></Link> : <></>}
     </>
   );
-} //Reports is a temp card TODO
+}
 
 function LinkTo(props: {path: string, label: string})
 {
