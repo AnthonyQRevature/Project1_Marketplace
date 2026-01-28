@@ -10,7 +10,7 @@ export default function NavBar()
   return (
     <div className="nav_bar">
       <div></div>
-      <Link to={`/`} className="title">Secondhand</Link>
+      <Link to={`/`} className="nav_title">Secondhand</Link>
       <MyProfile auth={auth}/>
     </div>
   )
@@ -22,13 +22,13 @@ function MyProfile(props : {auth: Authentication})
   if (!auth.isGuest())
   {
     return (
-      <div className="profile"><Link to={`/users/${auth.id}`}><p>My Profile</p></Link></div>
+      <div className="right"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link></div>
     );
   }
   else
   {
     return (
-      <div></div>
+      <div className="right"><Link to={"/login"} className="nav_login"><p>Login</p></Link></div>
     )
   }
 }

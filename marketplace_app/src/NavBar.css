@@ -1,23 +1,71 @@
 .nav_bar {
-    background-color: blue;
+    background-color: var(--color2);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 
         "a b c";
 }
+.nav_bar > .right {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    justify-self: right;
+    align-self: center;
+}
+.nav_bar > .right p {
+    border-radius: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background: var(--colorbg1);
+    
+    transition: border-color 0.25s;
+}
 
-.title {
+.nav_title {
     justify-self: center;
     align-self: center;
 
-    color:black;
+    color:var(--color0);
     font-size: larger;
     font-weight: bold;
 }
-.title:hover {
+.nav_title:hover {
+    /*color: black;*/
+}
+
+.profile p {
+    justify-self: center;
+    align-self: center;
+
+    color:var(--color0);
+    font-size: larger;
+    font-weight: bold;
+}
+
+.nav_profile {
     color: black;
 }
 
-.profile {
-    justify-self: right;
+.nav_profile:hover {
+	color: black;
+}
+.nav_profile p {
+    justify-self: center;
+    align-self: center;
+
+    color:var(--color0);
+    font-size: larger;
+    font-weight: bold;
+}
+
+.nav_login {
+	justify-self:left;
+
+	color: var(--color0);
+	font-size:larger;
+	font-weight: bold;
+}
+
+.nav_login:hover {
+	color: black
 }

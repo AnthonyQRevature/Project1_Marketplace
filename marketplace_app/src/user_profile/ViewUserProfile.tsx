@@ -6,6 +6,8 @@ import { EncodedImage } from "../util/EncodedImage";
 import type { Endpoint } from "../util/Endpoint";
 import DeleteButton from "./DeleteButton";
 import useLoader from "../util/AsyncLoader";
+import ProfileSocialButtons from "./SocialButtons";
+import mailIcon from "../assets/mail.png";
 
 //get user profile endpoint
 function makeEndpoint(id: number) : Endpoint
@@ -49,7 +51,6 @@ function Display(props : {resource : UserProfile, reset: () => void})
   const [editMode, setEditMode] = useState<boolean>(false);
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
-  const [admin, setAdmin] = useState(false);
   const profile = props.resource;
   
   let owner = false;
@@ -57,43 +58,37 @@ function Display(props : {resource : UserProfile, reset: () => void})
   {
     owner = true;
   }
-
-  const fetchStatus = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/users/ADMIN`, {
-        method: "GET",
-        headers: {
-          Authorization: auth.encryptedToken
-        }
-      });
-
-      if (response.ok) {
-        setAdmin(true);
-      } else {
-        setAdmin(false);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  
-  useEffect(() => {
-    fetchStatus();
-  }, []);
   
   if (!editMode)
   {
     return (
       <>
-        <EncodedImage img={profile.profile.pfp_encoded} />
-        {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-        <h1>{profile.username}</h1>
-        <p>{profile.email}</p>
-        <p>BIO:</p>
-        <p>{profile.profile.bio}</p>
-        <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
-        {admin && (<Link to={`/users/${profile.id}/reports/of`}><p>Reports Against </p></Link>)}
-        {(admin || owner) && (<Link to={`/users/${profile.id}/reports/from`}><p>Reports Made </p></Link>)}
+        {owner? <InboxIcon /> : <MsgIcon /> }
+        {auth.isAdmin()? <DeleteButton /> : <></>}
+        <div className="profile-columns">
+          <div>
+          	<div className="profile_pic_loc">
+              <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
+            </div>
+            <div className="profile_edit_loc">
+              {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+            </div>
+            <div className="profile_username_loc">
+              <h1 className="profile_username">{profile.username}</h1>
+            </div>
+            <div className="profile_email_loc">
+              <p className="profile_email">{profile.email}</p>
+            </div>
+            <div className="profile_BIO_loc">
+              <p className="profile_BIO_title">BIO:</p>
+              <p className="profile_BIO_content">{profile.profile.bio}</p>
+            </div>
+            <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+          </div>
+          <div>
+            <ProfileSocialButtons user_id={Number(user_id)}/>
+          </div>
+        </div>
       </>
     );
   }
@@ -187,4 +182,22 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
   }
 }
 
+function InboxIcon()
+{
+  const nav = useNavigate();
+
+  return (
+    <img className="icon link" src={mailIcon} onClick={() => nav("/inbox")} />
+  );
+}
+
+function MsgIcon()
+{
+  const nav = useNavigate();
+  const {user_id} = useParams();
+
+  return (
+    <img className="icon link" src={mailIcon} onClick={() => nav(`/message/${user_id}`)} />
+  );
+}
 export default ViewUserProfile;

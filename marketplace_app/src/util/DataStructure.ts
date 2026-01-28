@@ -12,6 +12,24 @@ export type UserProfile = {
   }
 }
 
+export type PostEntity = {
+  id: number;
+  description: string;
+  price: number;
+  status: string;
+  createdAt: string;
+  lastEditTime: string;
+  media: {
+    postId: number;
+    mediaType: string;
+    mediaEncoded: string;
+  }[];
+  postTags: {
+    postNum: number;
+    postTagId: number;
+  }[];
+};
+
 export type Blocks = Array<{blocker: number, blocked: number}>;
 
 export type ProfileBrief = {id: number, username: string, pfp_encoded: string};

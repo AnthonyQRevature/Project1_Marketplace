@@ -148,3 +148,6 @@ CREATE TABLE IF NOT EXISTS review (
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+delete from post where seller_id = 2;
+select * from post;

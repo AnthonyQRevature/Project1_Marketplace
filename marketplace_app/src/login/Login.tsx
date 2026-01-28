@@ -2,43 +2,42 @@ import { useContext, useState } from "react";
 import "./Login.css";
 import { Link, useNavigate, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
-//import logo from '../assets/Logo.png'
+import logo from '../assets/Logo.png'
+import logError from "../util/logError";
 
 const login = {endpoint: "http://localhost:8080/login", method: "POST"};
 
 function Register()
 {
-  const [response, setResponse] = useState(null);
   const [auth, setAuth] = useContext<AuthenticationState>(AuthenticationContext);
   const navigate = useNavigate();
-  const formHandler = handleSubmit((val) => {
-    setResponse(val);
-  }, setAuth, navigate);
+  const formHandler = handleSubmit(setAuth, navigate);
 
   return (
     <>
       <form action={formHandler}>
-        <div>
-          <label htmlFor="username">Username: </label>
-          <input type="text" name="username" id="username" required />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" required />
-        </div>
-        <Link to="/register"><p>Register an Account</p></Link>
-        <div>
-          <input type="submit" value="Login" />
+        <div className = "loginBox">
+	  	  <div className ="logUserInput">
+            <label htmlFor="username">Username: </label>
+            <input type="text" name="username" id="username" required />
+          </div>
+          <div className="logPassInput">
+            <label htmlFor="password">Password: </label>
+            <input type="password" name="password" id="password" required />
+          </div>
+          <div className="logRegLink">
+            <Link to="/register"><p>Register an Account</p></Link>
+          </div>
+          <div className="logSubmit">
+            <input type="submit" value="Login" />
+          </div>
         </div>
       </form>
-
-      <p>output: {JSON.stringify(response)}</p>
-      <p>current authentication: {JSON.stringify(auth)}</p>
     </>
   );
 }
 
-function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => void, navigate : NavigateFunction)
+function handleSubmit(setAuth : (val : any) => void, navigate : NavigateFunction)
 {
   return async (e : FormData) => 
   {
@@ -59,7 +58,7 @@ function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => 
       if (result.ok)
       {
         const response = await result.json();
-        setResponse(response);
+        //setResponse(response);
 
         //set auth
         setAuth(new Authentication(response));
@@ -71,13 +70,13 @@ function handleSubmit(setResponse : (val : any)=>void, setAuth : (val : any) => 
       }
       else
       {
-        setResponse(`Error: ${result.status}`);
+        //setResponse(`Error: ${result.status}`);
       }
     }
     catch (e)
     {
-      setResponse("Server error");
-      console.log(e);
+      //setResponse("Server error");
+      logError(e);
     }
     return;
   }

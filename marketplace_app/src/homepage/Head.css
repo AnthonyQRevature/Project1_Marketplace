@@ -1,4 +1,4 @@
-img {
+head_img {
   max-width: 100%;
 }
 
@@ -6,19 +6,19 @@ p {
   margin: 0 0 1em 0;
 }
 
-.title {
+.head_title {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.title .img {
+.head_title .img {
   display: flex;
   flex-direction: row-reverse;
   grid-column: 3;
 }
-.title .name {
+.head_title .name {
   grid-column: 2;
 }
-.title .name h1 {
+.head_title .name h1 {
   text-align: center;
 }
 
@@ -36,4 +36,9 @@ p {
     grid-template-areas:
       "image content";
   }
+}
+
+.head_userSearch {
+  justify-self: left;
+  justify-content: left;
 }

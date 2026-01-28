@@ -11,12 +11,32 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /*change and use these color variables*/
+  --color-1:#0d1b2a;
+  --color0: #1b263b;
+  --color1: #415a77;
+  --color2: #778da9;
+  --colorbg:#dfe0dc;
+  --colorbg1:#adb6c4; /*pick a good button color*/
 }
 
 .icon {
   width: 32px;
   height: 32px;
 }
+
+/* Global background */
+body {
+	background-color: var(--colorbg);
+}
+
+/*
+#viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+}*/
 
 .link {
   border-radius: 8px;

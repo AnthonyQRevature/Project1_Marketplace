@@ -310,7 +310,7 @@ function ViewAllReports({
           <div className="report-header">
             <div>
               <strong>Report #{report.report_id}</strong>
-              <UserBrief lhs="Reporter:" user_id={report.report_id}/>
+              <UserBrief lhs="Reporter:" user_id={report.reporter_id}/>
               <UserBrief lhs="Reported:" user_id={report.reported_id}/>
             </div>
             <span className={`report-status ${report.status.toLowerCase()}`}>
@@ -349,7 +349,8 @@ function ViewAllReports({
   );
 }
 
-function UserBrief(props : {user_id : number, lhs : string})
+//TODO: extract this component
+export function UserBrief(props : {user_id : number, lhs : string})
 {
   const {user_id, lhs} = props;
   const endpoint = {
