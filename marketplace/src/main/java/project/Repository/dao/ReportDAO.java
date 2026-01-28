@@ -1,13 +1,13 @@
 package project.Repository.dao;
 
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import project.Repository.Entities.ReportEntity;
 
-import java.util.List;
+import jakarta.transaction.Transactional;
+import project.Repository.Entities.ReportEntity;
 
 public interface ReportDAO extends JpaRepository<ReportEntity, Integer>{
 	//@Query("SELECT r FROM ReportEntity r WHERE r.id = ?1")
@@ -25,4 +25,8 @@ public interface ReportDAO extends JpaRepository<ReportEntity, Integer>{
 	//get reports of user
 	@Query("SELECT r FROM ReportEntity r WHERE r.reported_id = ?1")
 	public List<ReportEntity> getReportsOf(Integer id);
+
+	//get reports from user
+	@Query("SELECT r FROM ReportEntity r WHERE r.reporter_id = ?1")
+	public List<ReportEntity> getReportsFrom(Integer id);
 }

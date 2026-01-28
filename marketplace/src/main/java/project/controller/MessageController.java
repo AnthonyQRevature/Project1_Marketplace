@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.websocket.server.PathParam;
 import project.Repository.Entities.MessageEntity;
 import project.controller.response.ProfileBriefResponse;
 import project.service.MessageService;

@@ -1,5 +1,7 @@
 package project.controller;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
-import project.controller.request.ProfileRequest;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
@@ -77,7 +78,7 @@ public class UserController {
             ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
             UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
             return ResponseEntity.ok(response);
-        } catch (Exception e){
+        } catch (AccountNotFoundException e){
             return ResponseEntity.badRequest().body(e);
         }
     }
@@ -93,4 +94,17 @@ public class UserController {
             return ResponseEntity.badRequest().body(e);
         }
     }
+
+    /*
+    Not needed
+    @GetMapping("/ADMIN")
+    @SecureIndescriminate(SecurityLevel.ADMIN)
+    public ResponseEntity<?> privilegeCheck(@RequestHeader("Authorization") String authHeader) {
+        try{
+            return ResponseEntity.ok().body("");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
+        }
+    }
+    */
 }

@@ -1,0 +1,188 @@
+.report-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.report-form {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.report-form div {
+    margin-bottom: 15px;
+}
+
+.report-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.report-form input,
+.report-form textarea,
+.report-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.report-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.report-form input[type="submit"] {
+    background-color: #646cff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: auto;
+}
+
+.report-form input[type="submit"]:hover {
+    background-color: #535bf2;
+}
+
+.reports-list {
+    margin-top: 30px;
+}
+
+.report-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #646cff;
+}
+
+.report-item.pending {
+    border-left-color: #ff9800;
+}
+
+.report-item.resolved {
+    border-left-color: #4caf50;
+}
+
+.report-item.dismissed {
+    border-left-color: #9e9e9e;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.report-status {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.report-status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.report-status.resolved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.report-status.dismissed {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.report-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.report-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.report-actions .btn-resolve {
+    background-color: #4caf50;
+    color: white;
+}
+
+.report-actions .btn-dismiss {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.report-actions .btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.debug-output {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+}
+
+.tab.active {
+    background-color: #646cff;
+    color: white;
+}
+
+p {
+    text-align: left;
+}
+
+.inline {
+    display: flex;
+}
+div.inline p
+{
+    margin-right: 20px;
+}

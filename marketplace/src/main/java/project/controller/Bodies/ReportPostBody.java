@@ -1,7 +1,6 @@
 package project.controller.Bodies;
 
 import java.util.Objects;
-import java.util.Optional;
 
 //{reporter_id: int, reported_id: int, post_id?: int, message_id?:  int, reason:String}
 public class ReportPostBody {

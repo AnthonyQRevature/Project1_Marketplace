@@ -1,14 +1,16 @@
-import './Homepage.css'
 import Head from './Head.tsx'
 import { Link } from 'react-router';
 import SearchBar from './SearchBar.tsx';
 import listing from '../listings/Listings.tsx';
 import { useEffect } from 'react';
-import { OverlayScrollbars } from 'overlayscrollbars';
+import AuthenticationContext from '../authentication/AuthenticationContext.tsx';
+import { useContext } from 'react';
+
+import './Homepage.css'
 
 function Homepage()
 {
-  
+  const [auth, _] = useContext(AuthenticationContext)
 
   return (
     <>
@@ -27,7 +29,7 @@ function Homepage()
           <SearchBar />
         </div>
       </div>
-      <Link to='/'><p className='danger'>view reports</p></Link>
+      {auth.isAdmin()? <Link to='/reports'><p className='danger'>view reports</p></Link> : <></>}
     </>
   );
 }

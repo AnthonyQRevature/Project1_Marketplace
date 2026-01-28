@@ -19,12 +19,12 @@ public class DefaultPfp {
         try
         {
             InputStream file = DefaultPfp.class.getResourceAsStream(fileName);
-            Scanner scanner = new Scanner(file).useDelimiter("\\A");
-            encodedPfp = scanner.next();
+            try (Scanner scanner = new Scanner(file).useDelimiter("\\A")) {
+                encodedPfp = scanner.next();
+            }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             System.out.println("unable to read default_pfp");
         }
     }

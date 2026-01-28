@@ -2,7 +2,6 @@ package project.controller;
 
 import java.util.List;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ import project.util.SecurityLevel;
 @RestController
 @AllowCORS
 public class BlocksController {
-	private BlocksService blocksService;
+	private final BlocksService blocksService;
 
 	@Autowired
 	public BlocksController(BlocksService blocksService) {

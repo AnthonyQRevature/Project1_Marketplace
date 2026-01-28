@@ -27,8 +27,8 @@ import project.util.exception.InvalidRequestException;
 @Service
 public class MediaService 
 {
-    private Set<String> acceptedMediaTypes;
-    private FileSystemProvider fileSystem;
+    private final Set<String> acceptedMediaTypes;
+    private final FileSystemProvider fileSystem;
     
     @Autowired
     public MediaService(FileSystemProvider fileSystem) {

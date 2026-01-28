@@ -1,7 +1,6 @@
 package project.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ public class ReportService {
 			return true;
 		}catch (RuntimeException e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -45,12 +43,13 @@ public class ReportService {
 		}catch(RuntimeException e)
 		{
 			//TODO handle exceptions
-			e.printStackTrace();
 			return false;
 		}
 	}
 
 	public List<ReportEntity> getReportsOf(Integer id) {return dao.getReportsOf(id);}
+
+	public List<ReportEntity> getReportsFrom(Integer id) {return dao.getReportsFrom(id);}
 
 	//TODO check that the post/message matches the reported_id
 	public ReportEntity createReport(ReportPostBody body)
