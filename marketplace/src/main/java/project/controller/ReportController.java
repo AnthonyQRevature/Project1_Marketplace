@@ -122,7 +122,7 @@ public class ReportController {
 			var token = tokenUtil.asToken(authHeader);
 
 			if (body.getReporter_id() != token.getId()) throw new InvalidRequestException();
-			if (body.getReported_id() == id) throw new InvalidRequestException();
+			if (body.getReported_id() == token.getId()) throw new InvalidRequestException();
 			return ResponseEntity.ok(reportService.createReport(body));
 		}
 		catch (InvalidRequestException e)

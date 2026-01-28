@@ -51,7 +51,6 @@ function Display(props : {resource : UserProfile, reset: () => void})
   const [editMode, setEditMode] = useState<boolean>(false);
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
-  const [admin, setAdmin] = useState(false);
   const profile = props.resource;
   
   let owner = false;
@@ -59,29 +58,6 @@ function Display(props : {resource : UserProfile, reset: () => void})
   {
     owner = true;
   }
-
-  const fetchStatus = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/users/ADMIN`, {
-        method: "GET",
-        headers: {
-          Authorization: auth.encryptedToken
-        }
-      });
-
-      if (response.ok) {
-        setAdmin(true);
-      } else {
-        setAdmin(false);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  
-  useEffect(() => {
-    fetchStatus();
-  }, []);
   
   if (!editMode)
   {
