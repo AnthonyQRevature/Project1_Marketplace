@@ -58,12 +58,22 @@ function Display(props : {resource : UserProfile, reset: () => void})
         {auth.isAdmin()? <DeleteButton /> : <></>}
         <div className="profile-columns">
           <div>
-            <EncodedImage img={profile.profile.pfp_encoded} />
-            {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-            <h1>{profile.username}</h1>
-            <p>{profile.email}</p>
-            <p>BIO:</p>
-            <p>{profile.profile.bio}</p>
+          	<div className="profile_pic_loc">
+              <EncodedImage img={profile.profile.pfp_encoded} className="profile_pic" />
+            </div>
+            <div className="profile_edit_loc">
+              {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+            </div>
+            <div className="profile_username_loc">
+              <h1 className="profile_username">{profile.username}</h1>
+            </div>
+            <div className="profile_email_loc">
+              <p className="profile_email">{profile.email}</p>
+            </div>
+            <div className="profile_BIO_loc">
+              <p className="profile_BIO_title">BIO:</p>
+              <p className="profile_BIO_content">{profile.profile.bio}</p>
+            </div>
             <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
           </div>
           <div>

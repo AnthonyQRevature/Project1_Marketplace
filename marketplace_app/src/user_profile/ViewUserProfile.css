@@ -3,7 +3,48 @@
     grid-template-columns: 1fr fit-content(200px);
 }
 
+.profile_pic_loc {
+	display:flex;
+	justify-content: center;
+}
 
+.profile_pic {
+	display:flex;
+	justify-content: center;
+}
+
+.profile_edit_loc{
+
+}
+
+.profile_username_loc{
+
+}
+
+.profile_username {
+
+}
+
+.profile_email_loc {
+	display: flex;
+	justify-content:center;
+}
+
+.profile_email {
+
+}
+
+.profile_BIO_loc {
+	border: 2px solid var(--color2);
+}
+
+.profile_BIO_title {
+
+}
+
+.profile_BIO_content {
+
+}
 
 p {
     text-align: left;
