@@ -18,7 +18,7 @@ function makeEndpoint(id : number)
 export default function InboxPage()
 {
   const [auth, _] = useContext(AuthenticationContext);
-  const [AsyncLoader, reset] = useLoader(makeEndpoint(Number(auth.id)));
+  const [AsyncLoader] = useLoader(makeEndpoint(Number(auth.id)));
   const nav = useNavigate();
 
   if (auth.isGuest())

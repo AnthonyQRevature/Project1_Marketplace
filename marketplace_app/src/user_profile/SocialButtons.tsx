@@ -36,7 +36,7 @@ function makeReportEndpoint(target : number) : Endpoint
   };
 }
 
-export default function ProfileSocialButtons(props: { user_id : number })
+export default function ProfileSocialButtons(_props: { user_id : number })
 {
   const [auth, _] = useContext(AuthenticationContext);
   const {user_id} = useParams();
@@ -77,7 +77,7 @@ function BlockButton(props : {resource: Blocks, reset: () => void})
 async function block(from : number, to : number, auth : Authentication, reset : () => void)
 {
   const endpoint = makeBlockSetter(from);
-  const response = await fetch(endpoint.endpoint, {
+  await fetch(endpoint.endpoint, {
     method: endpoint.method,
     headers: {
       "Content-Type": "application/json",
@@ -93,7 +93,7 @@ async function block(from : number, to : number, auth : Authentication, reset : 
 async function unblock(from : number, to : number, auth : Authentication, reset : () => void)
 {
   const endpoint = makeBlockDeleter(from);
-  const response = await fetch(endpoint.endpoint, {
+  await fetch(endpoint.endpoint, {
     method: endpoint.method,
     headers: {
       "Content-Type": "application/json",

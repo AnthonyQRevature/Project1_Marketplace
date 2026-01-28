@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams, type NavigateFunction } from "react-router";
-import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 import { EncodedImage } from "../util/EncodedImage";
 import type { Endpoint } from "../util/Endpoint";
 import DeleteButton from "./DeleteButton";
@@ -143,7 +143,7 @@ function DisplayEdit(props : {init : UserProfile, reset : () => void})
   );
 }
 
-function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint : Endpoint, init : UserProfile, reset : () => void)
+function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint : Endpoint, _init : UserProfile, reset : () => void)
 {
   return async (e : FormData) => 
   {

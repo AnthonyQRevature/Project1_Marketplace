@@ -4,20 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import "./Messages.css";
 import AuthenticationContext from "../authentication/AuthenticationContext";
 import { Link, useNavigate, useParams } from "react-router";
-import type { Message_t, Messages, ProfileBrief, UserProfile } from "../util/DataStructure";
+import type { Message_t, Messages, UserProfile } from "../util/DataStructure";
 import { EncodedImage } from "../util/EncodedImage";
 
 import refresh from "../assets/refresh.png";
-import useLoader, { useLoaderses } from "../util/AsyncLoader";
-import ProfileSocialButtons from "../user_profile/SocialButtons";
-
-type MessageEntity = {
-  messageId: number;
-  senderId: number;
-  receiverId: number;
-  message: string;
-  sentAt: string;
-};
+import { useLoaderses } from "../util/AsyncLoader";
 
 function makeProfileEndpoint(user_id : number)
 {
@@ -70,7 +61,7 @@ function Messages(props: { resources: [UserProfile, UserProfile, Messages], rese
   const [my_profile, their_profile, messages] = props.resources;
   const reset = props.reset;
   const [text, setText] = useState(""); // isnt this a bit wierd? this will rerender the component whenever the user types in the message box
-  const [auth, _] = useContext(AuthenticationContext);
+  const [, _] = useContext(AuthenticationContext);
 
   // send message
   const sendMessage = async () => {

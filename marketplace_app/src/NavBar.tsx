@@ -5,7 +5,7 @@ import "./NavBar.css";
 
 export default function NavBar()
 {
-const [auth, setAuth] = useContext<AuthenticationState>(AuthenticationContext);
+const [auth] = useContext<AuthenticationState>(AuthenticationContext);
 
   return (
     <div className="nav_bar">

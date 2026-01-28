@@ -34,7 +34,7 @@ type UserProfile = {
 function UsersReport() {
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
-  const [AsyncLoader, reset] = useLoader<UserProfile>(makeEndpointSecond(Number(user_id)));
+  const [] = useLoader<UserProfile>(makeEndpointSecond(Number(user_id)));
   const [activeTab, setActiveTab] = useState<"view">("view");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [admin, setAdmin] = useState(false);

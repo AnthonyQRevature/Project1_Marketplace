@@ -1,10 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import "./Report.css";
-import { useNavigate, useParams, type NavigateFunction } from "react-router";
 import { Link } from "react-router";
-import type { Endpoint } from "../util/Endpoint";
-import AuthenticationContext, { type AuthenticationState } from "../authentication/AuthenticationContext";
-import useLoader from "../util/AsyncLoader";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 
 const API_BASE = "http://localhost:8080";
 
@@ -16,20 +13,6 @@ interface ReportEntity {
   message_id?: number;
   reason: string;
   status: "open" | "resolved";
-}
-
-type UserProfile = {
-  id : number,
-  username : string,
-  email : string,
-  profile: 
-  {
-    pfp_encoded : string,
-    bio : string,
-    latitude : number,
-    longitude : number,
-    distance : number
-  }
 }
 
 function Report() {
