@@ -1,7 +1,6 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router"; //React Router
-import './index.css';
 import Homepage from './homepage/Homepage.tsx';
 import Test from './Test.tsx';
 import Register from './register_user/Register.tsx';
@@ -13,33 +12,50 @@ import Upload from './file_upload_test/Upload.tsx';
 import MessagePage from './message/Messages.tsx';
 import ViewUserProfilePage from './user_profile/ViewUserProfile.tsx';
 import NavBar from './NavBar.tsx';
-import ProfileSocialButtons from './user_profile/SocialButtons.tsx';
 import InboxPage from './inbox/Inbox.tsx';
 import CreatePost from './createpost/CreatePost.tsx';
 import ViewPost from './view_post/ViewPost.tsx';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+
+import './index.css';
+import { OverlayScrollbars } from 'overlayscrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 AuthenticationContext;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <ReactRoot />
+  </StrictMode>
+)
+
+function ReactRoot()
+{
+  
+  useEffect(() => {
+    const osInstance = OverlayScrollbars(document.querySelector('#viewport') as HTMLElement, {paddingAbsolute:true});
+  }, []);
+  
+
+  return (
     <AuthenticationProvider>
       <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/listings" element={<Listings/>} />
-          <Route path="/uploads" element={<Upload/>} />
-          <Route path="/users/:user_id" element={<ViewUserProfilePage />} />
-          <Route path="/inbox" element={<InboxPage />} />
-          <Route path="/message/:user_id" element={<MessagePage />} />
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/test" element={<Test />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/listings" element={<Listings/>} />
+              <Route path="/uploads" element={<Upload/>} />
+              <Route path="/users/:user_id" element={<ViewUserProfilePage />} />
+              <Route path="/inbox" element={<InboxPage />} />
+              <Route path="/message/:user_id" element={<MessagePage />} />
 
-          <Route path="/createpost" element={<CreatePost/>}/>
-          <Route path="/listings/:postId" element={<ViewPost/>}/>
-        </Routes>
+              <Route path="/createpost" element={<CreatePost/>}/>
+              <Route path="/listings/:postId" element={<ViewPost/>}/>
+            </Routes>
       </BrowserRouter>
     </AuthenticationProvider>
-  </StrictMode>,
-)
+  )
+}

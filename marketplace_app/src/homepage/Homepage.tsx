@@ -3,9 +3,13 @@ import Head from './Head.tsx'
 import { Link } from 'react-router';
 import SearchBar from './SearchBar.tsx';
 import listing from '../listings/Listings.tsx';
+import { useEffect } from 'react';
+import { OverlayScrollbars } from 'overlayscrollbars';
 
 function Homepage()
 {
+  
+
   return (
     <>
       <Head />
@@ -24,7 +28,6 @@ function Homepage()
         </div>
       </div>
       <Link to='/'><p className='danger'>view reports</p></Link>
-      
     </>
   );
 }
