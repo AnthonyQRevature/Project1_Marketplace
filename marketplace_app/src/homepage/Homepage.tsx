@@ -1,10 +1,15 @@
-import './Homepage.css'
 import Head from './Head.tsx'
 import { Link } from 'react-router';
 import SearchBar from './SearchBar.tsx';
+import AuthenticationContext from '../authentication/AuthenticationContext.tsx';
+import { useContext } from 'react';
+
+import './Homepage.css'
 
 function Homepage()
 {
+  const [auth, _] = useContext(AuthenticationContext)
+
   return (
     <>
       <Head />
@@ -22,7 +27,7 @@ function Homepage()
           <SearchBar />
         </div>
       </div>
-      <Link to='/'><p className='danger'>view reports</p></Link>
+      {auth.isAdmin()? <Link to='/reports'><p className='danger'>view reports</p></Link> : <></>}
     </>
   );
 }

@@ -1,7 +1,5 @@
 package project.controller.Bodies;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.util.Objects;
 
 //{id: int, newStatus:int} -- newStatus may need to change, for now 0 for open, nonZero for resolved

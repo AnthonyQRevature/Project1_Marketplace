@@ -93,6 +93,7 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
     else
     {
       //loaded the resource
+      console.log(currentState);
       const resource = currentState as T;
       return (<Then {...{resource: resource, ...props.foward}}/>);
     }
@@ -163,9 +164,9 @@ export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5
     //run whenever currentState is set to LOADING
     useEffect(() => {
       let runner = async () => {
-        let aborted = false;
         if (currentState !== LOADER_STATE.LOADING) return;
         
+        let aborted = false;
         let result = new Array<T>(endpoints.length);
         let promises = endpoints.map((endpoint) => async_fetch(repititions, endpoint));
 

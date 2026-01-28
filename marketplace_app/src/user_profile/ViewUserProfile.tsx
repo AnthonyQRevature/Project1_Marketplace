@@ -1,15 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import "./ViewUserProfile.css";
 import { Link, useNavigate, useParams, type NavigateFunction } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "../authentication/AuthenticationContext";
 import { EncodedImage } from "../util/EncodedImage";
 import type { Endpoint } from "../util/Endpoint";
 import DeleteButton from "./DeleteButton";
 import useLoader from "../util/AsyncLoader";
-import type { UserProfile } from "../util/DataStructure";
-import ProfileSocialButtons from "./SocialButtons";
-
-import mailIcon from "../assets/mail.png";
-import "./ViewUserProfile.css";
 
 //get user profile endpoint
 function makeEndpoint(id: number) : Endpoint
@@ -21,19 +17,30 @@ function pfp_endpoint(id: number) : Endpoint
   return {endpoint: `http://localhost:8080/users/${id}/media`, method: "POST"};
 }
 
-function ViewUserProfilePage()
+const API_BASE = "http://localhost:8080";
+
+type UserProfile = {
+  id : number,
+  username : string,
+  email : string,
+  profile: 
+  {
+    pfp_encoded : string,
+    bio : string,
+    latitude : number,
+    longitude : number,
+    distance : number
+  }
+}
+
+function ViewUserProfile()
 {
   const {user_id} = useParams();
+  const [auth, _] = useContext(AuthenticationContext);
   const [AsyncLoader, reset] = useLoader<UserProfile>(makeEndpoint(Number(user_id)));
 
-  //reload on param change
-  useEffect(reset, [user_id]);
-
   return (
-    <>
-      <AsyncLoader foward={{reset: reset}} then={Display} otherwise={() => <p>Loading</p>}/>
-      <Attribution />
-    </>
+    <AsyncLoader foward={{reset: reset}} then={Display} otherwise={() => <p>Loading</p>}/>
   );
 }
 
@@ -42,6 +49,7 @@ function Display(props : {resource : UserProfile, reset: () => void})
   const [editMode, setEditMode] = useState<boolean>(false);
   const {user_id} = useParams();
   const [auth, _] = useContext(AuthenticationContext);
+  const [admin, setAdmin] = useState(false);
   const profile = props.resource;
   
   let owner = false;
@@ -49,27 +57,43 @@ function Display(props : {resource : UserProfile, reset: () => void})
   {
     owner = true;
   }
+
+  const fetchStatus = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/users/ADMIN`, {
+        method: "GET",
+        headers: {
+          Authorization: auth.encryptedToken
+        }
+      });
+
+      if (response.ok) {
+        setAdmin(true);
+      } else {
+        setAdmin(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  
+  useEffect(() => {
+    fetchStatus();
+  }, []);
   
   if (!editMode)
   {
     return (
       <>
-        {owner? <InboxIcon /> : <MsgIcon /> }
-        {auth.isAdmin()? <DeleteButton /> : <></>}
-        <div className="profile-columns">
-          <div>
-            <EncodedImage img={profile.profile.pfp_encoded} />
-            {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-            <h1>{profile.username}</h1>
-            <p>{profile.email}</p>
-            <p>BIO:</p>
-            <p>{profile.profile.bio}</p>
-            <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
-          </div>
-          <div>
-            <ProfileSocialButtons user_id={Number(user_id)}/>
-          </div>
-        </div>
+        <EncodedImage img={profile.profile.pfp_encoded} />
+        {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
+        <h1>{profile.username}</h1>
+        <p>{profile.email}</p>
+        <p>BIO:</p>
+        <p>{profile.profile.bio}</p>
+        <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+        {admin && (<Link to={`/users/${profile.id}/reports/of`}><p>Reports Against </p></Link>)}
+        {(admin || owner) && (<Link to={`/users/${profile.id}/reports/from`}><p>Reports Made </p></Link>)}
       </>
     );
   }
@@ -163,30 +187,4 @@ function submitProfile(token : string, profile_endpoint : Endpoint, pfp_endpoint
   }
 }
 
-function InboxIcon()
-{
-  const nav = useNavigate();
-
-  return (
-    <img className="icon link" src={mailIcon} onClick={() => nav("/inbox")} />
-  );
-}
-
-function MsgIcon()
-{
-  const nav = useNavigate();
-  const {user_id} = useParams();
-
-  return (
-    <img className="icon link" src={mailIcon} onClick={() => nav(`/message/${user_id}`)} />
-  );
-}
-
-function Attribution()
-{
-  return (
-    <a className="attribution" href="https://www.flaticon.com/free-icons/email" title="email icons">Email icon created by Freepik - Flaticon</a>
-  );
-}
-
-export default ViewUserProfilePage;
+export default ViewUserProfile;

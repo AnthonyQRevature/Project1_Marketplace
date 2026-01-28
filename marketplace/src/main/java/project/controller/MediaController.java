@@ -13,16 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import project.service.PostMediaService;
 import project.service.UserProfileService;
-import project.util.*;
-import project.util.exception.FileNotFoundException;
 import project.util.AllowCORS;
 import project.util.Secure;
+import project.util.SecureIndescriminate;
+import project.util.SecurityLevel;
 import project.util.exception.InvalidRequestException;
 
 @RestController
 public class MediaController {
     private final PostMediaService storageService;
-    private UserProfileService profileService;
+    private final UserProfileService profileService;
     
     @Autowired
     public MediaController(PostMediaService storageService, UserProfileService profileService) {
@@ -76,7 +76,7 @@ public class MediaController {
             var entity = profileService.addMedia(file, user_id);
             return ResponseEntity.ok(entity.getPfpEncoded());
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             return ResponseEntity.badRequest().header("cause", e.getMessage()).build();
         }

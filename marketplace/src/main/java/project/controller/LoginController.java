@@ -52,7 +52,7 @@ public class LoginController {
     public ResponseEntity<RegisterRequest> registerUser(@RequestBody RegisterRequest body)
     {
         try {
-            var response = userService.registerNewUser(body);
+            userService.registerNewUser(body);
             return ResponseEntity.ok().build();
         }
         catch (InvalidCredentialsException e) {

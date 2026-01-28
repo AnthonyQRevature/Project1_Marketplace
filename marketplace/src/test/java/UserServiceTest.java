@@ -55,7 +55,6 @@ public class UserServiceTest {
     public void CreateUserTest() throws Exception
     {
         //arrange
-        String inputPassword = "Password";
 
         /*
         UserEntity input = new UserEntity();
@@ -102,10 +101,9 @@ public class UserServiceTest {
         RegisterRequest input = new RegisterRequest("test_email", "password", "username");
         
         try {
-            var ret = userService.registerNewUser(input);
+            userService.registerNewUser(input);
             assert(false);
         } catch (DatabaseConflictException e) {
-            return;
         }
     }
 
