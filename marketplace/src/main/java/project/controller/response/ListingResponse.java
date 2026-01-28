@@ -13,6 +13,8 @@ public class ListingResponse {
     public List<MediaResponse> media;
     public List<TagResponse> tags;
 
+    public Integer sellerId;
+
     public static class MediaResponse {
         public String mediaEncoded;
         public String mediaType;

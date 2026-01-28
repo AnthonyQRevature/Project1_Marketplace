@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "./ViewPost.css";
+import { UserBrief } from "../report/Report";
 
 type Media = {
   mediaEncoded: string;
@@ -14,6 +15,7 @@ type TagEntity = {
 
 type Post = {
   id: number;
+  sellerId : number;
   description: string;
   price: number;
   status: string;
@@ -48,6 +50,7 @@ export default function ViewPost() {
     <div className="view-post">
       <h1>Post #{post.id}</h1>
 
+      <UserBrief user_id={post.sellerId} lhs="Seller: "/>
       <p className="price">${post.price.toFixed(2)}</p>
       <p className={`status status-${post.status}`}>
         Status: {post.status}

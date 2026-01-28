@@ -115,6 +115,7 @@ public class PostService {
         response.description = post.description;
         response.price = post.price;
         response.status = post.status.name();
+        response.sellerId = post.sellerId;
 
         // Media
         List<PostMediaEntity> mediaEntities = postMediaDao.findByPostId(id);
