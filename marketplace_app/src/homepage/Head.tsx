@@ -5,16 +5,16 @@ import SearchBar from './SearchBar.tsx';
 function Test()
 {
   return (
-    <div className="title">
+    <div id="head">
       <div className="userSearch">
         <SearchBar/>
       </div>
-      <div className="content">
+      <div className="title">
         <h1>
           Secondhand
         </h1>
       </div>
-      <div className="img">
+      <div className="logo">
         <img src={logo}/>
       </div>
     </div>

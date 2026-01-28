@@ -6,19 +6,21 @@ p {
   margin: 0 0 1em 0;
 }
 
-.title {
+#head {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.title .img {
+#head .logo {
   display: flex;
   flex-direction: row-reverse;
-  grid-column: 3;
 }
-.title .name {
-  grid-column: 2;
+#head .logo img {
+  max-width: 100%;
+  aspect-ratio: 1;
 }
-.title .name h1 {
+#head .name {
+}
+#head .name h1 {
   text-align: center;
 }
 
