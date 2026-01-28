@@ -2,9 +2,11 @@ import "./Listings.css";
 import Messages from "../message/Messages";
 import useLoader from "../util/AsyncLoader";
 import getAsset from "../util/AssetLoader";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { PostEntity } from "../util/DataStructure";
 import { EncodedImage } from "../util/EncodedImage";
+import { Link, useNavigate } from "react-router";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
 type TagEntity = {
@@ -16,6 +18,8 @@ type TagEntity = {
 function Listings() {
   const [posts, setPosts] = useState<PostEntity[]>([]);
   const [AsyncLoader, _] = useLoader<TagEntity[]>(get_tags);
+  const [auth,] = useContext(AuthenticationContext);
+  const nav = useNavigate();
 
   //load posts in when the webpage is opened
   useEffect(() => {
@@ -52,6 +56,7 @@ function Listings() {
 
   return (
     <>
+      <button style={{visibility: auth.isGuest()? "hidden" : "visible"}} onClick={() => {nav("/createpost")}}>Create</button>
       <AsyncLoader
         then={renderTags}
         otherwise={() => <p>Loading...</p>}
@@ -99,7 +104,7 @@ function PostCard(props: { post: PostEntity }) {
     <div className="postCard">
       <EncodedImage img={props.post.media[0].mediaEncoded} />
       <h1>{props.post.price.toLocaleString("en-US", { style: "currency", currency: "USD" })}</h1>
-      <p>{props.post.description}</p>
+      <p><Link to={`/listings/${props.post.id}`}>View</Link>{props.post.description}</p>
     </div>
   );
 }

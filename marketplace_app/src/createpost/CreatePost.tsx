@@ -1,5 +1,7 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, type ChangeEvent, useContext } from "react";
 import "./CreatePost.css";
+import AuthenticationContext from "../authentication/AuthenticationContext";
+import { useNavigate } from "react-router";
 
 type TagEntity = {
   id: number;
@@ -26,6 +28,14 @@ export default function CreatePost() {
   const [price, setPrice] = useState<number>(0);
   const [images, setImages] = useState<string[]>([]); // base64 strings
   const [statusMessage, setStatusMessage] = useState("");
+  const [auth, _] = useContext(AuthenticationContext);
+  const nav = useNavigate();
+
+  if (auth.isGuest())
+  {
+    useEffect(()=>{nav("/login")}, []);
+    return <></>;
+  }
 
   useEffect(() => {
     fetch("http://localhost:8080/tags")
@@ -43,14 +53,14 @@ export default function CreatePost() {
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === "string") {
-          setImages((prev) => [...prev, reader.result!]);
+          setImages((prev) => [...prev, reader.result as string]);
         }
       };
       reader.readAsDataURL(file); // base64 encode
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, user_id : number) => {
     e.preventDefault();
 
     if (!description || price <= 0 || images.length === 0) {
@@ -70,7 +80,7 @@ export default function CreatePost() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/createpost?sellerId=1", {
+      const res = await fetch(`http://localhost:8080/createpost?sellerId=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -95,7 +105,7 @@ export default function CreatePost() {
   return (
     <div className="create-post">
       <h1>Create Post</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit(e, auth.id)}>
         <label>Description:</label>
         <textarea
           value={description}

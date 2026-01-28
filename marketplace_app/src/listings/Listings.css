@@ -23,10 +23,13 @@ p {
 {
     border: 2px solid black;
 }
-
 .postCard > img
 {
     object-fit: cover;
     max-width: 60%;
     aspect-ratio: 1/1;
+}
+.postCard > p > a
+{
+    margin-right: 10px;
 }

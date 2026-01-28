@@ -57,11 +57,13 @@ export default function ViewPost() {
 
       {post.tags.length > 0 && (
         <div className="tags">
-          {post.tags.map((tag) => (
-            <span key={tag.id} className="tag">
-              {tag.tag_name}
-            </span>
-          ))}
+          <ul>
+            {post.tags.map((tag) => (
+              <li key={tag.id} className="tag">
+                {tag.tag_name}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
