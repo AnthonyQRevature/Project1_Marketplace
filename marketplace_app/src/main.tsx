@@ -9,7 +9,7 @@ import Login from './login/Login.tsx'
 import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
 import Upload from './file_upload_test/Upload.tsx';
-import Messages, { MessagesTest } from './listings/Messages.tsx';
+//import Messages, { MessagesTest } from './listings/Messages.tsx';
 import ViewUserProfile from './user_profile/ViewUserProfile.tsx';
 import Report from './report/Report.tsx'
 import UserReports from './report/UserReportOf.tsx'
@@ -56,7 +56,7 @@ function ReactRoot()
           <Route path="/register" element={<Register />} />
           <Route path="/listings" element={<Homepage/>} />
           <Route path="/uploads" element={<Upload/>} />
-          <Route path="/debug" element={<MessagesTest />} />
+{/*          <Route path="/debug" element={<MessagesTest />} /> */}
           <Route path="/users/:user_id" element={<ViewUserProfile />} />
           <Route path="/reports" element={<Report />} />
           <Route path="/createpost" element={<CreatePost/>}/>
