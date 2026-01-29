@@ -83,7 +83,7 @@ function Display(props : {resource : UserProfile, reset: () => void})
               <p className="profile_BIO_title">BIO:</p>
               <p className="profile_BIO_content">{profile.profile.bio}</p>
             </div>
-            <p>Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+            <p className="profile_location">Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
           </div>
           <div>
             <ProfileSocialButtons user_id={Number(user_id)}/>
@@ -128,8 +128,8 @@ function DisplayEdit(props : {init : UserProfile, reset : () => void})
         <label htmlFor="email">Email: </label><input type="email" name="email" defaultValue={profile.email} />
         <p>BIO:</p>
         <label htmlFor="bio">Bio: </label><textarea name="bio" defaultValue={profile.profile.bio} rows={5} cols={33} />
-        <label htmlFor="latitude">Latitude: </label><input type="text" name="latitude" defaultValue={profile.profile.latitude} />
-        <label htmlFor="longitude">Longitude: </label><input type="text" name="longitude" defaultValue={profile.profile.longitude} />
+        <label className="profile_location" htmlFor="latitude">Latitude: </label><input type="text" name="latitude" defaultValue={profile.profile.latitude} className="profile_location" />
+        <label className="profile_location" htmlFor="longitude">Longitude: </label><input type="text" name="longitude" defaultValue={profile.profile.longitude} className="profile_location" />
         <button type="submit">Submit</button>
       </form>
     </>

@@ -49,6 +49,10 @@
 	min-height: 10vh;
 }
 
+.profile_location{
+	display: none;
+}
+
 p {
     text-align: left;
 }
