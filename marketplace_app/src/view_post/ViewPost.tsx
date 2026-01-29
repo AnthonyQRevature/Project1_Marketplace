@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
 import "./ViewPost.css";
 import { UserBrief } from "../report/Report";
+import flag_icon from '../assets/flag_lmao.png';
+import type { Endpoint } from '../util/Endpoint';
+import { Link, useNavigate, useParams } from "react-router";
+import AuthenticationContext from "../authentication/AuthenticationContext";
 
 type Media = {
   mediaEncoded: string;
@@ -23,7 +26,15 @@ type Post = {
   tags: TagEntity[];
 };
 
-export default function ViewPost() {
+function makeReportEndpoint(target : number) : Endpoint
+{
+  return {
+    endpoint: `http://localhost:8080/users/${target}/reports`,
+    method: "POST"
+  };
+}
+
+function ViewPost() {
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState("");
@@ -48,6 +59,9 @@ export default function ViewPost() {
 
   return (
     <div className="view-post">
+      <div className="viewer_report_loc">
+        <Post_ReportButton post_report={post}/>
+      </div>
       <h1>Post #{post.id}</h1>
 
       <UserBrief user_id={post.sellerId} lhs="Seller: "/>
@@ -90,3 +104,49 @@ export default function ViewPost() {
     </div>
   );
 }
+
+function Post_ReportButton(props: {post_report: Post})
+{
+  const {post_report} = props;
+  const [auth, _] = useContext(AuthenticationContext);
+
+  if(post_report.sellerId == auth.id || auth.isGuest())
+  {
+    return (<></>)
+  }
+
+  const report = async () =>
+  {
+
+    const reason = prompt("Reason");
+
+    if(reason != null)
+    {
+      const endpoint = makeReportEndpoint(Number(post_report.sellerId));
+      const response = await fetch(endpoint.endpoint, {
+        method: endpoint.method,
+        body: JSON.stringify({
+          reporter_id: auth.id,
+          reported_id: Number(post_report.sellerId),
+          reason: reason,
+          post_id:Number(post_report.id)
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth.encryptedToken
+        }
+      });
+
+      if (response.ok)
+      {
+        alert("your response has been successfully submitted");
+      }
+    }
+  }
+
+  return (
+    <img className='icon view_report link' onClick={report} src={flag_icon} />
+  )
+}
+
+export default ViewPost;
