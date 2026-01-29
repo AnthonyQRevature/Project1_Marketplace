@@ -1,0 +1,14 @@
+.view_report {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+.view_report:hover {
+    border-color: #646cff;
+}
+
+.viewer_report_loc {
+    display: flex;
+    justify-self: right;
+}

@@ -9,6 +9,7 @@ import { EncodedImage } from "../util/EncodedImage";
 import { Link, useNavigate } from "react-router";
 import AuthenticationContext from "../authentication/AuthenticationContext";
 
+
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
 type TagEntity = {
   id: number;
