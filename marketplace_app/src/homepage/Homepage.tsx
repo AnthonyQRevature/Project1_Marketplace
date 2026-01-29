@@ -41,10 +41,9 @@ function Homepage()
 
     const formData = new FormData(e.currentTarget);
     const tags = formData.getAll("tags") as string[];
-    const distance = formData.get("distance") as string;
 
     const url = new URL("http://localhost:8080/listings");
-    url.searchParams.append("distance", distance);
+    url.searchParams.append("distance", '0');
     url.searchParams.append("tags", tags.join(','));
     //tags.forEach(tag => url.searchParams.append("tags", tag));
 
