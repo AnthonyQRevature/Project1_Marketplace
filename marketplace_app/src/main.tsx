@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router"; //React Router
 import Homepage from './homepage/Homepage.tsx';
 import Test from './Test.tsx';
 import Register from './register_user/Register.tsx';
-import Listings from './listings/Listings.tsx';
+//import Listings from './listings/Listings.tsx';
 import Login from './login/Login.tsx'
 import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
@@ -54,7 +54,7 @@ function ReactRoot()
           <Route path="/test" element={<Test />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/listings" element={<Listings/>} />
+          <Route path="/listings" element={<Homepage/>} />
           <Route path="/uploads" element={<Upload/>} />
           <Route path="/debug" element={<MessagesTest />} />
           <Route path="/users/:user_id" element={<ViewUserProfile />} />
