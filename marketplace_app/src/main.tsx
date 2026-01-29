@@ -51,7 +51,7 @@ function ReactRoot()
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/test" element={<Test />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/listings" element={<Homepage/>} />
