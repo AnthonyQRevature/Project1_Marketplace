@@ -21,6 +21,7 @@ p {
 	flex-direction: column;
    	justify-content: center;
    	align-items: center;
+   	padding-bottom: 10px;
 }
 
 .logRegLink {
@@ -28,6 +29,7 @@ p {
    	justify-content: center;
    	align-items: center;
    	text-align: center;
+   	padding-top: 10px;
 }
 
 .loginBox {
@@ -38,4 +40,5 @@ p {
 	justify-self: center;
 	border: 2px solid #1C6EA4;
 	width: 300px;
+	border-radius: 8px;
 }
