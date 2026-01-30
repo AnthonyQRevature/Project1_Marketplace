@@ -66,15 +66,20 @@ public class UserServiceTest {
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
         expectedSave.setRole(UserEntity.UserRole.user);
+        UserProfileEntity profileSave = new UserProfileEntity();
+        profileSave.setUserEntity(expectedSave);
+        profileSave.setPfpEncoded("default pfp");
+        expectedSave.setUserProfile(profileSave);
 
         UserEntity daoResponse = new UserEntity();
         daoResponse.setId(1);
-        RegisterRequest expectedResponse = new RegisterRequest("test_email", null, "username");
+        daoResponse.setUsername("username");
+        daoResponse.setEmail("test_email");
 
-        UserProfileEntity profileSave = new UserProfileEntity();
-        profileSave.setUserEntity(daoResponse);
-        profileSave.setPfpEncoded("default pfp");
-        expectedSave.setUserProfile(profileSave);
+        RegisterRequest expectedResponse = new RegisterRequest();
+        expectedResponse.setUsername("username");
+        expectedResponse.setEmail("test_email");
+
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
