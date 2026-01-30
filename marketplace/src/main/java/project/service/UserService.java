@@ -1,23 +1,30 @@
 package project.service;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserEntity.UserRole;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
-import project.Repository.dao.UserProfileDao;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.LoginResponse;
 import project.util.DefaultPfp;
+import project.util.FileEncoder;
 import project.util.Hasher;
 import project.util.TokenUtil;
 import project.util.exception.DatabaseConflictException;
@@ -31,9 +38,11 @@ public class UserService {
 
     UserDao dao;
     DefaultPfp defaultPfp;
-    UserProfileDao profileDao;
     Hasher hasher;
     TokenUtil tokenUtil;
+    FileEncoder encoder;
+
+    Rectangle targetDimensions;
 
     /*
      * a response entity represents an HTML response
@@ -79,14 +88,14 @@ public class UserService {
             //assign the password field in the entity
             String hash = hasher.hashPassword(user.getPassword());
             entity.setPasswordHash(hash);
-
-            UserEntity result = dao.save(entity);
             
             //create a corresponding profile
             UserProfileEntity profileEntity = new UserProfileEntity();
-            profileEntity.setUserID(result.getId());
+            profileEntity.setUserEntity(entity);
             profileEntity.setPfpEncoded(defaultPfp.get());
-            profileDao.save(profileEntity);
+            entity.setUserProfile(profileEntity);
+            
+            UserEntity result = dao.save(entity);
 
             //conversion from entity to model
             RegisterRequest ret = new RegisterRequest(result.getEmail(), null, result.getUsername());
@@ -149,13 +158,64 @@ public class UserService {
 
     //achieves constructor injection
     @Autowired
-    public UserService(UserDao dao, UserProfileDao profileDao, Hasher hasher, TokenUtil tokenUtil, DefaultPfp defaultPfp) 
-    {
+    public UserService(
+        UserDao dao,
+        Hasher hasher, 
+        TokenUtil tokenUtil, 
+        DefaultPfp defaultPfp,
+        FileEncoder encoder
+    ) {
         this.dao = dao;
         this.defaultPfp = defaultPfp;
-        this.profileDao = profileDao;
         this.hasher = hasher;
         this.tokenUtil = tokenUtil;
+        this.encoder = encoder;
+
+        this.targetDimensions = new Rectangle(32, 32);
     }
 
+    public List<UserEntity> getAllUsers() {
+        return dao.findAll();
+    }
+
+    public Optional<UserEntity> getById(Integer id) {
+        return dao.findById(id);
+    }
+
+    public UserEntity updateById(Integer id, UserUpdateRequest body) 
+    throws AccountNotFoundException
+    {
+        var optional = dao.findById(id);
+        if (!optional.isPresent())
+        {
+            throw new AccountNotFoundException();
+        }
+        UserEntity entity = optional.get();
+        UserProfileEntity profileEntity = entity.getUserProfile();
+
+        entity.setEmail(body.getEmail());
+        profileEntity.setBio(body.getProfile().getBio());
+        profileEntity.setLatitude(body.getProfile().getLatitude());
+        profileEntity.setLongitude(body.getProfile().getLongitude());
+
+        entity = dao.save(entity);
+        return entity;
+    }
+
+    @Transactional
+    public UserEntity addMedia(MultipartFile file, Integer user_id) throws IOException
+    {
+        String encodedFile;
+        UserEntity entity = dao.findById(user_id).get();
+
+        try (InputStream stream = file.getInputStream())
+        {
+            //removes the alpha channel
+            BufferedImage resized = encoder.cropAndResize(ImageIO.read(stream), targetDimensions);
+            encodedFile = encoder.base64Encode(resized);
+            entity.getUserProfile().setPfpEncoded(encodedFile);
+            entity = dao.save(entity);
+            return entity;
+        }
+    }
 }

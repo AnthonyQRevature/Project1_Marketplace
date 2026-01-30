@@ -1,9 +1,13 @@
 package project.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,28 +27,25 @@ import project.service.UserProfileService;
 import project.service.UserService;
 import project.util.AllowCORS;
 import project.util.Secure;
+import project.util.SecureIndescriminate;
+import project.util.SecurityLevel;
 
 @RestController
 @AllowCORS
 @RequestMapping("/users")
 public class UserController {
     UserService userService;
-    UserProfileService userProfileService;
 
     @Autowired
-    public UserController(UserService userService, UserProfileService userProfileService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userProfileService = userProfileService;
     }
 
     @GetMapping("/by-username/{username}")
     public ResponseEntity<?> getUserAndProfileByUsername(@PathVariable("username") String username) {
         try{
             UserEntity entity = userService.retrieveByUsername(username).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(entity.getId()).get();
-
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
-            UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, username, entity.getVerifiedSeller());
+            UserResponse response = toUserResponse(entity);
             return ResponseEntity.ok(response);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e);
@@ -55,10 +56,7 @@ public class UserController {
     public ResponseEntity<?> getUserAndProfileById(@PathVariable("id") int id) {
         try{
             UserEntity entity = userService.retrieveByID(id).get();
-            UserProfileEntity profileEntity = userProfileService.getProfileEntityByUserID(id).get();
-
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
-            UserResponse response = new UserResponse(entity.getEmail(), id, profileResponse, entity.getUsername(), entity.getVerifiedSeller());
+            UserResponse response = toUserResponse(entity);
             return ResponseEntity.ok(response);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e);
@@ -68,31 +66,71 @@ public class UserController {
     @PatchMapping("/{id}")
     @Transactional
     @Secure
-    public ResponseEntity<?> patchUserAndProfile(@RequestHeader("Authorization") String auth, @PathVariable("id") Integer id, @RequestBody UserUpdateRequest body) {
+    public ResponseEntity<?> patchUserAndProfile(
+        @RequestHeader("Authorization") String auth, 
+        @PathVariable("id") Integer id, 
+        @RequestBody UserUpdateRequest body
+    ) {
         try{
-            //Maybe add if statements so we do not do uneeded saving? But then we would be checking excessivly
-            UserEntity entity = userService.updateUserEmail(id, body).get();
-            var profile = body.getProfile();
-            UserProfileEntity profileEntity = userProfileService.modelToEntity(userProfileService.updateUserProfileByUserId(id, profile).get());
-
-            ProfileResponse profileResponse = new ProfileResponse(profileEntity.getBio(), profileEntity.getLatitude(), profileEntity.getLongitude(), profileEntity.getPfpEncoded());
-            UserResponse response = new UserResponse(entity.getEmail(), entity.getId(), profileResponse, entity.getUsername(), entity.getVerifiedSeller());
+            UserEntity entity = userService.updateById(id, body);
+            UserResponse response = toUserResponse(entity);
             return ResponseEntity.ok(response);
         } catch (AccountNotFoundException e){
             return ResponseEntity.badRequest().body(e);
         }
     }
 
+    private UserResponse toUserResponse(UserEntity entity) {
+        ProfileResponse profileResponse = new ProfileResponse(
+            entity.getUserProfile().getBio(), 
+            entity.getUserProfile().getLatitude(), 
+            entity.getUserProfile().getLongitude(),
+            entity.getUserProfile().getPfpEncoded()
+        );
+        UserResponse response = new UserResponse(
+            entity.getEmail(), entity.getId(), 
+            profileResponse, entity.getUsername(), 
+            entity.getVerifiedSeller()
+        );
+        return response;
+    }
+
     @DeleteMapping("/{id}")
     @Secure
     public ResponseEntity<?> deleteUserAndProfile(@RequestHeader("Authorization") String auth, @PathVariable("id") Integer id) {
         try{
-            userProfileService.deleteUserProfileById(id);
-            userService.deleteUserById(id);
+            userService.deleteUserById(id);//on delete cascade
             return ResponseEntity.ok(id);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e);
         }
+    }
+
+    @GetMapping("") //this is cursed
+    @SecureIndescriminate(SecurityLevel.ADMIN)
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestHeader("Authorization") String auth)
+    {
+        List<UserResponse> ret = new ArrayList<>();
+        var users = userService.getAllUsers();
+        for (var user : users)
+        {
+            UserResponse element = new UserResponse(
+                user.getEmail(),
+                user.getId(),
+                new ProfileResponse(
+                    user.getUserProfile().getBio(),
+                    user.getUserProfile().getLatitude(),
+                    user.getUserProfile().getLongitude(),
+                    user.getUserProfile().getPfpEncoded()
+                ),
+                user.getUsername(),
+                user.getVerifiedSeller()
+            );
+            
+            ret.add(element);
+        }
+
+        return ResponseEntity.ok(ret);
     }
 
     /*
