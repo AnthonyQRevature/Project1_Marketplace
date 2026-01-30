@@ -57,7 +57,6 @@ public class UserService {
         if (user.getPassword().length() < 8)
         {
             throw new InvalidCredentialsException();
-            //return ResponseEntity.badRequest().build();
         }
 
         //check existence
