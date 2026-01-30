@@ -28,6 +28,7 @@
   border-radius: 6px;
   font-size: 0.9rem;
 }
+
 .message.reverse {
   text-align: right;
 }
@@ -76,4 +77,17 @@
 
 .buttons {
   display:flex
+}
+
+.MessageIndividual {
+  
+  border: 3px;
+  border-color: black;
+  padding:.1rem;
+
+}
+
+.MessageIndividual:hover {
+  border-width: 0.5rem;
+  border-color: red;
 }
