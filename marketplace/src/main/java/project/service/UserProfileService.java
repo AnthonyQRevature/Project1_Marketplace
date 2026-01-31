@@ -132,8 +132,9 @@ public class UserProfileService{
         return ret;
     }
 
-    public boolean uniqueUser_id(int user_id){
-        return !dao.existsByUserID(user_id);
+    public boolean uniqueUser_id(Integer user_id){
+        var val = dao.existsByUserID(user_id);
+        return !val;
     }
 
     @Autowired
