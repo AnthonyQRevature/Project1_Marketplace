@@ -49,6 +49,7 @@ p.danger {
 .postCard
 {
     border: 2px solid black;
+    border-radius: 12px;
     margin: 20px;
     display: grid;
     justify-items: center;
