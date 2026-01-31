@@ -6,6 +6,7 @@ import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
+import project.Repository.Entities.UserEntity.UserRole;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
@@ -105,7 +107,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("") //this is cursed
+    @GetMapping("")
     @SecureIndescriminate(SecurityLevel.ADMIN)
     public ResponseEntity<List<UserResponse>> getUsers(@RequestHeader("Authorization") String auth)
     {
@@ -119,6 +121,25 @@ public class UserController {
         }
 
         return ResponseEntity.ok(ret);
+    }
+
+    @PatchMapping("/{id}/perms")
+    @SecureIndescriminate(SecurityLevel.SUPER_USER)
+    public ResponseEntity<?> setPerms(
+        @RequestHeader("Authorization") String auth,
+        @PathVariable Integer id,
+        @RequestBody Integer role
+    ) {
+        var optional = userService.getById(id);
+        if (!optional.isPresent())
+        {
+            //not present
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        var user = optional.get();
+        user.setRole(UserRole.of(role));
+        userService.update(user);
+        return ResponseEntity.ok().build();
     }
 
     /*

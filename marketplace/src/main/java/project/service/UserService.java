@@ -218,4 +218,9 @@ public class UserService {
             return entity;
         }
     }
+
+    public UserEntity update(UserEntity e)
+    {
+        return dao.save(e);
+    }
 }
