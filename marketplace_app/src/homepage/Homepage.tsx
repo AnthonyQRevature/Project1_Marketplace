@@ -11,6 +11,7 @@ import type { PostEntity } from "../util/DataStructure";
 import { EncodedImage } from "../util/EncodedImage";
 
 import './Homepage.css'
+import AdminBar from './AdminBar.tsx';
 
 const get_tags = { endpoint: "http://localhost:8080/tags", method: "GET" };
 type TagEntity = {
@@ -68,16 +69,10 @@ function Homepage()
       />
       {/* Render PostsGrid from state, so it updates after submit */}
       <PostsGrid posts={posts} />
-      {auth.isAdmin()? <Link to='/reports'><p className='danger'>view reports</p></Link> : <></>}
+      <AdminBar />
     </>
   );
 }
-
-function LinkTo(props: {path: string, label: string})
-{
-  return (<Link to={props.path}><p>{props.label}</p></Link>);
-}
-
 
 /* TagsList with onSubmit prop */
 function TagsList(props: { tags: TagEntity[]; onSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) {

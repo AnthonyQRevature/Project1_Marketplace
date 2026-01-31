@@ -24,6 +24,7 @@ import './index.css';
 import { OverlayScrollbars } from 'overlayscrollbars';
 import 'overlayscrollbars/overlayscrollbars.css';
 import MessagePage from './message/Messages.tsx';
+import UserPermsPage from './admin_zone/UserPerms.tsx';
 
 AuthenticationContext;
 
@@ -63,6 +64,7 @@ function ReactRoot()
           <Route path="/listings/:postId" element={<ViewPost/>}/>
           <Route path="/inbox" element={<InboxPage />} />
           <Route path="/message/:user_id" element={<MessagePage />} />
+          <Route path="/all-users" element={<UserPermsPage />} />
 
           {/*I dont think we need these?*/}
           <Route path="/users/:user_id/reports/of" element={<UserReports />} />

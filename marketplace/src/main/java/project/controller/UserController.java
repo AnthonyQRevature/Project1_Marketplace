@@ -7,7 +7,6 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import project.Repository.Entities.UserEntity;
-import project.Repository.Entities.UserProfileEntity;
 import project.controller.request.UserUpdateRequest;
 import project.controller.response.ProfileResponse;
 import project.controller.response.UserResponse;
-import project.service.UserProfileService;
 import project.service.UserService;
 import project.util.AllowCORS;
 import project.util.Secure;
@@ -89,7 +86,9 @@ public class UserController {
         );
         UserResponse response = new UserResponse(
             entity.getEmail(), entity.getId(), 
-            profileResponse, entity.getUsername(), 
+            profileResponse,
+            entity.getRole().value,
+            entity.getUsername(), 
             entity.getVerifiedSeller()
         );
         return response;
@@ -114,18 +113,7 @@ public class UserController {
         var users = userService.getAllUsers();
         for (var user : users)
         {
-            UserResponse element = new UserResponse(
-                user.getEmail(),
-                user.getId(),
-                new ProfileResponse(
-                    user.getUserProfile().getBio(),
-                    user.getUserProfile().getLatitude(),
-                    user.getUserProfile().getLongitude(),
-                    user.getUserProfile().getPfpEncoded()
-                ),
-                user.getUsername(),
-                user.getVerifiedSeller()
-            );
+            UserResponse element = toUserResponse(user);
             
             ret.add(element);
         }

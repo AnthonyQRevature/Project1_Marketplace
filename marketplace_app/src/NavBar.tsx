@@ -11,19 +11,21 @@ export default function NavBar()
     <div className="nav_bar">
       <div></div>
       <Link to={`/`} className="nav_title">Secondhand</Link>
-      <MyProfile auth={auth}/>
+      <MyProfile />
     </div>
   )
 }
 
-function MyProfile(props : {auth: Authentication})
+function MyProfile()
 {
-  const {auth} = props;
+  const [auth, setAuth] = useContext(AuthenticationContext);
+  const nav = useNavigate();
+
   if (!auth.isGuest())
   {
-    const [auth,setAuth] = useContext(AuthenticationContext);
     const handleLogout = () => {
       setAuth(new Authentication());
+      //nav("/");
     }
 
     return (

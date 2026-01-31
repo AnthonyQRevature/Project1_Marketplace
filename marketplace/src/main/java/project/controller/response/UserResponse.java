@@ -2,15 +2,17 @@ package project.controller.response;
 
 public class UserResponse {
     int id;
+    Integer role;
     String username;
     String email;
     Boolean verified_seller;
     ProfileResponse profile;
 
-    public UserResponse(String email, int id, ProfileResponse profileResponse, String username, Boolean verified_seller) {
+    public UserResponse(String email, int id, ProfileResponse profile, Integer role, String username, Boolean verified_seller) {
         this.email = email;
         this.id = id;
-        this.profile = profileResponse;
+        this.profile = profile;
+        this.role = role;
         this.username = username;
         this.verified_seller = verified_seller;
     }
@@ -48,5 +50,13 @@ public class UserResponse {
     }
     public void setProfile(ProfileResponse profileResponse) {
         this.profile = profileResponse;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import AuthenticationContext, { type AuthenticationState } from "../authentication/AuthenticationContext";
 import useLoader from "../util/AsyncLoader";
 import { EncodedImage } from "../util/EncodedImage";
+import LoadBrief from "../util/UserBrief";
 
 const API_BASE = "http://localhost:8080";
 
@@ -310,8 +311,8 @@ function ViewAllReports({
           <div className="report-header">
             <div>
               <strong>Report #{report.report_id}</strong>
-              <UserBrief lhs="Reporter:" user_id={report.reporter_id}/>
-              <UserBrief lhs="Reported:" user_id={report.reported_id}/>
+              <LoadBrief lhs="Reporter:" user_id={report.reporter_id}/>
+              <LoadBrief lhs="Reported:" user_id={report.reported_id}/>
             </div>
             <span className={`report-status ${report.status.toLowerCase()}`}>
               {report.status}
@@ -347,39 +348,6 @@ function ViewAllReports({
       ))}
     </div>
   );
-}
-
-//TODO: extract this component
-export function UserBrief(props : {user_id : number, lhs : string})
-{
-  const {user_id, lhs} = props;
-  const endpoint = {
-    endpoint: `http://localhost:8080/users/${user_id}`,
-    method: "GET"
-  }
-  const [AsyncLoader, _] = useLoader(endpoint);
-
-  const brief = function(props : {resource : UserProfile})
-  {
-    const profile = props.resource;
-
-    console.log(profile);
-    return (
-      <>
-        <Link className="inline" to={`/users/${user_id}`}>
-          <EncodedImage img={profile.profile.pfp_encoded}/>
-          <p>{profile.username}</p>
-        </Link>
-      </>
-    )
-  }
-
-  return (
-    <div className="inline">
-      <p>{lhs}</p>
-      <AsyncLoader then={brief} otherwise={() => <p>...</p>}/>
-    </div>
-  )
 }
 
 export default Report;

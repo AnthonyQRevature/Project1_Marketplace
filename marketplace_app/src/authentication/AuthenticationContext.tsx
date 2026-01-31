@@ -1,5 +1,6 @@
 import { createContext, useState, type Dispatch } from "react";
 import type { JSX } from "react/jsx-runtime";
+import { Role } from "../util/DataStructure";
 
 //this stuff is complicated enough to be wrapped in a class
 export class Authentication {
@@ -28,7 +29,7 @@ export class Authentication {
   }
 
   isAdmin() {
-    return this.role === 2;
+    return this.role >= Role.ADMIN;
   }
 };
 
