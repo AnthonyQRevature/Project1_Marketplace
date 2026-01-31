@@ -270,7 +270,7 @@ function ViewAllReports({
   };
 
   const deleteReport = async (report_id: number) => {
-    if (!window.confirm("Are you sure you want to delete this report?")) return;
+    if (!window.confirm("Are you sure you want to delete this report, and all associated content?")) return;
 
     try {
       const response = await fetch(`${API_BASE}/reports/${report_id}`, {
@@ -281,7 +281,7 @@ function ViewAllReports({
       });
 
       if (response.ok) {
-        setMessage({ type: "success", text: "Report deleted!" });
+        setMessage({ type: "success", text: "Report and content deleted!" });
         fetchReports();
       } else {
         const errorText = await response.text();

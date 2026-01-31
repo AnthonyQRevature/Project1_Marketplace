@@ -1,6 +1,7 @@
 package project.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +78,23 @@ public class ReportController {
 			@PathVariable Integer id
 	)
 	{
+		Optional<ReportEntity> optionalReportEntity = reportService.getReportById(id);
+		if(optionalReportEntity.isEmpty())
+		{
+			return ResponseEntity.badRequest().build();
+		}
+		ReportEntity reportEntity = optionalReportEntity.get();
+
+		if(reportEntity.getMessage_id() != null)
+		{
+			reportService.deleteAssociatedMessage(reportEntity);
+		}
+
+		if(reportEntity.getPost_id() != null)
+		{
+			reportService.deleteAssociatedPost(reportEntity);
+		}
+
 		if(! reportService.Delete(id))
 		{
 			//TODO: ERROR HANDLING: if report status is false, do things here
@@ -130,4 +148,5 @@ public class ReportController {
 			return ResponseEntity.status(400).build();
 		}
 	}
+
 }
