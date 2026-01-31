@@ -2,21 +2,15 @@
     display:grid;
     grid-template-columns: 1fr fit-content(200px);
 }
-.center-container {
-	display: flex;
-	justify-content: center;
-}
+
 .profile_pic_loc {
-	width: 10%;
-	min-width: 32px;
-	min-height: 32px;
-	aspect-ratio: 1;
+	display:flex;
+	justify-content: center;
 }
 
 .profile_pic {
-	justify-self: center;
-	width: 100%;
-	object-fit: contain;
+	display:flex;
+	justify-content: center;
 }
 
 .profile_edit_loc{

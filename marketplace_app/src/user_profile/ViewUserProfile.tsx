@@ -67,10 +67,8 @@ function Display(props : {resource : UserProfile, reset: () => void})
         {auth.isAdmin()? <DeleteButton /> : <></>}
         <div className="profile-columns">
           <div>
-            <div className="center-container">
-              <div className="profile_pic_loc">
-                <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
-              </div>
+          	<div className="profile_pic_loc">
+              <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
             </div>
             <div className="profile_edit_loc">
               {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}

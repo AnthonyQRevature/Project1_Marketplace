@@ -22,7 +22,8 @@ import project.util.AllowCORS;
 
 @AllowCORS
 public class PostController {
-    private final PostService postService;
+
+    PostService postService;
 
     @Autowired
     public PostController(PostService postService) {

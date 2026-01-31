@@ -6,7 +6,6 @@
         "a b c";
 }
 .nav_bar > .right {
-    display: flex;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
@@ -15,13 +14,9 @@
 }
 .nav_bar > .right p {
     border-radius: 10px;
-    margin: 5px;
     padding: 5px;
     border: 1px solid black;
     background: var(--colorbg1);
-    cursor: pointer;
-    font-size:larger;
-	font-weight: bold;
     
     transition: border-color 0.25s;
 }
@@ -59,6 +54,7 @@
     align-self: center;
 
     color:var(--color0);
+    font-size: larger;
     font-weight: bold;
 }
 

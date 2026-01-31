@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { Link, Navigate, useNavigate, type NavigateFunction } from "react-router";
+import { useContext } from "react";
+import { Link } from "react-router";
 import AuthenticationContext, { Authentication, type AuthenticationState } from "./authentication/AuthenticationContext";
 import "./NavBar.css";
 
@@ -21,13 +21,8 @@ function MyProfile(props : {auth: Authentication})
   const {auth} = props;
   if (!auth.isGuest())
   {
-    const [auth,setAuth] = useContext(AuthenticationContext);
-    const handleLogout = () => {
-      setAuth(new Authentication());
-    }
-
     return (
-      <div className="right"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link><p onClick={handleLogout}>Logout</p></div>
+      <div className="right"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link></div>
     );
   }
   else
