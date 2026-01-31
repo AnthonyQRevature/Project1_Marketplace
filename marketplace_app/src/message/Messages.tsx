@@ -10,6 +10,8 @@ import { EncodedImage } from "../util/EncodedImage";
 import refresh from "../assets/refresh.png";
 import useLoader, { useLoaderses } from "../util/AsyncLoader";
 import ProfileSocialButtons from "../user_profile/SocialButtons";
+import type { Endpoint } from '../util/Endpoint';
+import flag_icon from '../assets/flag_lmao.png';
 
 type MessageEntity = {
   messageId: number;
@@ -34,7 +36,13 @@ const get_messages = (user1Id: number, user2Id: number) => ({
   endpoint: `http://localhost:8080/messages/conversation?user1Id=${user1Id}&user2Id=${user2Id}`,
   method: "GET"
 });
-
+function makeReportEndpoint(target : number) : Endpoint
+{
+  return {
+    endpoint: `http://localhost:8080/users/${target}/reports`,
+    method: "POST"
+  };
+}
 /*
 export function MessagesTest()
 {
@@ -116,7 +124,40 @@ function Messages(props: { resources: [UserProfile, UserProfile, Messages], rese
 function Message(props : {message: Message_t, my_profile : UserProfile, their_profile : UserProfile})
 {
   const {message, my_profile, their_profile} = props;
+  const [auth, _] = useContext(AuthenticationContext);
 
+  const report = async (message_report:Message_t) =>
+  {
+
+    let reporter:Number = my_profile.id;
+    let reported:Number = their_profile.id;
+
+    const reason = prompt("Reason");
+
+    if(reason != null)
+    {
+      const endpoint = makeReportEndpoint(Number(reported));
+      const response = await fetch(endpoint.endpoint, {
+        method: endpoint.method,
+        body: JSON.stringify({
+          reporter_id: reporter,
+          reported_id: reported,
+          reason: reason,
+          message_id:Number(message_report.messageId)
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth.encryptedToken
+        }
+      });
+
+      if (response.ok)
+      {
+        alert("your response has been successfully submitted");
+      }
+    }
+  }
+  
   if (message.senderId === my_profile.id)
   {
     //my message
@@ -136,7 +177,7 @@ function Message(props : {message: Message_t, my_profile : UserProfile, their_pr
       <div className="message-box reverse">
         <Link to={`/users/${their_profile.id}`}><EncodedImage img={their_profile.profile.pfp_encoded} /></Link>
         <div className="message reverse">
-          <span>{message.message}</span>
+          <span onClick={() => report(message)} className="MessageIndividual">{message.message}</span>
           <b>{their_profile.username}</b>
         </div>
       </div>

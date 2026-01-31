@@ -1,22 +1,33 @@
 package project.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project.Repository.Entities.MessageEntity;
+import project.Repository.Entities.PostEntity;
 import project.Repository.Entities.ReportEntity;
+import project.Repository.dao.MessageDao;
+import project.Repository.dao.PostDao;
 import project.Repository.dao.ReportDAO;
 import project.controller.Bodies.ReportPostBody;
 
 @Service
 public class ReportService {
 	ReportDAO dao;
+	PostDao postDao;
+	MessageDao messageDao;
 
 	@Autowired
-	public ReportService(ReportDAO dao) {
+	public ReportService(ReportDAO dao, PostDao postDao, MessageDao messageDao) {
 		this.dao = dao;
+		this.postDao = postDao;
+		this.messageDao = messageDao;
 	}
+
+	public Optional<ReportEntity> getReportById(Integer id) {return dao.findById(id);}
 
 	public List<ReportEntity> getAllReports() {return dao.findAll();}
 
@@ -65,5 +76,24 @@ public class ReportService {
 
 
 		return dao.save(newReport);
+	}
+
+	public Boolean deleteAssociatedMessage(ReportEntity entity)
+	{
+		if(entity.getMessage_id() != null) {
+			messageDao.deleteById(entity.getMessage_id());
+			return true;
+		}
+		return false;
+	}
+
+	public boolean deleteAssociatedPost(ReportEntity entity)
+	{
+		if(entity.getPost_id() != null)
+		{
+			postDao.deleteById(entity.getPost_id());
+			return true;
+		}
+		return false;
 	}
 }
