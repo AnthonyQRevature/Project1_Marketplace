@@ -270,7 +270,7 @@ function ViewAllReports({
   };
 
   const deleteReport = async (report_id: number) => {
-    if (!window.confirm("Are you sure you want to delete this report, and all associated content?")) return;
+    if (!window.confirm("Are you sure you want to delete this report?")) return;
 
     try {
       const response = await fetch(`${API_BASE}/reports/${report_id}`, {
@@ -281,7 +281,7 @@ function ViewAllReports({
       });
 
       if (response.ok) {
-        setMessage({ type: "success", text: "Report and content deleted!" });
+        setMessage({ type: "success", text: "Report deleted!" });
         fetchReports();
       } else {
         const errorText = await response.text();
@@ -293,31 +293,6 @@ function ViewAllReports({
       console.error(e);
     }
   };
-
-  const purgeReport = async (report_id: number) => {
-    if (!window.confirm("Are you sure you want to purge this report? It will delete any associated message or post.")) return;
-
-    try {
-      const response = await fetch(`${API_BASE}/reports/${report_id}/purge`, {
-        method: "DELETE",
-        headers: {
-          Authorization: auth.encryptedToken
-        }
-      });
-
-      if (response.ok) {
-        setMessage({ type: "success", text: "Content purged!" });
-        fetchReports();
-      } else {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
-        setMessage({ type: "error", text: `Failed to delete content: ${response.status}` });
-      }
-    } catch (e) {
-      setMessage({ type: "error", text: "Server error" });
-      console.error(e);
-    }
-  }
 
   if (loading && reports.length === 0) {
     return <p>Loading reports...</p>;
@@ -367,14 +342,6 @@ function ViewAllReports({
             >
               Delete
             </button>
-            {((report.message_id != null || report.post_id != null) && report.status !== "resolved") && (
-              <button
-                className="btn-delete"
-                onClick={() => purgeReport(report.report_id)}
-                >
-                  Purge
-                </button>
-            )}
           </div>
         </div>
       ))}

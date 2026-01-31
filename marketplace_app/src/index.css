@@ -21,11 +21,6 @@
   --colorbg1:#adb6c4; /*pick a good button color*/
 }
 
-#page-root {
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
 .icon {
   width: 32px;
   height: 32px;

@@ -58,7 +58,14 @@ public class UserProfileEntity {
 	public void setLongitude(Double longitude) {this.longitude = longitude;}
 	public String getAddress() {return address;}
 	public void setAddress(String address) {this.address = address;}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		UserProfileEntity that = (UserProfileEntity) o;
+		return Double.compare(latitude, that.latitude) == 0 && Double.compare(longitude, that.longitude) == 0 && Objects.equals(id, that.id) && Objects.equals(userID, that.userID) && Objects.equals(pfpEncoded, that.pfpEncoded) && Objects.equals(bio, that.bio) && Objects.equals(address, that.address);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, userID, pfpEncoded, bio, latitude, longitude, address);
@@ -76,37 +83,4 @@ public class UserProfileEntity {
 				", address='" + address + '\'' +
 				'}';
 	}
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserProfileEntity other = (UserProfileEntity) obj;
-        if (!Objects.equals(this.pfpEncoded, other.pfpEncoded)) {
-            return false;
-        }
-        if (!Objects.equals(this.bio, other.bio)) {
-            return false;
-        }
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.userID, other.userID)) {
-            return false;
-        }
-        if (!Objects.equals(this.latitude, other.latitude)) {
-            return false;
-        }
-        return Objects.equals(this.longitude, other.longitude);
-    }
 }

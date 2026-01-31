@@ -1,7 +1,6 @@
 package project.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -130,32 +129,5 @@ public class ReportController {
 		{
 			return ResponseEntity.status(400).build();
 		}
-	}
-
-	@DeleteMapping("/reports/{id}/purge")
-	@SecureIndescriminate(SecurityLevel.ADMIN)
-	public ResponseEntity<?> PurgeReport(
-			@RequestHeader("Authorization") String authHeader,
-			@PathVariable Integer id
-	)
-	{
-		Optional<ReportEntity> optionalReportEntity = reportService.getReportById(id);
-		if(optionalReportEntity.isEmpty())
-		{
-			return ResponseEntity.badRequest().build();
-		}
-		ReportEntity reportEntity = optionalReportEntity.get();
-
-		if(reportEntity.getMessage_id() != null)
-		{
-			reportService.deleteAssociatedMessage(reportEntity);
-		}
-
-		if(reportEntity.getPost_id() != null)
-		{
-			reportService.deleteAssociatedPost(reportEntity);
-		}
-
-		return ResponseEntity.ok().build();
 	}
 }

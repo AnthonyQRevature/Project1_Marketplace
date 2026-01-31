@@ -23,11 +23,11 @@ import project.controller.response.ListingResponse;
 
 @Service
 public class PostService {
-    private final PostDao dao;
-    private final UserDao userDao;
-    private final PostMediaDao postMediaDao;
-    private final PostTagsDao postTagsDao;
-    private final TagDao tagDao;
+    PostDao dao;
+    UserDao userDao;
+    PostMediaDao postMediaDao;
+    PostTagsDao postTagsDao;
+    TagDao tagDao;
     @Autowired
     public PostService(PostDao dao, UserDao userDao, PostMediaDao postMediaDao, PostTagsDao postTagsDao, TagDao tagDao) {
         this.dao = dao;

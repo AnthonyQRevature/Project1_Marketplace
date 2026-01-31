@@ -71,6 +71,7 @@ public class UserProfileServiceTest {
             entity.setLongitude(3.0);
             entity.setAddress("ccc");
             
+            when(dao.findUserProfileByUserID(1)).thenReturn(entity);
             
             UserProfileEntity entity2 = entity;
             entity.setUserID(1);
@@ -80,8 +81,6 @@ public class UserProfileServiceTest {
             entity.setLongitude(3.0);
             entity.setAddress("ccc");
             
-            when(dao.existsByUserID(1)).thenReturn(true);
-            when(dao.findUserProfileByUserID(1)).thenReturn(entity);
             when(dao.save(entity2)).thenReturn(entity2);
             
             UserProfileModel model2 = (service.updateUserProfile(1, profileRequest).get());
@@ -93,7 +92,7 @@ public class UserProfileServiceTest {
             assertEquals(model2.getLongitude(), profileRequest.getLongitude());
             assertEquals(model2.getAddress(), "ccc");
         } catch (Exception ex) {
-            fail("There was an Exception.", ex);
+            fail("There was an Exception.");
         }
     }
     @Test
@@ -202,7 +201,7 @@ public class UserProfileServiceTest {
     @Test
     public void FailedProfileCreationTest(){
         UserProfileEntity entity = new UserProfileEntity();
-        when(dao.existsByUserID(1)).thenReturn(true);
+        when(dao.findUserProfileByUserID(1)).thenReturn(entity);
 
         UserProfileModel model = new UserProfileModel(1, "aa", "bb", 2.0, 3.0, "cc");
 
@@ -218,7 +217,7 @@ public class UserProfileServiceTest {
     @Test
     public void ExistingIDTest(){
         UserProfileEntity result = new UserProfileEntity();
-        when(dao.existsByUserID(1)).thenReturn(true);
+        when(dao.findUserProfileByUserID(1)).thenReturn(result);
         assertFalse(service.uniqueUser_id(1));
     }
 
