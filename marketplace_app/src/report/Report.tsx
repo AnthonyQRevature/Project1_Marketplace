@@ -5,6 +5,8 @@ import AuthenticationContext, { type AuthenticationState } from "../authenticati
 import useLoader from "../util/AsyncLoader";
 import { EncodedImage } from "../util/EncodedImage";
 import LoadBrief from "../util/UserBrief";
+import { useAuthGuard } from "../util/AuthGuard";
+import { Role } from "../util/DataStructure";
 
 const API_BASE = "http://localhost:8080";
 
@@ -36,15 +38,11 @@ function Report() {
   const [auth, _] = useContext(AuthenticationContext);
 //const [activeTab, setActiveTab] = useState<"create" | "view">("create");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const nav = useNavigate();
-  const admin = auth.isAdmin();
+  const guard = useAuthGuard(Role.ADMIN);
 
-  if (!admin)
+  if (guard())
   {
-    //not allowed
-    useEffect(()=>{
-      nav("/login");
-    }, [])
+    return <></>;
   }
 
   /*

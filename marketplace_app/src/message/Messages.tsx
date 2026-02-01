@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import "./Messages.css";
 import AuthenticationContext from "../authentication/AuthenticationContext";
 import { Link, useNavigate, useParams } from "react-router";
-import type { Message_t, Messages, ProfileBrief, UserProfile } from "../util/DataStructure";
+import { Role, type Message_t, type Messages, type ProfileBrief, type UserProfile } from "../util/DataStructure";
 import { EncodedImage } from "../util/EncodedImage";
 
 import refresh from "../assets/refresh.png";
@@ -12,6 +12,7 @@ import useLoader, { useLoaderses } from "../util/AsyncLoader";
 import ProfileSocialButtons from "../user_profile/SocialButtons";
 import type { Endpoint } from '../util/Endpoint';
 import flag_icon from '../assets/flag_lmao.png';
+import { useAuthGuard } from "../util/AuthGuard";
 
 type MessageEntity = {
   messageId: number;
@@ -56,7 +57,7 @@ export default function MessagePage()
 {
   const [auth, _] = useContext(AuthenticationContext)
   const {user_id} = useParams();
-  const nav = useNavigate();
+  const guard = useAuthGuard(Role.USER);
   
   //ideally we would seperate get_messages into it's own loader
   const [AsyncLoader, reset] = useLoaderses([
@@ -65,9 +66,8 @@ export default function MessagePage()
     get_messages(auth.id, Number(user_id))
   ]);
 
-  if (auth.isGuest())
+  if (guard())
   {
-    useEffect(() => {nav("/login")}, []);
     return <></>;
   }
 

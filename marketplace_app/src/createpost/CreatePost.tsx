@@ -2,6 +2,8 @@ import { useState, useEffect, type ChangeEvent, useContext } from "react";
 import "./CreatePost.css";
 import AuthenticationContext from "../authentication/AuthenticationContext";
 import { useNavigate } from "react-router";
+import { useAuthGuard } from "../util/AuthGuard";
+import { Role } from "../util/DataStructure";
 
 type TagEntity = {
   id: number;
@@ -29,11 +31,10 @@ export default function CreatePost() {
   const [images, setImages] = useState<string[]>([]); // base64 strings
   const [statusMessage, setStatusMessage] = useState("");
   const [auth, _] = useContext(AuthenticationContext);
-  const nav = useNavigate();
+  const guard = useAuthGuard(Role.USER);
 
-  if (auth.isGuest())
+  if (guard())
   {
-    useEffect(()=>{nav("/login")}, []);
     return <></>;
   }
 

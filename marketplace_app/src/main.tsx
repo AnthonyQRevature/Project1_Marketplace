@@ -57,14 +57,16 @@ function ReactRoot()
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/listings" element={<Homepage/>} />
-            <Route path="/uploads" element={<Upload/>} />
-            <Route path="/debug" element={<MessagesTest />} />
             <Route path="/users/:user_id" element={<ViewUserProfile />} />
-            <Route path="/reports" element={<Report />} />
-            <Route path="/createpost" element={<CreatePost/>}/>
             <Route path="/listings/:postId" element={<ViewPost/>}/>
+
+            {/* User */}
+            <Route path="/createpost" element={<CreatePost/>}/>
             <Route path="/inbox" element={<InboxPage />} />
             <Route path="/message/:user_id" element={<MessagePage />} />
+
+            {/* Admin */}
+            <Route path="/reports" element={<Report />} />
             <Route path="/all-users" element={<UserPermsPage />} />
 
             {/*I dont think we need these?*/}

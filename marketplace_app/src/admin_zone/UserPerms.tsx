@@ -6,6 +6,7 @@ import useLoader from "../util/AsyncLoader";
 import { UserBrief } from "../util/UserBrief";
 import type { State } from "../util/State";
 import type { Endpoint } from "../util/Endpoint";
+import { useAuthGuard } from "../util/AuthGuard";
 
 const endpoint = {
   endpoint: "http://localhost:8080/users",
@@ -23,12 +24,11 @@ function makePermEndpoint(user_id : number) : Endpoint
 export default function UserPermsPage()
 {
   const [auth,] = useContext(AuthenticationContext);
-  const nav = useNavigate();
   const [AsyncLoader, reset] = useLoader(endpoint);
   const [mod, setMod] = useState<Record<number, number>>({});
-  useEffect(() => {auth.isAdmin() || nav("/login");}, [auth]);
+  const guard = useAuthGuard(Role.ADMIN);
   
-  if (!auth.isAdmin())
+  if (guard())
   {
     return <></>;
   }

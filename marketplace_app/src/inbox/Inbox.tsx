@@ -2,10 +2,11 @@ import { useContext, useEffect } from "react";
 import AuthenticationContext from "../authentication/AuthenticationContext";
 import useLoader from "../util/AsyncLoader";
 import { Link, useNavigate } from "react-router";
-import type { Conversations, ProfileBrief } from "../util/DataStructure";
+import { Role, type Conversations, type ProfileBrief } from "../util/DataStructure";
 import { EncodedImage } from "../util/EncodedImage";
 
 import "./Inbox.css"
+import { useAuthGuard } from "../util/AuthGuard";
 
 function makeEndpoint(id : number)
 {
@@ -19,11 +20,10 @@ export default function InboxPage()
 {
   const [auth, _] = useContext(AuthenticationContext);
   const [AsyncLoader, reset] = useLoader(makeEndpoint(Number(auth.id)));
-  const nav = useNavigate();
+  const guard = useAuthGuard(Role.USER);
 
-  if (auth.isGuest())
+  if (guard())
   {
-    useEffect(() => {nav("/login")}, []);
     return <></>;
   }
   
