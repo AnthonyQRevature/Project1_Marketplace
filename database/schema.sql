@@ -1,4 +1,4 @@
-CREATE TYPE user_role_enum AS ENUM ('user', 'admin', 'super');
+CREATE TYPE user_role_enum AS ENUM ('user', 'admin', 'super_user');
 CREATE TYPE notification_type_enum AS ENUM (
     'message_received',
     'system',

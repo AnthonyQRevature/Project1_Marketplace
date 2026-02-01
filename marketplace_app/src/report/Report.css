@@ -178,11 +178,3 @@
 p {
     text-align: left;
 }
-
-.inline {
-    display: flex;
-}
-div.inline p
-{
-    margin-right: 20px;
-}

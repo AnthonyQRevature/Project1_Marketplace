@@ -1,5 +1,6 @@
 export type UserProfile = {
   id : number,
+  role : number,
   username : string,
   email : string,
   profile: 
@@ -10,6 +11,13 @@ export type UserProfile = {
     longitude : number,
     distance : number
   }
+}
+
+export const Role = {
+  GUEST: 0,
+  USER: 1,
+  ADMIN: 2,
+  SUPER_USER: 3
 }
 
 export type PostEntity = {

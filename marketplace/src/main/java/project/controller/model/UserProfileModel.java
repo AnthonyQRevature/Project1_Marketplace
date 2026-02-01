@@ -1,6 +1,7 @@
 package project.controller.model;
 
 //this doesnt have a reason to exist
+@Deprecated
 public class UserProfileModel {
     Integer user_id;
 	String pfp_encoded;

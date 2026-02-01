@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import project.Repository.Entities.UserEntity;
 import project.Repository.Entities.UserProfileEntity;
 import project.Repository.dao.UserDao;
-import project.Repository.dao.UserProfileDao;
 import project.controller.request.LoginRequest;
 import project.controller.request.RegisterRequest;
 import project.controller.response.LoginResponse;
@@ -29,7 +28,6 @@ import project.util.exception.DatabaseConflictException;
 public class UserServiceTest {
 
     @Mock UserDao dao;
-    @Mock UserProfileDao profileDao;
     @Mock Hasher hasher;
     @Mock TokenUtil tokenUtil;
     @Mock DefaultPfp defaultPfp;
@@ -68,14 +66,20 @@ public class UserServiceTest {
         expectedSave.setPasswordHash("hashed_password"); //validate the hash of the password
         expectedSave.setEmail("test_email");
         expectedSave.setRole(UserEntity.UserRole.user);
-
-        UserEntity daoResponse = new UserEntity(expectedSave);
-        daoResponse.setId(1);
-        RegisterRequest expectedResponse = new RegisterRequest("test_email", null, "username");
-
         UserProfileEntity profileSave = new UserProfileEntity();
-        profileSave.setUserID(1);
+        profileSave.setUserEntity(expectedSave);
         profileSave.setPfpEncoded("default pfp");
+        expectedSave.setUserProfile(profileSave);
+
+        UserEntity daoResponse = new UserEntity();
+        daoResponse.setId(1);
+        daoResponse.setUsername("username");
+        daoResponse.setEmail("test_email");
+
+        RegisterRequest expectedResponse = new RegisterRequest();
+        expectedResponse.setUsername("username");
+        expectedResponse.setEmail("test_email");
+
 
         when(dao.findUserByUsername("username")).thenReturn(null);
         when(dao.save(expectedSave)).thenReturn(daoResponse);
@@ -91,7 +95,6 @@ public class UserServiceTest {
         assertEquals(expectedResponse, ret);
         verify(dao, times(1)).findUserByUsername("username");
         verify(dao, times(1)).save(expectedSave);
-        verify(profileDao, times(1)).save(profileSave);
     }
 
     //a checking that users can not share usernames

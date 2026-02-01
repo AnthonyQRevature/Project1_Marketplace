@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import project.service.PostMediaService;
-import project.service.UserProfileService;
+import project.service.UserService;
 import project.util.AllowCORS;
 import project.util.Secure;
 import project.util.SecureIndescriminate;
@@ -22,12 +22,12 @@ import project.util.exception.InvalidRequestException;
 @RestController
 public class MediaController {
     private final PostMediaService storageService;
-    private final UserProfileService profileService;
+    private UserService userService;
     
     @Autowired
-    public MediaController(PostMediaService storageService, UserProfileService profileService) {
+    public MediaController(PostMediaService storageService, UserService userService) {
         this.storageService = storageService;
-        this.profileService = profileService;
+        this.userService = userService;
     }
     
     /*
@@ -73,8 +73,8 @@ public class MediaController {
     ) {
         try
         {
-            var entity = profileService.addMedia(file, user_id);
-            return ResponseEntity.ok(entity.getPfpEncoded());
+            var entity = userService.addMedia(file, user_id);
+            return ResponseEntity.ok(entity.getUserProfile().getPfpEncoded());
         }
         catch (IOException e)
         {

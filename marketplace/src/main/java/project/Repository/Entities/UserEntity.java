@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /*
@@ -20,6 +21,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
+
+    public UserProfileEntity getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfileEntity userProfile) {
+        this.userProfile = userProfile;
+    }
     public static enum UserRole
     {
         user(1),
@@ -31,6 +40,21 @@ public class UserEntity {
         UserRole(int val)
         {
             this.value = val;
+        }
+
+        public static UserRole of(int val)
+        {
+            switch(val)
+            {
+                case 1:
+                    return user;
+                case 2:
+                    return admin;
+                case 3:
+                    return super_user;
+                default:
+                    return user;
+            }
         }
     }
 
@@ -51,6 +75,9 @@ public class UserEntity {
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private UserRole role;
     private Boolean verifiedSeller;
+
+    @OneToOne(mappedBy="userEntity")
+    private UserProfileEntity userProfile;
 
     public UserEntity() {
     }

@@ -122,8 +122,7 @@ public class Security {
                 int id = token.getId();
                 var usr = dao.findById(id);
                 SecurityLevel level = security.value();
-                if (usr.isPresent() && (usr.get().getRole().value >= level.value
-                    || usr.get().getRole().value >= SecurityLevel.ADMIN.value)) //ALSO ASSUME THAT ADMIN ROLE OVERRULES
+                if (usr.isPresent() && (usr.get().getRole().value >= level.value))
                 {
                     //if the function throws an exception we dont want to intercept it
                     return (ResponseEntity<?>)joinPoint.proceed();

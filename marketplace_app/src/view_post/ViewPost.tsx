@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import "./ViewPost.css";
-import { UserBrief } from "../report/Report";
+import LoadBrief from "../util/UserBrief";
 import flag_icon from '../assets/flag_lmao.png';
 import type { Endpoint } from '../util/Endpoint';
 import { Link, useNavigate, useParams } from "react-router";
@@ -64,7 +64,7 @@ function ViewPost() {
       </div>
       <h1>Post #{post.id}</h1>
 
-      <UserBrief user_id={post.sellerId} lhs="Seller: "/>
+      <LoadBrief user_id={post.sellerId} lhs="Seller: "/>
       <p className="price">${post.price.toFixed(2)}</p>
       <p className={`status status-${post.status}`}>
         Status: {post.status}

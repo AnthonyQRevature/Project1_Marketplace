@@ -1,0 +1,6 @@
+.admin-bar > a {
+    margin-left: 15px;
+}
+.admin-bar .danger {
+    color: maroon;
+}
