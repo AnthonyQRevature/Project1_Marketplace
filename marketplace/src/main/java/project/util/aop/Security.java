@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import project.Repository.Entities.UserEntity;
 import project.Repository.dao.UserDao;
 import project.util.Secure;
 import project.util.SecureIndescriminate;
@@ -89,13 +90,15 @@ public class Security {
         var token = tokenUtil.asToken(authHeader);
         if (token.isValid())
         {
-            if(!token.isExpired() && token.getId() == user_id) 
+            if(!token.isExpired()) 
             {
                 //verify user type
                 int id = token.getId();
                 var usr = dao.findById(id);
                 SecurityLevel level = security.value();
-                if (usr.isPresent() && usr.get().getRole().value >= level.value)
+                //hacky admin override
+                if (usr.isPresent() && (token.getId() == user_id || usr.get().getRole().value >= UserEntity.UserRole.admin.value) 
+                     && usr.get().getRole().value >= level.value)
                 {
                     //if the function throws an exception we dont want to intercept it
                     return (ResponseEntity<?>)joinPoint.proceed();
