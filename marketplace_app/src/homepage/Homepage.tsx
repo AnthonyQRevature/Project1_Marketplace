@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import SearchBar from './SearchBar.tsx';
 //import listing from '../listings/Listings.tsx';
 import AuthenticationContext from '../authentication/AuthenticationContext.tsx';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, type FormEventHandler } from "react";
 import Messages from "../message/Messages";
 import useLoader from "../util/AsyncLoader";
 import getAsset from "../util/AssetLoader";
@@ -22,7 +22,6 @@ type TagEntity = {
 function Homepage()
 {
   const [posts, setPosts] = useState<PostEntity[]>([]);
-  const [AsyncLoader, _] = useLoader<TagEntity[]>(get_tags);
   const [auth,] = useContext(AuthenticationContext);
   const nav = useNavigate();
 
@@ -54,19 +53,10 @@ function Homepage()
     setPosts(data); // update state to re-render PostsGrid
   };
 
-  const renderTags = (props: {resource: TagEntity[]}) => (
-    <TagsList tags={props.resource} onSubmit={handleSubmit} />
-  );
-
   return (
     <>
       <Head/>
-      <button style={{visibility: auth.isGuest()? "hidden" : "visible"}} onClick={() => {nav("/createpost")}}>Create</button>
-      <AsyncLoader
-        then={renderTags}
-        otherwise={() => <p>Loading...</p>}
-        abort={() => <p>Failed</p>}
-      />
+      <ActionBar handleSubmit={handleSubmit}/>
       {/* Render PostsGrid from state, so it updates after submit */}
       <PostsGrid posts={posts} />
       <AdminBar />
@@ -74,9 +64,34 @@ function Homepage()
   );
 }
 
+function ActionBar(props : {handleSubmit: FormEventHandler<HTMLFormElement>})
+{
+  const [auth,] = useContext(AuthenticationContext);
+  const [AsyncLoader,] = useLoader<TagEntity[]>(get_tags);
+  const {handleSubmit} = props;
+  const nav = useNavigate();
+
+  return (
+    <div className='action-bar'>
+      <div className='left'>
+        <AsyncLoader
+          then={TagsList}
+          foward={{onSubmit: handleSubmit}}
+          otherwise={() => <p>Loading...</p>}
+          abort={() => <p>Failed</p>}
+        />
+      </div>
+      <div className="right">
+        <button style={{visibility: auth.isGuest()? "hidden" : "visible"}} onClick={() => {nav("/createpost")}}>Create</button>
+      </div>
+    </div>
+  );
+}
+
 /* TagsList with onSubmit prop */
-function TagsList(props: { tags: TagEntity[]; onSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) {
-  const Checkboxes = props.tags.map(tag => (
+function TagsList(props: { resource: TagEntity[]; onSubmit: (e: React.FormEvent<HTMLFormElement>) => void }) {
+  const {resource: tags, onSubmit} = props;
+  const Checkboxes = tags.map(tag => (
     <li key={tag.id}>
       <label htmlFor={`tag${tag.id}`}>{tag.tag_name}</label>
       <input type="checkbox" name="tags" value={tag.id} />
@@ -84,7 +99,7 @@ function TagsList(props: { tags: TagEntity[]; onSubmit: (e: React.FormEvent<HTML
   ));
 
   return (
-    <form method="GET" onSubmit={props.onSubmit}>
+    <form method="GET" onSubmit={onSubmit}>
       <div className="TagsList">{Checkboxes}</div>
 
       <button type="submit" className="listings_search_submit_button">Submit</button>

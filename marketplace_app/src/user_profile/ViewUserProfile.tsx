@@ -63,33 +63,31 @@ function Display(props : {resource : UserProfile, reset: () => void})
   {
     return (
       <>
-        {owner? <InboxIcon /> : <MsgIcon /> }
-        {auth.isAdmin()? <DeleteButton /> : <></>}
-        <div className="profile-columns">
-          <div>
-            <div className="center-container">
-              <div className="profile_pic_loc">
-                <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
-              </div>
-            </div>
-            <div className="profile_edit_loc">
-              {owner? <button onClick={()=>setEditMode(true)}>edit</button> : <></>}
-            </div>
-            <div className="profile_username_loc">
-              <h1 className="profile_username">{profile.username}</h1>
-            </div>
-            <div className="profile_email_loc">
-              <p className="profile_email">{profile.email}</p>
-            </div>
-            <div className="profile_BIO_loc">
-              <p className="profile_BIO_title">BIO:</p>
-              <p className="profile_BIO_content">{profile.profile.bio}</p>
-            </div>
-            <p className="profile_location">Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
+        <div className="button-bar">
+          <div className="icon">{owner? <InboxIcon /> : <MsgIcon /> }</div>
+          <div className="profile_edit_loc">
+            <button onClick={()=>setEditMode(true)} style={{visibility: !owner? "hidden" : "visible"}}>edit</button>
           </div>
-          <div>
-            <ProfileSocialButtons user_id={Number(user_id)}/>
+          {auth.isAdmin()? <DeleteButton /> : <></>}
+          <div className="right"><ProfileSocialButtons user_id={Number(user_id)}/></div>
+        </div>
+        <div>
+          <div className="center-container">
+            <div className="profile_pic_loc">
+              <EncodedImage img={profile.profile.pfp_encoded} foward={{className:"profile_pic"}} />
+            </div>
           </div>
+          <div className="profile_username_loc">
+            <h1 className="profile_username">{profile.username}</h1>
+          </div>
+          <div className="profile_email_loc">
+            <p className="profile_email">{profile.email}</p>
+          </div>
+          <div className="profile_BIO_loc">
+            <p className="profile_BIO_title">BIO:</p>
+            <p className="profile_BIO_content">{profile.profile.bio}</p>
+          </div>
+          <p className="profile_location">Location: {profile.profile.latitude}, {profile.profile.longitude}</p>
         </div>
       </>
     );
@@ -107,7 +105,7 @@ function DisplayEdit(props : {init : UserProfile, reset : () => void})
   //const [profile, setProfile] = useState(props.init);
   const profile = props.init;
   const [preview, setPreview] = useState<string | null>(null);
-  const [auth, _] = useContext(AuthenticationContext);
+  const [auth,] = useContext(AuthenticationContext);
   const {user_id} = useParams();
 
   function handleOnChange(e : any) {

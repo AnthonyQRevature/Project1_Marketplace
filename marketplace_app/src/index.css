@@ -19,9 +19,13 @@
   --color2: #778da9;
   --colorbg:#dfe0dc;
   --colorbg1:#adb6c4; /*pick a good button color*/
+  --colorbg2: #adb6c4;
 }
 
 /* globals */
+body {
+  height: 100%;
+}
 #viewport {
   min-height: 100vh;
 }

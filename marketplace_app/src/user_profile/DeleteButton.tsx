@@ -24,6 +24,7 @@ export default function DeleteButton()
     return (
       <div className='button-grid'>
         <button className='delete danger' onClick={() => setConfirm(true)}>Delete</button>
+        <button className='danger hidden'></button>
       </div>
     );
   }

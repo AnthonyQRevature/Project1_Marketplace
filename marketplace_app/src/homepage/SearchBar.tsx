@@ -9,11 +9,11 @@ function makeEndpoint(username : String)
 export default function SearchBar()
 {
   return (
-    <form action={findProfile(useNavigate())}>
-    <p className="search-label">find user</p>
-    <input type="text" name="username" />
-    <button type="submit" >Submit</button>
-    </form>
+    <div className="username-search">
+      <form action={findProfile(useNavigate())}>
+        <input type="text" placeholder="find other users" name="username" />
+      </form>
+    </div>
   )
 }
 

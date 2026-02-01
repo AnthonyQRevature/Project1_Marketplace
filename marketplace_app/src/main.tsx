@@ -1,4 +1,4 @@
-import { StrictMode, useEffect } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router"; //React Router
 import Homepage from './homepage/Homepage.tsx';
@@ -8,8 +8,6 @@ import Register from './register_user/Register.tsx';
 import Login from './login/Login.tsx'
 import AuthenticationContext from './authentication/AuthenticationContext.tsx';
 import { AuthenticationProvider } from './authentication/AuthenticationContext.tsx';
-import Upload from './file_upload_test/Upload.tsx';
-import Messages, { MessagesTest } from './listings/Messages.tsx';
 import ViewUserProfile from './user_profile/ViewUserProfile.tsx';
 import Report from './report/Report.tsx'
 import UserReports from './report/UserReportOf.tsx'
@@ -18,7 +16,6 @@ import NavBar from './NavBar.tsx';
 import InboxPage from './inbox/Inbox.tsx';
 import CreatePost from './createpost/CreatePost.tsx';
 import ViewPost from './view_post/ViewPost.tsx';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
 import './index.css';
 import { OverlayScrollbars } from 'overlayscrollbars';

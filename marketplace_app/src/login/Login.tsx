@@ -15,24 +15,27 @@ function Register()
 
   return (
     <>
-      <form action={formHandler}>
-        <div className = "loginBox">
-	  	  <div className ="logUserInput">
-            <label htmlFor="username">Username: </label>
-            <input type="text" name="username" id="username" required />
+      <div className="columns" >
+        <form action={formHandler}>
+          <div className = "loginBox">
+          <div className ="logUserInput">
+              <label htmlFor="username">Username: </label>
+              <input type="text" name="username" id="username" required />
+            </div>
+            <div className="logPassInput">
+              <label htmlFor="password">Password: </label>
+              <input type="password" name="password" id="password" required />
+            </div>
+            <div className="logRegLink">
+              <Link to="/register"><p>Register an Account</p></Link>
+            </div>
+            <div className="logSubmit">
+              <input type="submit" value="Login" />
+            </div>
           </div>
-          <div className="logPassInput">
-            <label htmlFor="password">Password: </label>
-            <input type="password" name="password" id="password" required />
-          </div>
-          <div className="logRegLink">
-            <Link to="/register"><p>Register an Account</p></Link>
-          </div>
-          <div className="logSubmit">
-            <input type="submit" value="Login" />
-          </div>
-        </div>
-      </form>
+        </form>
+        <Message />
+      </div>
     </>
   );
 }
@@ -80,6 +83,18 @@ function handleSubmit(setAuth : (val : any) => void, navigate : NavigateFunction
     }
     return;
   }
+}
+
+function Message()
+{
+  return (
+    <div className="right">
+      <p className="message">
+        In 2018, 11.3 million tons of textiles ended up in landfills. While this includes furniture,
+        carpets, and footwear, the majority of these textiles are discarded clothing.
+      </p>
+    </div>
+  );
 }
 
 export default Register;

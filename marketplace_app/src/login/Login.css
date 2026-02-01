@@ -2,6 +2,21 @@ p {
     text-align: left;
 }
 
+.columns {
+	flex: 1;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.columns .message {
+	margin-top: 6em;
+	padding-top: .75em;
+	padding-bottom: .5em;
+	padding: .75em .2em .5em .2em;
+
+	background-color: var(--colorbg1);
+	border: .1em solid var(--color0);
+}
+
 .logUserInput {
 	display: flex;
 	flex-direction: column;

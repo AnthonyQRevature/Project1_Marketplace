@@ -1,7 +1,28 @@
-.profile-columns {
-    display:grid;
-    grid-template-columns: 1fr fit-content(200px);
+.button-bar {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	display: flex;
+	height: 2em;
 }
+.button-bar > div.icon {
+	display:flex;
+	flex-direction: column;
+}
+.button-bar .icon
+{
+	height: 2em;
+	width: 2em;
+
+	background: #f9f9f9;
+	border-radius: 8px;
+}
+.button-bar > .right
+{
+	flex:1;
+	display: flex;
+	flex-direction: row-reverse;
+}
+
 .center-container {
 	display: flex;
 	justify-content: center;

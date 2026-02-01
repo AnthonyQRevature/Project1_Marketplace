@@ -9,6 +9,37 @@ p.danger {
     color: maroon;
 }
 
+.username-search {
+    height: 100%;
+    display: flex;
+}
+.username-search > *{
+    margin-top: 25%;
+    vertical-align: middle;
+}
+
+.head_content > h1 {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.head_img {
+    display: flex;
+    justify-content: center;
+}
+.head_img > * {
+}
+
+.action-bar {
+    display: grid;
+    grid-template-columns: 7fr 2fr
+}
+.action-bar>.right button {
+    height: 100%;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
 .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
