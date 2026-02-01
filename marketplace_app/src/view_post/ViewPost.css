@@ -1,3 +1,7 @@
+.view-post .columns {
+    grid-template-columns: 2fr 1fr;
+}
+
 .view_report {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -11,4 +15,20 @@
 .viewer_report_loc {
     display: flex;
     justify-self: right;
+}
+
+.media-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "a a"
+        "a a";
+}
+.media-gallery > img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+.media-gallery > .first {
+    grid-area: a;
 }

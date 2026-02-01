@@ -63,44 +63,31 @@ function ViewPost() {
         <Post_ReportButton post_report={post}/>
       </div>
       <h1>Post #{post.id}</h1>
+      <div className="columns">
+        <div className="left">
+          <LoadBrief user_id={post.sellerId} lhs="Seller: "/>
+          <p className="price">${post.price.toFixed(2)}</p>
+          <p className={`status status-${post.status}`}>
+            Status: {post.status}
+          </p>
 
-      <LoadBrief user_id={post.sellerId} lhs="Seller: "/>
-      <p className="price">${post.price.toFixed(2)}</p>
-      <p className={`status status-${post.status}`}>
-        Status: {post.status}
-      </p>
+          <p className="description">{post.description}</p>
 
-      <p className="description">{post.description}</p>
-
-      {post.tags.length > 0 && (
-        <div className="tags">
-          <ul>
-            {post.tags.map((tag) => (
-              <li key={tag.id} className="tag">
-                {tag.tag_name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {post.media.length > 0 && (
-        <div className="media-gallery">
-          {post.media.map((m, idx) =>
-            m.mediaType === "image" ? (
-              <img
-                key={idx}
-                src={`${m.mediaEncoded}`}
-                alt={`Post media ${idx}`}
-              />
-            ) : (
-              <video key={idx} controls>
-                <source src={m.mediaEncoded} />
-              </video>
-            )
+          {post.tags.length > 0 && (
+            <div className="tags">
+              <ul>
+                {post.tags.map((tag) => (
+                  <li key={tag.id} className="tag">
+                    {tag.tag_name}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
-      )}
+
+        <div className="right"><Gallery media={post.media}/></div>
+      </div>
     </div>
   );
 }
@@ -147,6 +134,33 @@ function Post_ReportButton(props: {post_report: Post})
   return (
     <img className='icon view_report link' onClick={report} src={flag_icon} />
   )
+}
+
+function Gallery(props : {media : Post['media']})
+{
+  const {media} = props;
+  return (
+    <>
+      {media.length > 0 && (
+        <div className="media-gallery">
+          {media.map((m, idx) =>
+            m.mediaType === "image" ? (
+              <img
+                className={idx === 0? "first" : ""}
+                key={idx}
+                src={`${m.mediaEncoded}`}
+                alt={`Post media ${idx}`}
+              />
+            ) : (
+              <video key={idx} controls>
+                <source src={m.mediaEncoded} />
+              </video>
+            )
+          )}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default ViewPost;
