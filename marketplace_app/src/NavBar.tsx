@@ -19,7 +19,6 @@ export default function NavBar()
 function MyProfile()
 {
   const [auth, setAuth] = useContext(AuthenticationContext);
-  const nav = useNavigate();
 
   if (!auth.isGuest())
   {

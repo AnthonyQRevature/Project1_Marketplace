@@ -31,7 +31,7 @@ export function UserBrief(props : {resource : UserProfile, children : React.Reac
     <div className="inline">
       {children}
       <Link className="inline" to={`/users/${profile.id}`}>
-        <EncodedImage img={profile.profile.pfp_encoded}/>
+        <EncodedImage img={profile.profile.pfp_encoded} foward={{className: "pfp"}}/>
         <p>{profile.username}</p>
       </Link>
     </div>

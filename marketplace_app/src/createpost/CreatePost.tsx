@@ -33,18 +33,19 @@ export default function CreatePost() {
   const [auth, _] = useContext(AuthenticationContext);
   const guard = useAuthGuard(Role.USER);
   const nav = useNavigate();
-
-  if (guard())
-  {
-    return <></>;
-  }
-
   useEffect(() => {
     fetch("http://localhost:8080/tags")
       .then((res) => res.json())
       .then(setTags)
       .catch((err) => console.error("Failed to load tags", err));
   }, []);
+  
+  if (guard())
+  {
+    return <></>;
+  }
+
+  
 
   // Convert uploaded files to base64
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
