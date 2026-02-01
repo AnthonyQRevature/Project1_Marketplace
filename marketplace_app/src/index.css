@@ -21,6 +21,11 @@
   --colorbg1:#adb6c4; /*pick a good button color*/
 }
 
+#page-root {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
 .inline {
     display: flex;
     gap: 20px;
