@@ -32,6 +32,7 @@ export default function CreatePost() {
   const [statusMessage, setStatusMessage] = useState("");
   const [auth, _] = useContext(AuthenticationContext);
   const guard = useAuthGuard(Role.USER);
+  const nav = useNavigate();
 
   if (guard())
   {
@@ -89,10 +90,14 @@ export default function CreatePost() {
 
       if (res.ok) {
         setStatusMessage("Post created successfully!");
+        /*
         setDescription("");
         setPrice(0);
         setSelectedTags([]);
         setImages([]);
+        */
+        const post : any = await res.json();
+        nav(`/listings/${post.id}`);
       } else {
         const err = await res.text();
         setStatusMessage("Failed to create post: " + err);
