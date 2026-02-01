@@ -100,6 +100,7 @@ export default function useLoader<T>(endpoint : Endpoint, repititions : number =
   return [LoaderComponent, resetFunction];
 }
 
+//idk what to name this
 export function useLoaderses<T>(endpoints : Endpoint[], repititions : number = 5) : [AsyncLoader<T>, () => void]
 {
   const LOADER_STATE = 

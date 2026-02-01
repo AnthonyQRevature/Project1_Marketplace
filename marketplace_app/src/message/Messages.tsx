@@ -98,25 +98,27 @@ function Messages(props: { resources: [UserProfile, UserProfile, Messages], rese
 
   return (
     <>
-      <div className="messages">
-        <h3>Messages</h3>
+      <div className="main" >
+        <div className="messages">
+          <h3>Messages</h3>
 
-        <div className="messagesList">
-          {messages.map(msg => <Message key={msg.messageId} message={msg} my_profile={my_profile} their_profile={their_profile} />)}
-        </div>
+          <div className="messagesList">
+            {messages.map(msg => <Message key={msg.messageId} message={msg} my_profile={my_profile} their_profile={their_profile} />)}
+          </div>
 
-        <input
-          value={text}
-          onChange={e => setText(e.target.value)}
-          placeholder="Type a message..."
-        />
+          <input
+            value={text}
+            onChange={e => setText(e.target.value)}
+            placeholder="Type a message..."
+          />
 
-        <div className="buttons">
-          <button onClick={sendMessage}>Send</button>
-          <img className="icon link" src={refresh} onClick={reset}/>
+          <div className="buttons">
+            <button onClick={sendMessage}>Send</button>
+            <img className="icon link" src={refresh} onClick={reset}/>
+          </div>
         </div>
       </div>
-      <Attribution />
+      <Attribution className="footer"/>
     </>
   );
 }
@@ -185,9 +187,13 @@ function Message(props : {message: Message_t, my_profile : UserProfile, their_pr
   }
 }
 
-function Attribution()
+function Attribution(props : {className : string})
 {
-  return <a href="https://www.flaticon.com/free-icons/refresh" title="refresh icons">Refresh icons created by Arkinasi - Flaticon</a>;
+  return (
+    <div className={props.className} >
+      <a href="https://www.flaticon.com/free-icons/refresh" title="refresh icons">Refresh icons created by Arkinasi - Flaticon</a>;
+    </div>
+  );
 }
 
 /*import { useEffect, useState } from "react";

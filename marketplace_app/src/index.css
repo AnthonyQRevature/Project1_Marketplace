@@ -21,9 +21,27 @@
   --colorbg1:#adb6c4; /*pick a good button color*/
 }
 
+/* globals */
+#viewport {
+  min-height: 100vh;
+}
+#root {
+  /* react root */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 #page-root {
+  /* router page root */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
   padding-left: 5%;
   padding-right: 5%;
+}
+#page-root .main{
+  flex: 1;
 }
 
 .inline {
