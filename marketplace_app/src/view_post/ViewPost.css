@@ -1,5 +1,6 @@
 .view-post .columns {
     grid-template-columns: 2fr 1fr;
+    margin-right: 3%;
 }
 
 .view_report {
