@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -76,7 +77,7 @@ public class UserEntity {
     private UserRole role;
     private Boolean verifiedSeller;
 
-    @OneToOne(mappedBy="userEntity")
+    @OneToOne(mappedBy="userEntity", cascade=CascadeType.ALL)
     private UserProfileEntity userProfile;
 
     public UserEntity() {
