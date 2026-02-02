@@ -13,18 +13,6 @@
     justify-self: right;
     align-self: center;
 }
-.nav_bar > .right p {
-    border-radius: 10px;
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid black;
-    background: var(--colorbg1);
-    cursor: pointer;
-    font-size:larger;
-	font-weight: bold;
-    
-    transition: border-color 0.25s;
-}
 
 .nav_title {
     justify-self: center;

@@ -18,7 +18,7 @@ function Register()
       <div className="columns" >
         <form action={formHandler}>
           <div className = "loginBox">
-          <div className ="logUserInput">
+            <div className ="logUserInput">
               <label htmlFor="username">Username: </label>
               <input type="text" name="username" id="username" required />
             </div>
@@ -27,14 +27,14 @@ function Register()
               <input type="password" name="password" id="password" required />
             </div>
             <div className="logRegLink">
-              <Link to="/register"><p>Register an Account</p></Link>
+              <Link to="/register"><p className="rounded-button">Register an Account</p></Link>
             </div>
             <div className="logSubmit">
-              <input type="submit" value="Login" />
+              <input type="submit" className="rounded-button" value="Login" />
             </div>
           </div>
         </form>
-        <Message />
+      <Message />
       </div>
     </>
   );

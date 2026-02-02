@@ -28,13 +28,22 @@ function MyProfile()
     }
 
     return (
-      <div className="right"><Link to={`/users/${auth.id}`} className="nav_profile"><p>My Profile</p></Link><p onClick={handleLogout}>Logout</p></div>
+      <div className="right">
+        <Link to={`/users/${auth.id}`} className="nav_profile">
+          <p className="rounded-button">My Profile</p>
+        </Link>
+        <p onClick={handleLogout} className="rounded-button">Logout</p>
+      </div>
     );
   }
   else
   {
     return (
-      <div className="right"><Link to={"/login"} className="nav_login"><p>Login</p></Link></div>
+      <div className="right">
+        <Link to={"/login"} className="nav_login">
+          <p className="rounded-button">Login</p>
+        </Link>
+      </div>
     )
   }
 }

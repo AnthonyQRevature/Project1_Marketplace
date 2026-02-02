@@ -36,6 +36,11 @@ p {
    	align-items: center;
 }
 
+#register-box .rounded-button {
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+
 
 .form-example {
 	position:relative;

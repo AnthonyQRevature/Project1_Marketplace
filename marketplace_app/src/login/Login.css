@@ -44,6 +44,10 @@ p {
    	align-items: center;
    	text-align: center;
 }
+.logRegLink .rounded-button{
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
 
 .loginBox {
 	position:relative;
@@ -53,4 +57,8 @@ p {
 	justify-self: center;
 	border: 2px solid #1C6EA4;
 	width: 300px;
+}
+.loginBox .rounded-button{
+	font-size: 0.8rem;
+	font-weight: 500;
 }

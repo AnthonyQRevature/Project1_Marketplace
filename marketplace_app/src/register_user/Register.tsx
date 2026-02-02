@@ -11,7 +11,7 @@ function Register()
 
   return (
     <>
-      <form onSubmit={formHandler} className="form-example">
+      <form onSubmit={formHandler} className="form-example" id="register-box">
         <div className="regUserInput">
           <label htmlFor="username">Enter your name: </label>
           <input type="text" name="username" id="username" required />
@@ -25,7 +25,7 @@ function Register()
           <input type="email" name="email" id="email" required />
         </div>
         <div className="regSubmit">
-          <input type="submit" value="register" />
+          <input type="submit" className="rounded-button" value="register" />
         </div>
       </form>
 
@@ -60,7 +60,13 @@ function handleSubmit(setResponse : (val : any)=>void, nav : NavigateFunction)
       nav("/login")
     }
     else
+    {
+      if (result.status === 409)
+      {
+        alert("A user with that username or email already exists");
+      }
       setResponse(`Error: ${result.status}`);
+    }
   }
 }
 
